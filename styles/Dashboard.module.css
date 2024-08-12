@@ -1,0 +1,76 @@
+.dashboard-main {
+    display: flex;
+    height: 100%;
+}
+
+.left-panel {
+    width: 20%;
+    border-right: 1px solid rgb(228 227 213);
+}
+
+.left-panel ul li{
+    padding: 24px;
+    border-bottom: 1px solid rgb(228 227 213);
+    cursor: pointer;
+}
+
+.right-panel {
+    flex-grow: 1;
+    padding: 48px;
+}
+
+
+.dashboard-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-form>input, .dashboard-form>button, .dashboard-form>textarea, .dashboard-form>label {
+    padding: 12px;
+    margin: 12px;
+}
+
+.dashboard-form input[type="text"], .dashboard-form textarea {
+    outline: 1px solid rgb(228 227 213);
+    resize: none;
+}
+
+.dashboard-form button {
+  background-color: rgb(78, 67, 124);
+  border-radius: 24px;
+  color : rgb(228 227 213);
+}
+
+.mobile-dashboard-select {
+    display: none;
+}
+
+
+@media screen and (max-width: 735px) {
+
+    .dashboard-main {
+        flex-direction: column;
+    }
+
+    .left-panel {
+        border: none;
+        width: 100%;
+    }
+    .left-panel ul {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .left-panel ul li {
+        margin: 8px;
+        border-bottom: none;
+        border-radius: 24px;
+        padding: 12px;
+        width: 150px;
+        background-color: rgb(228 227 213);
+    }
+
+    .right-panel {
+        width: 100%;
+    }
+  }
