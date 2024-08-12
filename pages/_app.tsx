@@ -2,6 +2,8 @@ import "@/styles/globals.css";
 import { NextUIProvider } from "@nextui-org/react";
 import type { AppProps } from "next/app";
 import { Kalnia } from "next/font/google"
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 const kalnia = Kalnia({
   weight: '400',
@@ -10,10 +12,12 @@ const kalnia = Kalnia({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <main className={kalnia.className}>
-      <NextUIProvider style={{ height: "100%" }}>
+    <Provider store={store}>
+      <main className={kalnia.className}>
+        <NextUIProvider style={{ height: "100%" }}>
           <Component {...pageProps} />
-      </NextUIProvider>
-    </main>
+        </NextUIProvider>
+      </main>
+    </Provider>
   )
 }
