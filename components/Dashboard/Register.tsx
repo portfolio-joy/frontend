@@ -1,14 +1,17 @@
 import { registerUserRequest } from '../../pages/redux/slices/registerSlice';
 import { AppDispatch, RootState } from '../../pages/redux/store';
 import styles from '@/styles/Dashboard.module.css'
-import { Tooltip } from '@nextui-org/react';
-import { useState } from 'react';
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tooltip, useDisclosure } from '@nextui-org/react';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { CorrectIcon } from '../icons';
 
 const Register = () => {
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const dispatch: AppDispatch = useDispatch();
-    const { loading, error } = useSelector((state: RootState) => state.register);
-    console.log(error);
+    const router = useRouter();
+    const { success, error } = useSelector((state: RootState) => state.register);
     const errorJson = JSON.parse(error ? error : "{}");
     const [formData, setFormData] = useState({
         firstName: '',
@@ -19,6 +22,13 @@ const Register = () => {
         confirmPassword: ''
     });
     const [formErrors, setFormErrors] = useState<any>({});
+    const registrationStatus: boolean = useSelector((state: RootState) => state.register.success);
+
+    useEffect(() => {
+        if (registrationStatus) {
+            onOpen();
+        }
+    }, [registrationStatus, router]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -49,6 +59,10 @@ const Register = () => {
         };
     };
 
+    const redirectToLogin = ()=>{
+        router.push('/login');
+    }
+
     return (
         <>
             <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
@@ -71,11 +85,25 @@ const Register = () => {
                 <Tooltip offset={-10} className={(errorJson.confirmPassword || formErrors.confirmPassword) && styles['error-tooltip']} key="confirmPassword" showArrow={true} content={errorJson.confirmPassword || formErrors.confirmPassword}>
                     <input name="confirmPassword" type="password" placeholder="Confirm Password *" minLength={8} maxLength={20} value={formData.confirmPassword} onChange={handleChange} className={formErrors.confirmPassword || errorJson.confirmPassword ? styles["input-error"] : styles["input-normal"]} required />
                 </Tooltip>
-                <button type="submit" disabled={loading}>Register</button>
+                <button type="submit" disabled={success}>Register</button>
                 {Object.keys(errorJson).length === 0 && formErrors.general &&
                     <p className={styles["error-message"]} >{formErrors.general}</p>
                 }
             </form>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} className={styles['registered-modal']}>
+                <ModalContent>
+                    <ModalHeader>Registered Successfully</ModalHeader>
+                    <ModalBody>
+                        <div className={styles['modal-body-content']}>
+                            <CorrectIcon />
+                            <p>Congratulations! You have been registered successfully.</p>
+                        </div>
+                    </ModalBody>
+                    <ModalFooter>
+                        <button onClick={redirectToLogin} className={styles["modal-button"]}>Go to Login Page</button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </>
     );
 }

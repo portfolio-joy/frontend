@@ -2,14 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // Define a TypeScript interface for the user state
 interface RegisterState {
-    loading: boolean;
+    success: boolean;
     user: any; // Replace `any` with a more specific type if you have a user model
     error: string | null;
 }
 
 // Define the initial state using that type
 const initialState: RegisterState = {
-    loading: false,
+    success: false,
     user: null,
     error: null,
 };
@@ -35,16 +35,17 @@ const registerSlice = createSlice({
     initialState,
     reducers: {
         registerUserRequest(state,action) {
-            state.loading = true;
+            state.success = false;
             state.user = action.payload
             state.error = null;
         },
         registerUserSuccess(state, action: PayloadAction<any>) {
-            state.loading = false;
+            state.success = true;
             state.user = action.payload;
         },
         registerUserFailure(state, action: PayloadAction<string>) {
-            state.loading = false;
+            state.success = false;
+            state.user = null;
             state.error = action.payload;
         },
 
