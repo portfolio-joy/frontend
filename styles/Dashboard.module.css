@@ -19,32 +19,81 @@
     padding: 48px;
 }
 
-
 .dashboard-form {
     display: flex;
     flex-direction: column;
+    margin: 12px 24px;
 }
 
-.dashboard-form>input, .dashboard-form>button, .dashboard-form>textarea, .dashboard-form>label {
+.dashboard-form h2 {
     padding: 12px;
     margin: 12px;
 }
 
-.dashboard-form input[type="text"], .dashboard-form textarea {
-    outline: 1px solid rgb(228 227 213);
+.dashboard-form>input, .dashboard-form>button, .dashboard-form>textarea, .dashboard-form>label, .modal-button{
+    padding: 10px;
+    margin: 12px;
+}
+
+.dashboard-form textarea {
     resize: none;
 }
 
-.dashboard-form button {
+.input-normal {
+    border-bottom: 1px solid rgb(228 227 213);
+    border-radius: 24px;
+}
+
+.input-normal:focus {
+    outline: none;
+}
+
+.input-error {
+    border-bottom: 1px solid red;
+    border-radius: 24px;
+}
+
+.input-error:focus {
+    outline: none;
+}
+
+.dashboard-form button, .modal-button{
   background-color: rgb(78, 67, 124);
   border-radius: 24px;
   color : rgb(228 227 213);
 }
 
-.mobile-dashboard-select {
-    display: none;
+.error-tooltip {
+    border-radius: 24px;
+    background-color: red;
+    color: white;
 }
 
+.registered-modal {
+    background-color: green;
+    color: white;
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.registered-modal {
+    background-color: rgb(228 227 213);
+    color: black;
+    border-radius: 24px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+}
+
+.modal-body-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.modal-body-content p {
+    margin-top: 10px;
+}
 
 @media screen and (max-width: 735px) {
 

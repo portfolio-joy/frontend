@@ -1,5 +1,10 @@
-export default function Login() {
+import Layout from "@/components/Dashboard/Layout";
+import Login from "@/components/Dashboard/Login";
+
+export default function LoginPage() {
     return (
-        <h1>Login Page</h1>
+        <Layout>
+            <Login />
+        </Layout>
     )
 }
