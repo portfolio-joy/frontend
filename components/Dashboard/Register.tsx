@@ -31,7 +31,6 @@ const Register = () => {
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
-        console.log(name);
         setFormData((previousFormDataState) => {
             if (name === 'confirmPassword' || name === 'password') {
                 if (previousFormDataState.password !== value && previousFormDataState.confirmPassword !== value) {
