@@ -2,21 +2,29 @@ import styles from '@/styles/Dashboard.module.css'
 import Image from 'next/image'
 import { AppDispatch, RootState } from '../../pages/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import portfolioImage from '@/public/portfolio.png'
 import { useRouter } from 'next/router';
 import { loginUserRequest } from '@/pages/redux/slices/loginSlice';
 import { LoginUserPayload } from '@/types/LoginUserPayload';
+import { LoginResponseData } from '@/types/LoginResponseData';
 export default function Login() {
-    const { success, error } = useSelector((state: RootState) => state.login);
+    const { success, data ,error } = useSelector((state: RootState) => state.login);
     const errorJson = JSON.parse(error ? error : "{}");
-    console.log(error);
     const dispatch: AppDispatch = useDispatch();
     const router = useRouter();
     
     const [formData, setFormData] = useState<LoginUserPayload>({
         loginId: '',
         password: ''
+    })
+
+    useEffect(()=>{
+        if(success && data) {
+            const responseData  = data as LoginResponseData;
+            localStorage.setItem('token',responseData.token);
+            router.push('/dashboard');
+        }
     })
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
