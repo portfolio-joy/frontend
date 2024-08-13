@@ -18,7 +18,7 @@ const registerSlice = createSlice({
     name: 'register',
     initialState,
     reducers: {
-        registerUserRequest(state,action) {
+        registerUserRequest(state,action : PayloadAction<RegisterUserPayload>) {
             state.success = false;
             state.data = action.payload
             state.error = null;
@@ -33,11 +33,9 @@ const registerSlice = createSlice({
             state.data = null;
             state.error = action.payload;
         },
-
-        registerUserData(state, action: PayloadAction<RegisterUserPayload>) {},
     },
 });
 
-export const { registerUserRequest, registerUserSuccess, registerUserFailure, registerUserData } = registerSlice.actions;
+export const { registerUserRequest, registerUserSuccess, registerUserFailure } = registerSlice.actions;
 export default registerSlice.reducer;
 export { registerUser };
