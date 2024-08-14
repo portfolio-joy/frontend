@@ -25,10 +25,10 @@ export default function Login() {
     useEffect(() => {
         if (success && data) {
             const responseData = data as LoginResponseData;
-            localStorage.setItem('token', responseData.token);
+            localStorage.setItem('data',JSON.stringify(responseData));
             router.push('/dashboard');
         }
-    })
+    },[success])
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
