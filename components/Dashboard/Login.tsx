@@ -8,28 +8,32 @@ import { useRouter } from 'next/router';
 import { loginUserRequest } from '@/pages/redux/slices/loginSlice';
 import { LoginUserPayload } from '@/types/LoginUserPayload';
 import { LoginResponseData } from '@/types/LoginResponseData';
+import Loader from './Loader';
+import { setLoading } from '@/pages/redux/slices/loadingSlice';
+
 export default function Login() {
-    const { success, data ,error } = useSelector((state: RootState) => state.login);
+    const { success, data, error } = useSelector((state: RootState) => state.login);
+    const { loading } = useSelector((state : RootState) => state.loading);
     const errorJson = JSON.parse(error ? error : "{}");
     const dispatch: AppDispatch = useDispatch();
     const router = useRouter();
-    
     const [formData, setFormData] = useState<LoginUserPayload>({
         loginId: '',
         password: ''
     })
 
-    useEffect(()=>{
-        if(success && data) {
-            const responseData  = data as LoginResponseData;
-            localStorage.setItem('token',responseData.token);
+    useEffect(() => {
+        if (success && data) {
+            const responseData = data as LoginResponseData;
+            localStorage.setItem('token', responseData.token);
             router.push('/dashboard');
         }
     })
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        dispatch(loginUserRequest(formData))
+        dispatch(setLoading(true));
+        dispatch(loginUserRequest(formData));
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +41,10 @@ export default function Login() {
         setFormData((previousFormDataState) => ({ ...previousFormDataState, [name]: value }));
     }
     return (
-        <section className={styles['login-page']}>
+        <section className={`${styles['login-page']} ${loading && styles['overlay']}` }>
+            {loading && (
+                <Loader />
+            )}
             <div className={styles['login-page-image']}>
                 <Image src={portfolioImage} alt='portfolioImage'></Image>
             </div>
@@ -47,9 +54,9 @@ export default function Login() {
                     {errorJson.general &&
                         <p className={styles["error-message"]} >{errorJson.general}</p>
                     }
-                    <input name="loginId" type="text" placeholder="Email Id or Username *" value={formData.loginId} onChange={handleChange} required title='' />
-                    <input name="password" type="password" placeholder="Password *" value={formData.password} onChange={handleChange} required title=''/>
-                    <button type="submit" disabled={success}>Login</button>
+                    <input name="loginId" type="text" placeholder="Email Id or Username *" value={formData.loginId} onChange={handleChange} required title='' disabled={loading}/>
+                    <input name="password" type="password" placeholder="Password *" value={formData.password} onChange={handleChange} required title='' disabled={loading}/>
+                    <button type="submit" disabled={loading}>Login</button>
                 </form>
             </div>
         </section>
