@@ -1,7 +1,7 @@
-import { UserType } from "./UserType"
+import { UserResponseType } from "./UserResponseType"
 
 export type UserState = {
     success : boolean,
-    data : UserType,
-    error : string
+    data : UserResponseType | null,
+    error : string | null
 }
