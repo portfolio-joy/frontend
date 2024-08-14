@@ -1,5 +1,5 @@
 export interface LoginResponseData extends Response {
-    id : string,
-    token : string,
+    id : string | null,
+    token : string | null,
     expiresIn : number
 }
