@@ -16,6 +16,8 @@
   font-weight: 500;
   padding: 12px;
   transition: .5s ease-in-out;
+  background: transparent;
+  font-size: 16px;
 }
 
 .header-link:hover, .header-dropdown:hover {
@@ -23,10 +25,6 @@
   border-radius: 24px;
   color : rgb(228 227 213);
   transition: .5s ease-in-out;
-}
-
-.dropdown-menu {
-  background-color: rgb(228 227 213);
 }
 
 .home-page {

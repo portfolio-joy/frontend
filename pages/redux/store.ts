@@ -2,16 +2,12 @@
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './rootSaga';
 import { configureStore } from '@reduxjs/toolkit';
-import registerSlice from './slices/registerSlice';
-import loginSlice from './slices/loginSlice';
+import rootReducer from './rootReducer';
 
 const sagaMiddleware = createSagaMiddleware();
 
 const store = configureStore({
-    reducer: {
-        register: registerSlice,
-        login: loginSlice
-    },
+    reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(sagaMiddleware),
 });

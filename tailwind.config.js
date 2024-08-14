@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const { nextui } = require('@nextui-org/react');
+
 module.exports = {
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}', // Note the addition of the `app` directory.
@@ -9,6 +11,6 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [nextui()],
 }
 
