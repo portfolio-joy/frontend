@@ -8,7 +8,7 @@ const initialState: UserState = {
     error: null
 };
 
-const fetchUser = {
+const user = {
     request: 'user/fetchUserData',
     success: 'user/fetchUserSuccess',
     failure: 'user/fetchUserFailure',
@@ -18,9 +18,9 @@ const fetchUserSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        fetchUserData(state) {
+        fetchUserData(state,action : PayloadAction<UserResponseType>) {
             state.success = false;
-            state.data = null;
+            state.data = action.payload;
             state.error = null;
         },
         fetchUserSuccess(state, action: PayloadAction<UserResponseType>) {
@@ -38,5 +38,5 @@ const fetchUserSlice = createSlice({
 
 export const { fetchUserData, fetchUserSuccess, fetchUserFailure } = fetchUserSlice.actions;
 export default fetchUserSlice.reducer;
-export { fetchUser }
+export { user }
 

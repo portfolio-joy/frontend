@@ -9,7 +9,6 @@ export interface UserResponseType extends Response {
     id : string,
     firstName : string,
     lastName : string,
-    age : string,
     emailId : string,
     username : string,
     portofolioUrl : string,
