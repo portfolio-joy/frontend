@@ -1,5 +1,5 @@
 .navbar {
-  justify-content: end;
+    justify-content: end;
 }
 
 .navbar-menu {
@@ -10,14 +10,14 @@
     padding: 0;
 }
 
-.navbar-menu a{
+.navbar-menu a {
     padding: 12px;
     color: black;
 }
 
 .navbar-menu a:hover {
     background-color: rgb(78, 67, 124);
-    color: rgb(228,227,213);
+    color: rgb(228, 227, 213);
     border-radius: 24px;
     transition: .5s ease-in-out;
 }
@@ -39,9 +39,29 @@
     letter-spacing: 1.5px;
 }
 
-
 .user-image img {
-    width: 60%;
+    width: 80%;
     border-radius: 48px;
-    margin-left: 25%;
+    margin: auto;
+}
+
+@media screen and (max-width: 767px) {
+
+    .about-me {
+        flex-direction: column-reverse;
+        align-items: center;
+        padding: 12px;
+    }
+
+    .user-detail,
+    .user-image {
+        width: 100%;
+    }
+
+    .user-detail h1,
+    .user-detail p,
+    .skill-chips {
+        text-align: center;
+        padding: 24px;
+    }
 }
