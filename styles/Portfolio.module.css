@@ -1,24 +1,47 @@
 .navbar {
-    justify-content: end;
-    background-color: rgba(228, 227, 213, 0.3);
+  justify-content: end;
 }
 
-.navbar-menu{
+.navbar-menu {
     height: fit-content !important;
-    background-color: rgba(78, 67, 124, 0.2);
     border-bottom-right-radius: 24px;
     border-bottom-left-radius: 24px;
     justify-content: end;
     padding: 0;
 }
 
-.navbar-menu li {
+.navbar-menu a{
     padding: 12px;
+    color: black;
 }
 
-.navbar-menu li:hover {
+.navbar-menu a:hover {
     background-color: rgb(78, 67, 124);
+    color: rgb(228,227,213);
     border-radius: 24px;
-    color : rgb(228 227 213);
     transition: .5s ease-in-out;
+}
+
+.about-me {
+    display: flex;
+    align-items: center;
+    justify-items: space-between;
+    padding: 96px;
+}
+
+.user-detail,
+.user-image {
+    width: 50%;
+}
+
+.user-detail h1 {
+    padding-bottom: 12px;
+    letter-spacing: 1.5px;
+}
+
+
+.user-image img {
+    width: 60%;
+    border-radius: 48px;
+    margin-left: 25%;
 }

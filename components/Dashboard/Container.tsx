@@ -7,15 +7,18 @@ import ProjectData from "./ProjectData";
 import Testimonials from "./Testimonials";
 import Contact from "./Contacts";
 import SocialMedia from "./SocialMedia";
-import { useDispatch, useSelector } from "react-redux";
-import { LoginResponseData } from "@/types/LoginResponseData";
-import { AppDispatch, RootState } from "@/pages/redux/store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/pages/redux/store";
 import { fetchUserData } from "@/pages/redux/slices/fetchUserSlice";
+import { useRouter } from "next/router";
+import { LoginResponseData } from "@/types/LoginResponseData";
 
 export default function DashboardContainer() {
   const dispatch: AppDispatch = useDispatch();
-  const [component, setComponent] = useState<JSX.Element>(AboutMe);
-  const components: { key: () => JSX.Element; value: string; }[] = [
+  const router = useRouter();
+  const [activeModule, setActiveModule] = useState<JSX.Element>(AboutMe);
+  const [activeModuleIndex, setActiveModuleIndex] = useState<number>(0);
+  const modules: { key: () => JSX.Element; value: string; }[] = [
     {
       key: AboutMe,
       value: "About Me",
@@ -48,7 +51,11 @@ export default function DashboardContainer() {
 
   useEffect(() => {
     const data = localStorage.getItem('data')
-    const dataJson = JSON.parse(data ? data : '{}');
+    const dataJson: LoginResponseData = JSON.parse(data ? data : '{}');
+    if (!dataJson.token || dataJson.expiresIn < new Date()) {
+      router.push('/login');
+      return;
+    }
     dispatch(fetchUserData(dataJson))
   }, []);
 
@@ -57,20 +64,21 @@ export default function DashboardContainer() {
       <div className={styles["left-panel"]}>
         <ul>
           {
-            components.map((component, index) => {
+            modules.map((module, index) => {
               return (
-                <li key={index} onClick={() => {
-                  setComponent(component.key);
+                <li className={activeModuleIndex == index ? styles['activeModule'] : styles['module']} key={index} onClick={() => {
+                  setActiveModuleIndex(index);
+                  setActiveModule(module.key);
                 }}
                 >
-                  {component.value}
+                  {module.value}
                 </li>
               )
             })
           }
         </ul>
       </div>
-      <div className={styles["right-panel"]}>{component}</div>
+      <div className={styles["right-panel"]}>{activeModule}</div>
     </section>
   );
 }

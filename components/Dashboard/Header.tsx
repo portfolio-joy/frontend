@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 export default function Header() {
     const [token, setToken] = useState<string | null>(null);
     useEffect(() => {
-        setToken(localStorage.getItem("token"));
+        setToken(localStorage.getItem("data"));
     }, []);
     return (
         <header className={styles['header']}>
