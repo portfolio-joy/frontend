@@ -1,6 +1,6 @@
 import styles from "@/styles/Portfolio.module.css"
 import Image from "next/image"
-import portfolioImage from '@/public/portfolio.png'
+import portfolioImage from '@/public/user.jpg'
 import { Chip } from "@nextui-org/react"
 
 export default function PortfolioAboutMe() {
