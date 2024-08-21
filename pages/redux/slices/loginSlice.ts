@@ -11,8 +11,8 @@ const initialState: LoginUserState = {
 
 const loginUser = {
     request: 'login/loginUserRequest',
-    success: 'register/loginUserSuccess',
-    failure: 'register/loginUserFailure',
+    success: 'login/loginUserSuccess',
+    failure: 'login/loginUserFailure',
 };
 
 const loginSlice = createSlice({
