@@ -3,12 +3,14 @@ import loginSlice from "./slices/loginSlice"
 import registerSlice from "./slices/registerSlice"
 import loadingSlice from "./slices/loadingSlice"
 import fetchUserSlice from "./slices/fetchUserSlice"
+import aboutMeSlice from "./slices/aboutMeSlice"
 
 const rootReducer = combineReducers({
     register: registerSlice,
     login: loginSlice,
     loading: loadingSlice,
-    user : fetchUserSlice
+    user : fetchUserSlice,
+    aboutMe : aboutMeSlice,
 })
 
 export default rootReducer;

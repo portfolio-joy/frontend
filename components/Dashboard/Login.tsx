@@ -13,7 +13,7 @@ import { setLoading } from '@/pages/redux/slices/loadingSlice';
 
 export default function Login() {
     const { success, data, error } = useSelector((state: RootState) => state.login);
-    const { loading } = useSelector((state : RootState) => state.loading);
+    const { loading } = useSelector((state : RootState) => state.loading)
     const errorJson = JSON.parse(error ? error : "{}");
     const dispatch: AppDispatch = useDispatch();
     const router = useRouter();
@@ -28,7 +28,10 @@ export default function Login() {
             localStorage.setItem('data',JSON.stringify(responseData));
             router.push('/dashboard');
         }
-    },[success])
+        if(error) {
+            dispatch(setLoading(false));
+        }
+    },[success,error])
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

@@ -7,14 +7,18 @@ import ProjectData from "./ProjectData";
 import Testimonials from "./Testimonials";
 import Contact from "./Contacts";
 import SocialMedia from "./SocialMedia";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/pages/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/pages/redux/store";
 import { fetchUserData } from "@/pages/redux/slices/fetchUserSlice";
 import { useRouter } from "next/router";
 import { LoginResponseData } from "@/types/LoginResponseData";
+import { updateAboutMeData } from "@/pages/redux/slices/aboutMeSlice";
+import { UserResponseType } from "@/types/UserResponseType";
 
 export default function DashboardContainer() {
   const dispatch: AppDispatch = useDispatch();
+  const userState = useSelector((state: RootState) => state.user);
+  const aboutMestate = useSelector((state: RootState) => state.aboutMe);
   const router = useRouter();
   const [activeModule, setActiveModule] = useState<JSX.Element>(AboutMe);
   const [activeModuleIndex, setActiveModuleIndex] = useState<number>(0);
@@ -50,14 +54,15 @@ export default function DashboardContainer() {
   ]
 
   useEffect(() => {
-    const data = localStorage.getItem('data')
-    const dataJson: LoginResponseData = JSON.parse(data ? data : '{}');
-    if (!dataJson.token || dataJson.expiresIn < new Date()) {
-      router.push('/login');
-      return;
+    const localStorageData = localStorage.getItem('data');
+    const dataJson: LoginResponseData = JSON.parse(localStorageData ? localStorageData : '{}');
+    dispatch(fetchUserData(dataJson));
+    if(userState.success)
+    {
+      const userData = userState.data as UserResponseType;
+      dispatch(updateAboutMeData(userData.aboutMe));
     }
-    dispatch(fetchUserData(dataJson))
-  }, []);
+  }, [userState.success]);
 
   return (
     <section className={styles["dashboard-main"]}>

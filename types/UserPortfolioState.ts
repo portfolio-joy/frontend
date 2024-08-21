@@ -8,6 +8,6 @@ import { TestimonialType } from "./TestimonialType"
 
 export type UserPortfolioState = {
     success : boolean,
-    data : AboutMeType | SkillType | ProjectsType | ProjectDataType | TestimonialType | ContactType | SocialMediaType,
-    error : string
+    data : AboutMeType | SkillType | ProjectsType | ProjectDataType | TestimonialType | ContactType | SocialMediaType | null,
+    error : string | null
 }
