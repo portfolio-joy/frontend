@@ -1,8 +1,8 @@
-import { AboutMeState } from "@/types/AboutMeState";
 import { AboutMeType } from "@/types/AboutMeType";
+import { UserPortfolioState } from "@/types/UserPortfolioState";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: AboutMeState = {
+const initialState: UserPortfolioState = {
     success: false,
     data: null,
     error: null

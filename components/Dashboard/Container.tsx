@@ -1,5 +1,5 @@
 import styles from "@/styles/Dashboard.module.css";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import AboutMe from "./AboutMe";
 import Skills from "./Skills";
 import Projects from "./Projects";
@@ -12,43 +12,40 @@ import { AppDispatch, RootState } from "@/pages/redux/store";
 import { fetchUserData } from "@/pages/redux/slices/fetchUserSlice";
 import { useRouter } from "next/router";
 import { LoginResponseData } from "@/types/LoginResponseData";
-import { updateAboutMeData } from "@/pages/redux/slices/aboutMeSlice";
-import { UserResponseType } from "@/types/UserResponseType";
 
 export default function DashboardContainer() {
   const dispatch: AppDispatch = useDispatch();
   const userState = useSelector((state: RootState) => state.user);
-  const aboutMestate = useSelector((state: RootState) => state.aboutMe);
   const router = useRouter();
-  const [activeModule, setActiveModule] = useState<JSX.Element>(AboutMe);
+  const [activeModule, setActiveModule] = useState<JSX.Element>(<AboutMe />);
   const [activeModuleIndex, setActiveModuleIndex] = useState<number>(0);
-  const modules: { key: () => JSX.Element; value: string; }[] = [
+  const modules: { key: SetStateAction<JSX.Element>; value: string; }[] = [
     {
-      key: AboutMe,
+      key: <AboutMe />,
       value: "About Me",
     },
     {
-      key: Skills,
+      key: <Skills />,
       value: "Skills",
     },
     {
-      key: Projects,
+      key: <Projects />,
       value: "Projects",
     },
     {
-      key: ProjectData,
+      key: <ProjectData />,
       value: "Project Data",
     },
     {
-      key: Testimonials,
+      key: <Testimonials />,
       value: "Testimonials",
     },
     {
-      key: Contact,
+      key: <Contact />,
       value: "Contact",
     },
     {
-      key: SocialMedia,
+      key: <SocialMedia />,
       value: "Social Media",
     }
   ]
@@ -56,13 +53,11 @@ export default function DashboardContainer() {
   useEffect(() => {
     const localStorageData = localStorage.getItem('data');
     const dataJson: LoginResponseData = JSON.parse(localStorageData ? localStorageData : '{}');
-    dispatch(fetchUserData(dataJson));
-    if(userState.success)
-    {
-      const userData = userState.data as UserResponseType;
-      dispatch(updateAboutMeData(userData.aboutMe));
+    if(!userState.error && !userState.success) dispatch(fetchUserData(dataJson));
+    if (userState.error) {
+      router.push('/login');
     }
-  }, [userState.success]);
+  }, [userState.error, userState.success]);
 
   return (
     <section className={styles["dashboard-main"]}>
