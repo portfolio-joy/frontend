@@ -57,8 +57,8 @@ export default function Login() {
                     {errorJson.general &&
                         <p className={styles["error-message"]} >{errorJson.general}</p>
                     }
-                    <input name="loginId" type="text" placeholder="Email Id or Username *" value={formData.loginId} onChange={handleChange} required title='' disabled={loading}/>
-                    <input name="password" type="password" placeholder="Password *" value={formData.password} onChange={handleChange} required title='' disabled={loading}/>
+                    <input name="loginId" className={styles['input-normal']} type="text" placeholder="Email Id or Username *" value={formData.loginId} onChange={handleChange} required title='' disabled={loading}/>
+                    <input name="password" className={styles['input-normal']} type="password" placeholder="Password *" value={formData.password} onChange={handleChange} required title='' disabled={loading}/>
                     <button type="submit" disabled={loading}>Login</button>
                 </form>
             </div>

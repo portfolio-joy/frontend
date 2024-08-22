@@ -3,6 +3,6 @@ import { UserResponseType } from "./UserResponseType"
 
 export type UserState = {
     success : boolean,
-    data :  LoginResponseData | UserResponseType | null,
+    data :  UserResponseType | null,
     error : string | null
 }

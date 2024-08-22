@@ -1,10 +1,10 @@
 import { AboutMeType } from "@/types/AboutMeType";
 import { call, CallEffect, put, PutEffect } from "redux-saga/effects";
-import { saveAboutMeFaliure, saveAboutMeSuccess } from "../slices/saveAboutMeSlice";
-import { ImageType } from "@/types/ImageType";
+import { updateAboutMeSuccess, updateAboutMeFaliure } from "../slices/updateAboutMeSlice";
 import { base64ToFile } from "@/util/base64ToFile";
+import { ImageType } from "@/types/ImageType";
 
-export default function* saveAboutMeSaga(action: { type: string; payload: { data: AboutMeType, userId: string, token: string, profile: File } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, AboutMeType> {
+export default function* updateAboutMeSaga(action: { type: string; payload: { data: AboutMeType, aboutMeId: string, userId: string, token: string, profile: File } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, AboutMeType> {
     try {
         const aboutMeData: AboutMeType = {
             ...action.payload.data,
@@ -16,8 +16,8 @@ export default function* saveAboutMeSaga(action: { type: string; payload: { data
         formData.append('aboutMeData', JSON.stringify(aboutMeData));
         formData.append('profile', action.payload.profile);
         const response: AboutMeType = yield call(() =>
-            fetch('http://localhost:8080/user/aboutMe', {
-                method: 'POST',
+            fetch(`http://localhost:8080/user/aboutMe/${action.payload.aboutMeId}`, {
+                method: 'PUT',
                 headers: {
                     'Access-Control-Allow-Origin': 'http://localhost:3000',
                     'Authorization': `Bearer ${action.payload.token}`,
@@ -30,8 +30,8 @@ export default function* saveAboutMeSaga(action: { type: string; payload: { data
         }
         const responseJson = yield response.json();
         responseJson.profile = base64ToFile(responseJson.profile as ImageType);
-        yield put(saveAboutMeSuccess(responseJson));
+        yield put(updateAboutMeSuccess(responseJson));
     } catch (error: unknown) {
-        yield put(saveAboutMeFaliure((error as Error).message));
+        yield put(updateAboutMeFaliure((error as Error).message));
     }
 }

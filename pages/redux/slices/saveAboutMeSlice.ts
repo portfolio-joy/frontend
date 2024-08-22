@@ -9,20 +9,20 @@ const initialState: UserPortfolioState = {
     error: null
 };
 
-const aboutMe = {
+const saveAboutMe = {
     request: 'aboutMe/saveAboutMeRequest',
     success: 'aboutMe/saveAboutMeSuccess',
-    failure: 'aboutMe/saveAboutMeFaliure',
+    failure: 'aboutMe/saveAboutMeFailure',
 };
 
-const aboutMeSlice = createSlice({
+const saveAboutMeSlice = createSlice({
     name: 'aboutMe',
     initialState,
     reducers: {
         updateUserData(state, action: PayloadAction<UserResponseType>) {
             state.user = action.payload;
         },
-        saveAboutMeRequest(state, action: PayloadAction<{ data: AboutMeType, id: string, token : string, profile : File }>) {
+        saveAboutMeRequest(state, action: PayloadAction<{ data: AboutMeType, userId: string, token : string, profile : File }>) {
             state.success = false;
             state.error = null;
         },
@@ -38,6 +38,6 @@ const aboutMeSlice = createSlice({
     }
 })
 
-export const { updateUserData, saveAboutMeRequest, saveAboutMeSuccess, saveAboutMeFaliure } = aboutMeSlice.actions;
-export default aboutMeSlice.reducer;
-export { aboutMe }
+export const { updateUserData, saveAboutMeRequest, saveAboutMeSuccess, saveAboutMeFaliure } = saveAboutMeSlice.actions;
+export default saveAboutMeSlice.reducer;
+export { saveAboutMe }
