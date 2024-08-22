@@ -53,9 +53,16 @@ export default function DashboardContainer() {
   useEffect(() => {
     const localStorageData = localStorage.getItem('data');
     const dataJson: LoginResponseData = JSON.parse(localStorageData ? localStorageData : '{}');
-    if(!userState.error && !userState.success) dispatch(fetchUserData(dataJson));
+    if (!userState.error && !userState.success) dispatch(fetchUserData(dataJson));
     if (userState.error) {
-      router.push('/login');
+      let error;
+      try {
+        error = JSON.parse(userState.error);
+      } catch (error: unknown) {
+      }
+      if (error?.general === 'Session Expired') {
+        router.push('/login');
+      }
     }
   }, [userState.error, userState.success]);
 

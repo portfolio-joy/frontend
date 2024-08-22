@@ -11,7 +11,7 @@ export interface UserResponseType extends Response {
     lastName : string,
     emailId : string,
     username : string,
-    portofolioUrl : string,
+    portfolioUrl : string,
     token : string,
     aboutMe : AboutMeType,
     allSkill : SkillType[],

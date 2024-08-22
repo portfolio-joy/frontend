@@ -3,14 +3,18 @@ import loginSlice from "./slices/loginSlice"
 import registerSlice from "./slices/registerSlice"
 import loadingSlice from "./slices/loadingSlice"
 import fetchUserSlice from "./slices/fetchUserSlice"
-import aboutMeSlice from "./slices/aboutMeSlice"
+import saveAboutMeSlice from "./slices/saveAboutMeSlice"
+import updateAboutMeSlice, { updateAboutMe } from "./slices/updateAboutMeSlice"
+import fetchPortfolioDataSlice from "./slices/fetchPortfolioDataSlice"
 
 const rootReducer = combineReducers({
     register: registerSlice,
     login: loginSlice,
     loading: loadingSlice,
     user : fetchUserSlice,
-    aboutMe : aboutMeSlice,
+    saveAboutMe : saveAboutMeSlice,
+    updateAboutMe : updateAboutMeSlice,
+    portfolio : fetchPortfolioDataSlice,
 })
 
 export default rootReducer;

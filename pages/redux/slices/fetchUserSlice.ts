@@ -21,7 +21,6 @@ const fetchUserSlice = createSlice({
     reducers: {
         fetchUserData(state,action : PayloadAction<LoginResponseData>) {
             state.success = false;
-            state.data = action.payload;
             state.error = null;
         },
         fetchUserSuccess(state, action: PayloadAction<UserResponseType>) {
