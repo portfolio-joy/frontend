@@ -55,6 +55,7 @@ export default function AboutMe() {
     return (
         <>
             <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
+                <h2>About Me Form</h2>
                 <input className={styles['input-normal']} name="name" type="text" placeholder="Name" value={formData?.name} onChange={handleChange}></input>
                 <Tooltip className={styles['info-tooltip']} content="Seperate the skills using comma">
                     <input className={styles['input-normal']} name="skills" type="text" placeholder="Skills" maxLength={255} defaultValue={formData?.skills} onChange={handleChange}></input>
