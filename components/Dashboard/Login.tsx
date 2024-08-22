@@ -13,7 +13,7 @@ import { setLoading } from '@/pages/redux/slices/loadingSlice';
 
 export default function Login() {
     const { success, data, error } = useSelector((state: RootState) => state.login);
-    const { loading } = useSelector((state : RootState) => state.loading);
+    const { loading } = useSelector((state : RootState) => state.loading)
     const errorJson = JSON.parse(error ? error : "{}");
     const dispatch: AppDispatch = useDispatch();
     const router = useRouter();
@@ -28,7 +28,10 @@ export default function Login() {
             localStorage.setItem('data',JSON.stringify(responseData));
             router.push('/dashboard');
         }
-    },[success])
+        if(error) {
+            dispatch(setLoading(false));
+        }
+    },[success,error])
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -54,8 +57,8 @@ export default function Login() {
                     {errorJson.general &&
                         <p className={styles["error-message"]} >{errorJson.general}</p>
                     }
-                    <input name="loginId" type="text" placeholder="Email Id or Username *" value={formData.loginId} onChange={handleChange} required title='' disabled={loading}/>
-                    <input name="password" type="password" placeholder="Password *" value={formData.password} onChange={handleChange} required title='' disabled={loading}/>
+                    <input name="loginId" className={styles['input-normal']} type="text" placeholder="Email Id or Username *" value={formData.loginId} onChange={handleChange} required title='' disabled={loading}/>
+                    <input name="password" className={styles['input-normal']} type="password" placeholder="Password *" value={formData.password} onChange={handleChange} required title='' disabled={loading}/>
                     <button type="submit" disabled={loading}>Login</button>
                 </form>
             </div>

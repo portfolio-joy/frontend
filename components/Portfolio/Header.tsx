@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, NavbarContent, NavbarItem, Link } from "@nextui-org/react";
+import { Navbar, NavbarMenuToggle, NavbarMenu, NavbarContent, Link } from "@nextui-org/react";
 import styles from "@/styles/Portfolio.module.css"
 
 export default function PortfolioHeader() {
@@ -18,23 +18,19 @@ export default function PortfolioHeader() {
                 <NavbarMenuToggle />
             </NavbarContent>
 
-            <NavbarContent className={`hidden md:flex`} justify="end">
+            <NavbarContent className={`hidden md:flex ${styles['navbar-menu']}`} justify="end">
                 {menuItems.map((item, index) => (
-                    <NavbarItem key={index}>
-                        <Link color="foreground" href="#">
+                        <Link key={index} href="#">
                             {item}
                         </Link>
-                    </NavbarItem>
                 ))}
             </NavbarContent>
 
             <NavbarMenu className={styles['navbar-menu']}>
                 {menuItems.map((item, index) => (
-                    <NavbarMenuItem key={index}>
-                        <Link className="w-full" href="#" size="lg">
+                        <Link key={index} className="w-full" href="#" size="lg">
                             {item}
                         </Link>
-                    </NavbarMenuItem>
                 ))}
             </NavbarMenu>
         </Navbar>

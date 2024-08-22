@@ -1,5 +1,5 @@
 import styles from "@/styles/Dashboard.module.css";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import AboutMe from "./AboutMe";
 import Skills from "./Skills";
 import Projects from "./Projects";
@@ -8,69 +8,84 @@ import Testimonials from "./Testimonials";
 import Contact from "./Contacts";
 import SocialMedia from "./SocialMedia";
 import { useDispatch, useSelector } from "react-redux";
-import { LoginResponseData } from "@/types/LoginResponseData";
 import { AppDispatch, RootState } from "@/pages/redux/store";
 import { fetchUserData } from "@/pages/redux/slices/fetchUserSlice";
+import { useRouter } from "next/router";
+import { LoginResponseData } from "@/types/LoginResponseData";
 
 export default function DashboardContainer() {
   const dispatch: AppDispatch = useDispatch();
-  const [component, setComponent] = useState<JSX.Element>(AboutMe);
-  const components: { key: () => JSX.Element; value: string; }[] = [
+  const userState = useSelector((state: RootState) => state.user);
+  const router = useRouter();
+  const [activeModule, setActiveModule] = useState<JSX.Element>(<AboutMe />);
+  const [activeModuleIndex, setActiveModuleIndex] = useState<number>(0);
+  const modules: { key: SetStateAction<JSX.Element>; value: string; }[] = [
     {
-      key: AboutMe,
+      key: <AboutMe />,
       value: "About Me",
     },
     {
-      key: Skills,
+      key: <Skills />,
       value: "Skills",
     },
     {
-      key: Projects,
+      key: <Projects />,
       value: "Projects",
     },
     {
-      key: ProjectData,
+      key: <ProjectData />,
       value: "Project Data",
     },
     {
-      key: Testimonials,
+      key: <Testimonials />,
       value: "Testimonials",
     },
     {
-      key: Contact,
+      key: <Contact />,
       value: "Contact",
     },
     {
-      key: SocialMedia,
+      key: <SocialMedia />,
       value: "Social Media",
     }
   ]
 
   useEffect(() => {
-    const data = localStorage.getItem('data')
-    const dataJson = JSON.parse(data ? data : '{}');
-    dispatch(fetchUserData(dataJson))
-  }, []);
+    const localStorageData = localStorage.getItem('data');
+    const dataJson: LoginResponseData = JSON.parse(localStorageData ? localStorageData : '{}');
+    if (!userState.error && !userState.success) dispatch(fetchUserData(dataJson));
+    if (userState.error) {
+      let error;
+      try {
+        error = JSON.parse(userState.error);
+      } catch (error: unknown) {
+      }
+      if (error?.general === 'Session Expired') {
+        router.push('/login');
+      }
+    }
+  }, [userState.error, userState.success]);
 
   return (
     <section className={styles["dashboard-main"]}>
       <div className={styles["left-panel"]}>
         <ul>
           {
-            components.map((component, index) => {
+            modules.map((module, index) => {
               return (
-                <li key={index} onClick={() => {
-                  setComponent(component.key);
+                <li className={activeModuleIndex == index ? styles['activeModule'] : styles['module']} key={index} onClick={() => {
+                  setActiveModuleIndex(index);
+                  setActiveModule(module.key);
                 }}
                 >
-                  {component.value}
+                  {module.value}
                 </li>
               )
             })
           }
         </ul>
       </div>
-      <div className={styles["right-panel"]}>{component}</div>
+      <div className={styles["right-panel"]}>{activeModule}</div>
     </section>
   );
 }

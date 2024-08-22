@@ -1,3 +1,4 @@
+import { LoginResponseData } from "@/types/LoginResponseData";
 import { UserResponseType } from "@/types/UserResponseType";
 import { UserState } from "@/types/UserState";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -18,9 +19,8 @@ const fetchUserSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        fetchUserData(state,action : PayloadAction<UserResponseType>) {
+        fetchUserData(state,action : PayloadAction<LoginResponseData>) {
             state.success = false;
-            state.data = action.payload;
             state.error = null;
         },
         fetchUserSuccess(state, action: PayloadAction<UserResponseType>) {
