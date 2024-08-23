@@ -37,14 +37,12 @@ export default function AboutMe() {
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
             setProfile(event.target.files[0]);
-            console.log(profile);
         }
     }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (isDataPresent) {
-            console.log(profile);
             dispatch(updateAboutMeRequest({ data: formData, aboutMeId: formData.id, userId: (userState.data as UserResponseType).id, token: (userState.data as UserResponseType).token, profile: profile as File }));
         }
         else {
@@ -65,11 +63,11 @@ export default function AboutMe() {
                 {(saveAboutMeState.success || updateAboutMeState.success) &&
                     <p className={styles["success-message"]} >Data Updated Successfully</p>
                 }
-                <input className={styles['input-normal']} name="name" type="text" placeholder="Name" value={formData?.name} onChange={handleChange}></input>
+                <input className={styles['input-normal']} name="name" type="text" placeholder="Name" defaultValue={formData?.name} onChange={handleChange} required></input>
                 <Tooltip className={styles['info-tooltip']} content="Seperate the skills using comma">
-                    <input className={styles['input-normal']} name="skills" type="text" placeholder="Skills" maxLength={255} defaultValue={formData?.skills} onChange={handleChange}></input>
+                    <input className={styles['input-normal']} name="skills" type="text" placeholder="Skills" maxLength={255} defaultValue={formData?.skills} onChange={handleChange} required></input>
                 </Tooltip>
-                <textarea className={styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} value={formData?.description} onChange={handleChange}></textarea>
+                <textarea className={styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} defaultValue={formData?.description} onChange={handleChange} required></textarea>
                 <input type="file" name="profile" accept="image/*" onChange={handleFileChange} />
                 <button type="submit"> {isDataPresent ? 'Update' : 'Save'} </button>
             </form>
