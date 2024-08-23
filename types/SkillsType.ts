@@ -3,4 +3,5 @@ export type SkillType = {
     name : string,
     type : string,
     proficiency : string,
+    description : string
 }
