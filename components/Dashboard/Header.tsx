@@ -3,17 +3,15 @@ import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@
 import Link from 'next/link'
 import { ArrowDownIcon } from '../icons'
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/pages/redux/store';
 import { UserResponseType } from '@/types/UserResponseType';
+import { useAppSelector } from '@/hooks/hooks';
 
 export default function Header() {
     const [userData,setUserData] = useState<UserResponseType | null>(null);
-    const userState = useSelector((state: RootState) => state.user);
+    const userState = useAppSelector((state) => state.user);
     useEffect(() => {
         if(userState.success) {
             setUserData(userState.data as UserResponseType);
-            console.log(userState.data);
         }
     }, [userState.success]);
     return (

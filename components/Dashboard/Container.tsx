@@ -7,15 +7,14 @@ import ProjectData from "./ProjectData";
 import Testimonials from "./Testimonials";
 import Contact from "./Contacts";
 import SocialMedia from "./SocialMedia";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/pages/redux/store";
 import { fetchUserData } from "@/pages/redux/slices/fetchUserSlice";
 import { useRouter } from "next/router";
 import { LoginResponseData } from "@/types/LoginResponseData";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 
 export default function DashboardContainer() {
-  const dispatch: AppDispatch = useDispatch();
-  const userState = useSelector((state: RootState) => state.user);
+  const dispatch = useAppDispatch();
+  const userState = useAppSelector((state) => state.user);
   const router = useRouter();
   const [activeModule, setActiveModule] = useState<JSX.Element>(<AboutMe />);
   const [activeModuleIndex, setActiveModuleIndex] = useState<number>(0);
@@ -55,14 +54,7 @@ export default function DashboardContainer() {
     const dataJson: LoginResponseData = JSON.parse(localStorageData ? localStorageData : '{}');
     if (!userState.error && !userState.success) dispatch(fetchUserData(dataJson));
     if (userState.error) {
-      let error;
-      try {
-        error = JSON.parse(userState.error);
-      } catch (error: unknown) {
-      }
-      if (error?.general === 'Session Expired') {
-        router.push('/login');
-      }
+      router.push('/login');
     }
   }, [userState.error, userState.success]);
 

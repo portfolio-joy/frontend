@@ -1,5 +1,5 @@
 import styles from '@/styles/Dashboard.module.css'
-import { Chip, Divider, Radio, RadioGroup } from '@nextui-org/react'
+import { Chip, Divider, Radio, RadioGroup, Slider } from '@nextui-org/react'
 import { CrossIcon } from '../icons'
 import { useState } from 'react';
 
@@ -15,16 +15,17 @@ export default function Skills() {
             </div>
             <Divider />
             <form className={styles['dashboard-form']}>
-                <h2>Skills Form</h2>
-                <input className={styles['input-normal']} name='name' type='text' placeholder='Name'></input>
-                <RadioGroup orientation="horizontal" value={skillType} onValueChange={setSkillType}>
-                    <Radio value="Technical">Technical</Radio>
+                <h2>Add Skill</h2>
+                <input className={styles['input-normal']} name='name' type='text' placeholder='Name' required></input>
+                <RadioGroup color='secondary' orientation="horizontal" value={skillType} onValueChange={setSkillType} isRequired>
+                    <Radio className={styles['radio-button']} value="Technical">Technical</Radio>
                     <Radio value="Soft">Soft</Radio>
                 </RadioGroup>
                 {
-                    skillType==='Technical' && 
-                    <input className={styles['input-normal']} type='number' placeholder='Proficiency' max={100}></input>
+                    skillType==='Technical' &&
+                    <Slider color='secondary' showTooltip={true} step={1} maxValue={100} minValue={1} defaultValue={1} className={`max-w-md p-5 ${styles['proficiency-slider']}`}/>
                 }
+                <textarea className={styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600}></textarea>
             </form>
         </section>
     )

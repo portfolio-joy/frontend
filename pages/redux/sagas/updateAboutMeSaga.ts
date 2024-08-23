@@ -1,8 +1,6 @@
 import { AboutMeType } from "@/types/AboutMeType";
 import { call, CallEffect, put, PutEffect } from "redux-saga/effects";
 import { updateAboutMeSuccess, updateAboutMeFaliure } from "../slices/updateAboutMeSlice";
-import { base64ToFile } from "@/util/base64ToFile";
-import { ImageType } from "@/types/ImageType";
 
 export default function* updateAboutMeSaga(action: { type: string; payload: { data: AboutMeType, aboutMeId: string, userId: string, token: string, profile: File } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, AboutMeType> {
     try {
@@ -29,7 +27,6 @@ export default function* updateAboutMeSaga(action: { type: string; payload: { da
             throw new Error((yield response.text()) as unknown as string);
         }
         const responseJson = yield response.json();
-        responseJson.profile = base64ToFile(responseJson.profile as ImageType);
         yield put(updateAboutMeSuccess(responseJson));
     } catch (error: unknown) {
         yield put(updateAboutMeFaliure((error as Error).message));

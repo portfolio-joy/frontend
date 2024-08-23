@@ -29,7 +29,6 @@ export default function* saveAboutMeSaga(action: { type: string; payload: { data
             throw new Error((yield response.text()) as unknown as string);
         }
         const responseJson = yield response.json();
-        responseJson.profile = base64ToFile(responseJson.profile as ImageType);
         yield put(saveAboutMeSuccess(responseJson));
     } catch (error: unknown) {
         yield put(saveAboutMeFaliure((error as Error).message));

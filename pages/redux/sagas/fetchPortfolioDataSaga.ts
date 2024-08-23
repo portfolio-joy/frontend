@@ -20,7 +20,7 @@ export default function* fetchPortfolioDataSaga(action: { type: string; payload:
         }
 
         const responseJson: UserResponseType = yield call([response, 'json']);
-        if(responseJson.aboutMe?.profile) responseJson.aboutMe.profile = base64ToFile(responseJson.aboutMe.profile as ImageType);
+        // if(responseJson.aboutMe?.profile) responseJson.aboutMe.profile = base64ToFile(responseJson.aboutMe.profile as ImageType);
         yield put(fetchPortfolioDataSuccess(responseJson));
     } catch (error: unknown) {
         yield put(fetchPortfolioDataFailure((error as Error).message));

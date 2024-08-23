@@ -1,7 +1,5 @@
 import styles from '@/styles/Dashboard.module.css'
 import Image from 'next/image'
-import { AppDispatch, RootState } from '../../pages/redux/store';
-import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import portfolioImage from '@/public/portfolio.png'
 import { useRouter } from 'next/router';
@@ -10,12 +8,13 @@ import { LoginUserPayload } from '@/types/LoginUserPayload';
 import { LoginResponseData } from '@/types/LoginResponseData';
 import Loader from './Loader';
 import { setLoading } from '@/pages/redux/slices/loadingSlice';
+import { useAppSelector, useAppDispatch } from '@/hooks/hooks';
 
 export default function Login() {
-    const { success, data, error } = useSelector((state: RootState) => state.login);
-    const { loading } = useSelector((state : RootState) => state.loading)
+    const { success, data, error } = useAppSelector((state) => state.login);
+    const { loading } = useAppSelector((state ) => state.loading)
     const errorJson = JSON.parse(error ? error : "{}");
-    const dispatch: AppDispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const router = useRouter();
     const [formData, setFormData] = useState<LoginUserPayload>({
         loginId: '',

@@ -21,7 +21,7 @@ export default function* fetchUserSaga(action: { type: string; payload: LoginRes
         }
 
         const responseJson: UserResponseType = yield call([response, 'json']);
-        if(responseJson.aboutMe?.profile) responseJson.aboutMe.profile = base64ToFile(responseJson.aboutMe.profile as ImageType);
+        // if(responseJson.aboutMe?.profile) responseJson.aboutMe.profile = base64ToFile(responseJson.aboutMe.profile as ImageType);
         yield put(fetchUserSuccess(responseJson));
     } catch (error: unknown) {
         yield put(fetchUserFailure((error as Error).message));
