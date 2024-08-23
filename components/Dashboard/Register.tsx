@@ -1,17 +1,16 @@
 import { registerUserRequest } from '../../pages/redux/slices/registerSlice';
-import { AppDispatch, RootState } from '../../pages/redux/store';
 import styles from '@/styles/Dashboard.module.css'
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tooltip, useDisclosure } from '@nextui-org/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { CorrectIcon } from '../icons';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 
 const Register = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const dispatch: AppDispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const router = useRouter();
-    const { success, error } = useSelector((state: RootState) => state.register);
+    const { success, error } = useAppSelector((state) => state.register);
     const errorJson = JSON.parse(error ? error : "{}");
     const [formData, setFormData] = useState({
         firstName: '',

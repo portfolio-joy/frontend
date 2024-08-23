@@ -4,6 +4,7 @@ import { RootState } from "@/pages/redux/store";
 import { useSelector } from "react-redux";
 import { AboutMeType } from "@/types/AboutMeType";
 import { useEffect, useState } from "react";
+import { ImageType } from "@/types/ImageType";
 
 export default function PortfolioAboutMe() {
 
@@ -21,7 +22,7 @@ export default function PortfolioAboutMe() {
     return (
         <>
             {aboutMe &&
-                <section className={styles['about-me']}>
+                <section id="aboutMe" className={styles['about-me']}>
                     <div className={styles['user-detail']}>
                         <h1>I'm {aboutMe.name}</h1>
                         <p>{aboutMe.description}</p>
@@ -34,7 +35,7 @@ export default function PortfolioAboutMe() {
                         </div>
                     </div>
                     <div className={styles['user-image']}>
-                        <img src={URL.createObjectURL(aboutMe.profile as File)} alt="portfolioImage"></img>
+                        <img src={`data:${(aboutMe.profile as ImageType).type};base64,${(aboutMe.profile as ImageType).imageData}`}></img>
                     </div>
                 </section>
             }
