@@ -148,6 +148,10 @@
     padding: 24px;
 }
 
+.skill-chip {
+    margin-right: 8px;
+}
+
 .skill-chip span {
     padding-right: 8px;
     cursor: pointer;

@@ -1,7 +1,7 @@
 import { AboutMeType } from "./AboutMeType"
 import { ContactType } from "./ContactType"
 import { ProjectsType } from "./ProjectsType"
-import { SkillType } from "./SkillsType"
+import { SkillsType } from "./SkillsType"
 import { SocialMediaType } from "./SocialMediaType"
 import { TestimonialType } from "./TestimonialType"
 
@@ -14,9 +14,9 @@ export interface UserResponseType extends Response {
     portfolioUrl : string,
     token : string,
     aboutMe : AboutMeType,
-    allSkill : SkillType[],
-    allProject : ProjectsType[],
-    allTestimonial : TestimonialType[],
+    skills : SkillsType[],
+    projects : ProjectsType[],
+    testimonials : TestimonialType[],
     contact : ContactType,
-    allSocialMedia : SocialMediaType[]
+    socialMedias : SocialMediaType[]
 }

@@ -1,9 +1,6 @@
-import { LoginResponseData } from "@/types/LoginResponseData";
 import { UserResponseType } from "@/types/UserResponseType";
 import { CallEffect, PutEffect, put, call } from "redux-saga/effects";
-import { base64ToFile } from "@/util/base64ToFile";
-import { ImageType } from "@/types/ImageType";
-import { fetchPortfolioDataFailure, fetchPortfolioDataSuccess } from "../slices/fetchPortfolioDataSlice";
+import { fetchPortfolioDataFailure, fetchPortfolioDataSuccess } from "../slices/fetchUserSlice";
 
 export default function* fetchPortfolioDataSaga(action: { type: string; payload: string }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, any> {
     try {

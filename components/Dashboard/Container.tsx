@@ -53,6 +53,7 @@ export default function DashboardContainer() {
     const localStorageData = localStorage.getItem('data');
     const dataJson: LoginResponseData = JSON.parse(localStorageData ? localStorageData : '{}');
     if (!userState.error && !userState.success) dispatch(fetchUserData(dataJson));
+    console.log(userState);
     if (userState.error) {
       router.push('/login');
     }
