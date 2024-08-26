@@ -1,5 +1,6 @@
 .navbar {
     justify-content: end;
+    position: fixed;
 }
 
 .navbar-menu {
@@ -22,11 +23,17 @@
     transition: .5s ease-in-out;
 }
 
+.about-me,
+.technical-skills,
+.soft-skills {
+    padding: 48px 72px;
+}
+
 .about-me {
     display: flex;
     align-items: center;
-    justify-items: space-between;
-    padding: 96px;
+    justify-content: space-between;
+    margin-top: 72px;
 }
 
 .user-detail,
@@ -45,12 +52,52 @@
     margin: auto;
 }
 
+.technical-skills {
+    background-color: rgb(228, 227, 213);
+}
+
+.technical-skills>div,
+.soft-skills>div {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.skill-card {
+    width: 350px;
+    height: fit-content;
+    margin: 36px 12px;
+    padding-bottom: 24px;
+}
+
+.card-body {
+    height: 144px;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: clip;
+    text-overflow: ellipsis;
+    padding: 0 24px 0 12px;
+    margin-bottom: 12px;
+    align-self: center;
+}
+
+.proficiency-bar div div{
+    background-color: rgb(78, 67, 124);
+}
+
+
 @media screen and (max-width: 767px) {
+
+    .about-me,
+    .technical-skills {
+        padding: 12px;
+    }
 
     .about-me {
         flex-direction: column-reverse;
         align-items: center;
-        padding: 12px;
     }
 
     .user-detail,

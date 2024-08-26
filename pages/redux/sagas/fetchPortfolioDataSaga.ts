@@ -1,9 +1,6 @@
-import { LoginResponseData } from "@/types/LoginResponseData";
 import { UserResponseType } from "@/types/UserResponseType";
 import { CallEffect, PutEffect, put, call } from "redux-saga/effects";
-import { base64ToFile } from "@/util/base64ToFile";
-import { ImageType } from "@/types/ImageType";
-import { fetchPortfolioDataFailure, fetchPortfolioDataSuccess } from "../slices/fetchPortfolioDataSlice";
+import { fetchPortfolioDataFailure, fetchPortfolioDataSuccess } from "../slices/fetchUserSlice";
 
 export default function* fetchPortfolioDataSaga(action: { type: string; payload: string }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, any> {
     try {
@@ -20,7 +17,7 @@ export default function* fetchPortfolioDataSaga(action: { type: string; payload:
         }
 
         const responseJson: UserResponseType = yield call([response, 'json']);
-        if(responseJson.aboutMe?.profile) responseJson.aboutMe.profile = base64ToFile(responseJson.aboutMe.profile as ImageType);
+        // if(responseJson.aboutMe?.profile) responseJson.aboutMe.profile = base64ToFile(responseJson.aboutMe.profile as ImageType);
         yield put(fetchPortfolioDataSuccess(responseJson));
     } catch (error: unknown) {
         yield put(fetchPortfolioDataFailure((error as Error).message));

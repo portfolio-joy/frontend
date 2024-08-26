@@ -1,5 +1,129 @@
+import styles from '@/styles/Dashboard.module.css'
+import { Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, Radio, RadioGroup, Slider, Tooltip, useDisclosure } from '@nextui-org/react'
+import { CrossIcon } from '../icons'
+import { useEffect, useState } from 'react';
+import { UserResponseType } from '@/types/UserResponseType';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { removeSkillRequest, saveSkillRequest, updateSkillRequest, updateSkillState } from '@/pages/redux/slices/skillSlice';
+import { SkillsType } from '@/types/SkillsType';
+import { updateUserData } from '@/pages/redux/slices/fetchUserSlice';
+
 export default function Skills() {
-    return(
-        <h1>This is Skills</h1>
+
+    const userState = useAppSelector(state => state.user);
+    const skillState = useAppSelector(state => state.skill);
+    const [skills, setSkills] = useState<SkillsType[]>((userState.user as UserResponseType)?.skills);
+    const errorJson = JSON.parse(skillState.error ? skillState.error : "{}");
+    const [deleteSkillIndex, setDeleteSkillIndex] = useState<number>(-1);
+    const [updateSkillIndex, setUpdateSkillIndex] = useState<number>(-1);
+    const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
+    const [formData, setFormData] = useState({
+        name: "",
+        skillType: "",
+        proficiency: 1,
+        description: "",
+        user: {
+            id: ""
+        }
+    });
+    const [skillType, setSkillType] = useState<string>("");
+    const [proficiencyValue, setProficiencyValue] = useState<number | number[]>(1);
+    const dispatch = useAppDispatch();
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = event.target;
+        setFormData((previousFormDataState) => ({ ...previousFormDataState, [name]: value }));
+    }
+
+    useEffect(() => {
+        if (userState.success) {
+            dispatch(updateSkillState(userState.user));
+            setSkills(userState.user?.skills as SkillsType[]);
+        }
+    }, [userState.success, skillState.user?.skills])
+
+    useEffect(() => {
+        setFormData((previousFormDataState) => ({ ...previousFormDataState, "proficiency": proficiencyValue as number }));
+    }, [proficiencyValue]);
+
+    useEffect(() => {
+        if (skillState.success) {
+            dispatch(updateUserData(skillState.user));
+        };
+    }, [skillState.success])
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (updateSkillIndex === -1) {
+            dispatch(saveSkillRequest({ data: formData as SkillsType, userId: (userState.user as UserResponseType).id, token: (userState.user as UserResponseType).token }))
+        } else {
+            dispatch(updateSkillRequest({ data: formData as SkillsType, skillId: (skills[updateSkillIndex].id), userId: (userState.user as UserResponseType).id, token: (userState.user as UserResponseType).token }))
+        }
+    }
+    const handleDelete = (index: number) => {
+        setDeleteSkillIndex(index);
+        onOpen();
+    }
+    const removeSkill = () => {
+        dispatch(removeSkillRequest({ skillId: (skills[deleteSkillIndex].id), token: (userState.user as UserResponseType).token }));
+        onClose();
+    }
+
+    const updateForm = (index: number) => {
+        setFormData(skills[index]);
+        setSkillType(skills[index].type);
+        setProficiencyValue(skills[index].proficiency);
+        setUpdateSkillIndex(index);
+    }
+    return (
+        <>
+            <div className={styles['skills-section']}>
+                {
+                    skills?.map((skill, index) =>
+                        <Chip key={index} className={styles['skill-chip']}>
+                            <span onDoubleClick={() => updateForm(index)}>{skill.name}</span>
+                            <button onClick={() => handleDelete(index)}><CrossIcon /></button>
+                        </Chip>
+                    )
+                }
+            </div>
+            <Divider />
+            <form className={styles['dashboard-form']} onSubmit={handleSubmit}>
+                <h2>Skill Form</h2>
+                {(errorJson.general) &&
+                    <p className={styles["error-message"]} >{errorJson.general}</p>
+                }
+                {(skillState.success) &&
+                    <p className={styles["success-message"]} >Data Updated Successfully</p>
+                }
+                <Tooltip className={errorJson.name && styles['error-tooltiip']} content={errorJson.name}>
+                    <input className={errorJson.name ? styles['input-error'] : styles['input-normal']} name='name' type='text' placeholder='Name' defaultValue={formData.name} onChange={handleChange} required></input>
+                </Tooltip>
+                <Tooltip className={errorJson.type && styles['error-tooltiip']} content={errorJson.type}>
+                    <RadioGroup name='skillType' aria-label='skill-type' color='secondary' orientation="horizontal" value={formData.skillType} onValueChange={setSkillType} isRequired onChange={handleChange}>
+                        <Radio value="Technical">Technical</Radio>
+                        <Radio value="Soft">Soft</Radio>
+                    </RadioGroup>
+                </Tooltip>
+                {
+                    skillType === 'Technical' &&
+                    <Slider name='proficiency' aria-label='proficiency-slider' color='secondary' showTooltip={true} step={1} maxValue={100} minValue={1} defaultValue={formData.proficiency} className={`max-w-md p-5 ${styles['proficiency-slider']}`} value={Number(proficiencyValue)} onChange={setProficiencyValue} />
+                }
+                <Tooltip className={errorJson.description && styles['error-tooltip']} content={errorJson.description}>
+                    <textarea className={errorJson.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} defaultValue={formData.description} onChange={handleChange} required></textarea>
+                </Tooltip>
+                <button type="submit">{updateSkillIndex === -1 ? 'Save' : 'Update'}</button>
+            </form>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                <ModalContent>
+                    <ModalBody>
+                        Are You Sure you want to remove?
+                    </ModalBody>
+                    <ModalFooter>
+                        <button onClick={onClose}>Cancel</button>
+                        <button className={styles['modal-button']} onClick={removeSkill}> Remove </button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </>
     )
 }

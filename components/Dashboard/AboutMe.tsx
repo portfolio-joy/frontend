@@ -1,34 +1,32 @@
-import { saveAboutMeRequest, updateUserData } from '@/pages/redux/slices/saveAboutMeSlice';
-import { updateAboutMeRequest } from '@/pages/redux/slices/updateAboutMeSlice';
-import { AppDispatch, RootState } from '@/pages/redux/store';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { saveAboutMeRequest } from '@/pages/redux/slices/aboutMeSlice';
+import { updateAboutMeRequest } from '@/pages/redux/slices/aboutMeSlice';
 import styles from '@/styles/Dashboard.module.css'
 import { AboutMeType } from '@/types/AboutMeType'
 import { ImageType } from '@/types/ImageType';
 import { UserResponseType } from '@/types/UserResponseType';
+import { base64ToFile } from '@/util/base64ToFile';
 import { Tooltip } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
 
 
 export default function AboutMe() {
 
-    const userState = useSelector((state: RootState) => state.user);
-    const saveAboutMeState = useSelector((state: RootState) => state.saveAboutMe);
-    const updateAboutMeState = useSelector((state: RootState) => state.updateAboutMe);
-    const [formData, setFormData] = useState<AboutMeType>((userState.data as UserResponseType)?.aboutMe)
+    const userState = useAppSelector((state) => state.user);
+    const aboutMeState = useAppSelector((state) => state.aboutMe);
+    const [formData, setFormData] = useState<AboutMeType>((userState.user as UserResponseType)?.aboutMe)
     const [isDataPresent, setIsDataPresent] = useState<boolean>(false);
-    const [profile, setProfile] = useState<ImageType | File | null>((userState.data as UserResponseType)?.aboutMe?.profile);
-    const dispatch: AppDispatch = useDispatch();
-    const saveErrorJson = JSON.parse(saveAboutMeState.error ? saveAboutMeState.error : "{}");
-    const updateErrorJson = JSON.parse(updateAboutMeState.error ? updateAboutMeState.error : "{}");
+    const [profile, setProfile] = useState<File | null>(null);
+    const dispatch = useAppDispatch();
+    const errorJson = JSON.parse(aboutMeState.error ? aboutMeState.error : "{}");
     useEffect(() => {
         if (userState.success) {
-            dispatch(updateUserData(userState.data as UserResponseType));
-            setProfile((userState.data as UserResponseType)?.aboutMe?.profile)
-            setFormData((userState.data as UserResponseType).aboutMe)
-            if ((userState.data as UserResponseType).aboutMe) setIsDataPresent(true);
+            setProfile(base64ToFile((userState.user as UserResponseType)?.aboutMe?.profile as ImageType))
+            setFormData((userState.user as UserResponseType).aboutMe)
+            if ((userState.user as UserResponseType).aboutMe) setIsDataPresent(true);
         }
     }, [userState.success])
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
         setFormData((previousFormDataState) => ({ ...previousFormDataState, [name]: value }));
@@ -37,37 +35,43 @@ export default function AboutMe() {
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
             setProfile(event.target.files[0]);
-            console.log(profile);
         }
     }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (isDataPresent) {
-            console.log(profile);
-            dispatch(updateAboutMeRequest({ data: formData, aboutMeId: formData.id, userId: (userState.data as UserResponseType).id, token: (userState.data as UserResponseType).token, profile: profile as File }));
+            dispatch(updateAboutMeRequest({ data: formData, aboutMeId: formData.id, userId: (userState.user as UserResponseType).id, token: (userState.user as UserResponseType).token, profile: profile as File }));
         }
         else {
-            dispatch(saveAboutMeRequest({ data: formData, userId: (userState.data as UserResponseType).id, token: (userState.data as UserResponseType).token, profile: profile as File }));
+            dispatch(saveAboutMeRequest({ data: formData, userId: (userState.user as UserResponseType).id, token: (userState.user as UserResponseType).token, profile: profile as File }));
         }
     }
 
     return (
         <>
             <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
-                <input className={styles['input-normal']} name="name" type="text" placeholder="Name" value={formData?.name} onChange={handleChange}></input>
-                <Tooltip className={styles['info-tooltip']} content="Seperate the skills using comma">
-                    <input className={styles['input-normal']} name="skills" type="text" placeholder="Skills" maxLength={255} defaultValue={formData?.skills} onChange={handleChange}></input>
+                <h2>About Me Form</h2>
+                {(errorJson.general) &&
+                    <p className={styles["error-message"]} >{errorJson.general}</p>
+                }
+                {(aboutMeState.success) &&
+                    <p className={styles["success-message"]} >Data Updated Successfully</p>
+                }
+                <Tooltip className={errorJson.name && styles['error-tooltip']} content={errorJson.name}>
+                    <input className={styles['input-normal']} name="name" type="text" placeholder="Name" defaultValue={formData?.name} onChange={handleChange} required></input>
                 </Tooltip>
-                <textarea className={styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} value={formData?.description} onChange={handleChange}></textarea>
-                <input type="file" name="profile" accept="image/*" onChange={handleFileChange} />
+                <Tooltip className={errorJson.skills ? styles['error-tooltip'] : styles['info-tooltip']} content={errorJson.skills ? errorJson.skills : `Seperate the skills using comma`}>
+                    <input className={errorJson.skills ? styles['input-error'] : styles['input-normal']} name="skills" type="text" placeholder="Skills" maxLength={255} defaultValue={formData?.skills} onChange={handleChange} required></input>
+                </Tooltip>
+                <Tooltip className={errorJson.description && styles['error-tooltiip']}>
+                    <textarea className={errorJson.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} defaultValue={formData?.description} onChange={handleChange} required></textarea>
+                </Tooltip>
+                <input id='profile' type="file" name="profile" accept="image/*" onChange={handleFileChange} hidden />
+                <Tooltip className={errorJson?.profile && styles['error-tooltiip']}>
+                    <label htmlFor='profile' className={`cursor-pointer ${errorJson?.profile ? styles['input-error'] : styles['input-normal']}`}>Your Profile : <i>{profile?.name}</i></label>
+                </Tooltip>
                 <button type="submit"> {isDataPresent ? 'Update' : 'Save'} </button>
-                {(saveErrorJson.general) &&
-                    <p className={styles["error-message"]} >{saveErrorJson.general}</p>
-                }
-                {(updateErrorJson.general) &&
-                    <p className={styles["error-message"]} >{updateErrorJson.general}</p>
-                }
             </form>
         </>
     )

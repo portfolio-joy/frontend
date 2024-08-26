@@ -4,12 +4,30 @@ import styles from "@/styles/Portfolio.module.css"
 
 export default function PortfolioHeader() {
     const menuItems = [
-        "About Me",
-        "Technical Skills",
-        "Soft Skills",
-        "Projects",
-        "Testimonials",
-        "Contact",
+        {
+            name: "About Me",
+            id: "aboutMe"
+        },
+        {
+            name: "Technical Skills",
+            id: "technicalSkills"
+        },
+        {
+            name: "Soft Skills",
+            id: "softSkills"
+        },
+        {
+            name: "Projects",
+            id: "projects"
+        },
+        {
+            name: "Testimonial",
+            id: "testimonial"
+        },
+        {
+            name: "Contact",
+            id: "contact"
+        },
     ];
 
     return (
@@ -20,17 +38,17 @@ export default function PortfolioHeader() {
 
             <NavbarContent className={`hidden md:flex ${styles['navbar-menu']}`} justify="end">
                 {menuItems.map((item, index) => (
-                        <Link key={index} href="#">
-                            {item}
-                        </Link>
+                    <Link key={index} href={`#${item.id}`}>
+                        {item.name}
+                    </Link>
                 ))}
             </NavbarContent>
 
             <NavbarMenu className={styles['navbar-menu']}>
                 {menuItems.map((item, index) => (
-                        <Link key={index} className="w-full" href="#" size="lg">
-                            {item}
-                        </Link>
+                    <Link key={index} href={`#${item.id}`}>
+                        {item.name}
+                    </Link>
                 ))}
             </NavbarMenu>
         </Navbar>

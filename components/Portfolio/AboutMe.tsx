@@ -1,27 +1,28 @@
 import styles from "@/styles/Portfolio.module.css"
 import { Chip } from "@nextui-org/react"
 import { RootState } from "@/pages/redux/store";
-import { useSelector } from "react-redux";
 import { AboutMeType } from "@/types/AboutMeType";
 import { useEffect, useState } from "react";
+import { ImageType } from "@/types/ImageType";
+import { useAppSelector } from "@/hooks/hooks";
 
 export default function PortfolioAboutMe() {
 
-    const portfolioState = useSelector((state: RootState) => state.portfolio);
+    const portfolioState = useAppSelector((state: RootState) => state.user);
     const [aboutMe, setAboutMe] = useState<AboutMeType | null | undefined>(null);
     const [skillsArray, setSkillsArray] = useState<string[]>();
     useEffect(() => {
         if (portfolioState.success) {
-            setAboutMe(portfolioState.data?.aboutMe);
+            setAboutMe(portfolioState.user?.aboutMe);
             if (aboutMe?.skills) {
                 setSkillsArray((aboutMe?.skills as string).split(','));
             }
         }
-    }, [portfolioState.success, aboutMe?.skills])
+    }, [portfolioState.success, aboutMe])
     return (
         <>
             {aboutMe &&
-                <section className={styles['about-me']}>
+                <section id="aboutMe" className={styles['about-me']}>
                     <div className={styles['user-detail']}>
                         <h1>I'm {aboutMe.name}</h1>
                         <p>{aboutMe.description}</p>
@@ -34,7 +35,7 @@ export default function PortfolioAboutMe() {
                         </div>
                     </div>
                     <div className={styles['user-image']}>
-                        <img src={URL.createObjectURL(aboutMe.profile as File)} alt="portfolioImage"></img>
+                        <img src={`data:${(aboutMe.profile as ImageType).type};base64,${(aboutMe.profile as ImageType).imageData}`}></img>
                     </div>
                 </section>
             }
