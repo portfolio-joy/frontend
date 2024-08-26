@@ -1,14 +1,14 @@
 import styles from "@/styles/Portfolio.module.css"
 import { Chip } from "@nextui-org/react"
 import { RootState } from "@/pages/redux/store";
-import { useSelector } from "react-redux";
 import { AboutMeType } from "@/types/AboutMeType";
 import { useEffect, useState } from "react";
 import { ImageType } from "@/types/ImageType";
+import { useAppSelector } from "@/hooks/hooks";
 
 export default function PortfolioAboutMe() {
 
-    const portfolioState = useSelector((state: RootState) => state.user);
+    const portfolioState = useAppSelector((state: RootState) => state.user);
     const [aboutMe, setAboutMe] = useState<AboutMeType | null | undefined>(null);
     const [skillsArray, setSkillsArray] = useState<string[]>();
     useEffect(() => {
