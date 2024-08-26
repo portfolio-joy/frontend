@@ -4,7 +4,7 @@ import registerSlice from "./slices/registerSlice"
 import loadingSlice from "./slices/loadingSlice"
 import fetchUserSlice from "./slices/fetchUserSlice"
 import aboutMeSlice from "./slices/aboutMeSlice"
-import saveSkillSlice from "./slices/skillSlice"
+import skillSlice from "./slices/skillSlice"
 
 const rootReducer = combineReducers({
     register: registerSlice,
@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
     loading: loadingSlice,
     user : fetchUserSlice,
     aboutMe : aboutMeSlice,
-    saveSkill : saveSkillSlice,
+    skill : skillSlice,
 })
 
 export default rootReducer;
