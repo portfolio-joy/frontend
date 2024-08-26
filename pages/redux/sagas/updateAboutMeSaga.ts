@@ -1,6 +1,6 @@
 import { AboutMeType } from "@/types/AboutMeType";
 import { call, CallEffect, put, PutEffect } from "redux-saga/effects";
-import { updateAboutMeSuccess, updateAboutMeFaliure } from "../slices/updateAboutMeSlice";
+import { updateAboutMeSuccess, updateAboutMeFaliure } from "../slices/aboutMeSlice";
 
 export default function* updateAboutMeSaga(action: { type: string; payload: { data: AboutMeType, aboutMeId: string, userId: string, token: string, profile: File } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, AboutMeType> {
     try {

@@ -1,7 +1,10 @@
-export type SkillType = {
+export interface SkillsType  extends Response  {
     id : string,
     name : string,
-    type : string,
-    proficiency : string,
-    description : string
+    skillType : string,
+    proficiency : number,
+    description : string,
+    user: {
+        id: string
+    }
 }

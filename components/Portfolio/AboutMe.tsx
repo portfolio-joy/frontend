@@ -8,17 +8,17 @@ import { ImageType } from "@/types/ImageType";
 
 export default function PortfolioAboutMe() {
 
-    const portfolioState = useSelector((state: RootState) => state.portfolio);
+    const portfolioState = useSelector((state: RootState) => state.user);
     const [aboutMe, setAboutMe] = useState<AboutMeType | null | undefined>(null);
     const [skillsArray, setSkillsArray] = useState<string[]>();
     useEffect(() => {
         if (portfolioState.success) {
-            setAboutMe(portfolioState.data?.aboutMe);
+            setAboutMe(portfolioState.user?.aboutMe);
             if (aboutMe?.skills) {
                 setSkillsArray((aboutMe?.skills as string).split(','));
             }
         }
-    }, [portfolioState.success, aboutMe?.skills])
+    }, [portfolioState.success, aboutMe])
     return (
         <>
             {aboutMe &&

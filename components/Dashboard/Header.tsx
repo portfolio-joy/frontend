@@ -11,7 +11,7 @@ export default function Header() {
     const userState = useAppSelector((state) => state.user);
     useEffect(() => {
         if(userState.success) {
-            setUserData(userState.data as UserResponseType);
+            setUserData(userState.user as UserResponseType);
         }
     }, [userState.success]);
     return (
