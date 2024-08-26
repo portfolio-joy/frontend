@@ -9,12 +9,6 @@ const initialState: LoginUserState = {
     error: null,
 };
 
-const loginUser = {
-    request: 'login/loginUserRequest',
-    success: 'login/loginUserSuccess',
-    failure: 'login/loginUserFailure',
-};
-
 const loginSlice = createSlice({
     name: 'login',
     initialState,
@@ -39,4 +33,3 @@ const loginSlice = createSlice({
 
 export const { loginUserRequest, loginUserSuccess, loginUserFailure } = loginSlice.actions;
 export default loginSlice.reducer;
-export { loginUser };

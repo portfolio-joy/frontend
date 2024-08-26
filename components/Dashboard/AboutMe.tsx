@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { saveAboutMeRequest, updateAboutMeFaliure } from '@/pages/redux/slices/aboutMeSlice';
+import { saveAboutMeRequest } from '@/pages/redux/slices/aboutMeSlice';
 import { updateAboutMeRequest } from '@/pages/redux/slices/aboutMeSlice';
 import styles from '@/styles/Dashboard.module.css'
 import { AboutMeType } from '@/types/AboutMeType'
@@ -16,7 +16,7 @@ export default function AboutMe() {
     const aboutMeState = useAppSelector((state) => state.aboutMe);
     const [formData, setFormData] = useState<AboutMeType>((userState.user as UserResponseType)?.aboutMe)
     const [isDataPresent, setIsDataPresent] = useState<boolean>(false);
-    const [profile, setProfile] = useState< File | null>(null);
+    const [profile, setProfile] = useState<File | null>(null);
     const dispatch = useAppDispatch();
     const errorJson = JSON.parse(aboutMeState.error ? aboutMeState.error : "{}");
     useEffect(() => {
@@ -26,7 +26,7 @@ export default function AboutMe() {
             if ((userState.user as UserResponseType).aboutMe) setIsDataPresent(true);
         }
     }, [userState.success])
-    
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
         setFormData((previousFormDataState) => ({ ...previousFormDataState, [name]: value }));
@@ -58,12 +58,19 @@ export default function AboutMe() {
                 {(aboutMeState.success) &&
                     <p className={styles["success-message"]} >Data Updated Successfully</p>
                 }
-                <input className={styles['input-normal']} name="name" type="text" placeholder="Name" defaultValue={formData?.name} onChange={handleChange} required></input>
-                <Tooltip className={styles['info-tooltip']} content="Seperate the skills using comma">
-                    <input className={styles['input-normal']} name="skills" type="text" placeholder="Skills" maxLength={255} defaultValue={formData?.skills} onChange={handleChange} required></input>
+                <Tooltip className={errorJson.name && styles['error-tooltip']} content={errorJson.name}>
+                    <input className={styles['input-normal']} name="name" type="text" placeholder="Name" defaultValue={formData?.name} onChange={handleChange} required></input>
                 </Tooltip>
-                <textarea className={styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} defaultValue={formData?.description} onChange={handleChange} required></textarea>
-                <input type="file" name="profile" accept="image/*" onChange={handleFileChange} />
+                <Tooltip className={errorJson.skills ? styles['error-tooltip'] : styles['info-tooltip']} content={errorJson.skills ? errorJson.skills : `Seperate the skills using comma`}>
+                    <input className={errorJson.skills ? styles['input-error'] : styles['input-normal']} name="skills" type="text" placeholder="Skills" maxLength={255} defaultValue={formData?.skills} onChange={handleChange} required></input>
+                </Tooltip>
+                <Tooltip className={errorJson.description && styles['error-tooltiip']}>
+                    <textarea className={errorJson.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} defaultValue={formData?.description} onChange={handleChange} required></textarea>
+                </Tooltip>
+                <input id='profile' type="file" name="profile" accept="image/*" onChange={handleFileChange} hidden />
+                <Tooltip className={errorJson?.profile && styles['error-tooltiip']}>
+                    <label htmlFor='profile' className={`cursor-pointer ${errorJson?.profile ? styles['input-error'] : styles['input-normal']}`}>Your Profile : <i>{profile?.name}</i></label>
+                </Tooltip>
                 <button type="submit"> {isDataPresent ? 'Update' : 'Save'} </button>
             </form>
         </>

@@ -8,12 +8,6 @@ const initialState: RegisterUserState = {
     error: null,
 };
 
-const registerUser = {
-    request: 'register/registerUserRequest',
-    success: 'register/registerUserSuccess',
-    failure: 'register/registerUserFailure',
-};
-
 const registerSlice = createSlice({
     name: 'register',
     initialState,
@@ -38,4 +32,3 @@ const registerSlice = createSlice({
 
 export const { registerUserRequest, registerUserSuccess, registerUserFailure } = registerSlice.actions;
 export default registerSlice.reducer;
-export { registerUser };
