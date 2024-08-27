@@ -3,7 +3,7 @@ import { NextUIProvider } from "@nextui-org/react";
 import type { AppProps } from "next/app";
 import { Kalnia } from "next/font/google"
 import { Provider } from "react-redux";
-import store from "./redux/store";
+import store from "@/redux/store";
 
 const kalnia = Kalnia({
   weight: '400',

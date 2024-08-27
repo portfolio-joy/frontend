@@ -23,6 +23,14 @@
     transition: .5s ease-in-out;
 }
 
+.portfolio-container {
+    margin-top: 72px;
+}
+
+.portfolio-container section:nth-child(even) {
+    background-color: rgb(228, 227, 213);
+}
+
 .about-me,
 .technical-skills,
 .soft-skills {
@@ -33,7 +41,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 72px;
 }
 
 .user-detail,
@@ -52,17 +59,6 @@
     margin: auto;
 }
 
-.technical-skills {
-    background-color: rgb(228, 227, 213);
-}
-
-.technical-skills>div,
-.soft-skills>div {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-}
-
 .skill-card {
     width: 350px;
     height: fit-content;
@@ -72,6 +68,7 @@
 
 .card-body {
     height: 144px;
+    width: fit-content;
     display: -webkit-box;
     -webkit-line-clamp: 6;
     line-clamp: 6;
@@ -81,17 +78,18 @@
     padding: 0 24px 0 12px;
     margin-bottom: 12px;
     align-self: center;
+    word-break: break-all;
 }
 
-.proficiency-bar div div{
+.proficiency-bar div div {
     background-color: rgb(78, 67, 124);
 }
-
 
 @media screen and (max-width: 767px) {
 
     .about-me,
-    .technical-skills {
+    .technical-skills,
+    .soft-skills {
         padding: 12px;
     }
 
@@ -111,4 +109,5 @@
         text-align: center;
         padding: 24px;
     }
+
 }

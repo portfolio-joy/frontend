@@ -3,6 +3,6 @@ import { LoginUserPayload } from "./LoginUserPayload"
 
 export type LoginUserState = {
     success : boolean,
-    data : LoginUserPayload | LoginResponseData | null,
+    data : LoginResponseData | null,
     error : string | null
 }

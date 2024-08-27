@@ -19,7 +19,6 @@ export default function* fetchUserSaga(action: { type: string; payload: LoginRes
         }
 
         const responseJson: UserResponseType = yield call([response, 'json']);
-        console.log("Response json : ",responseJson);
         yield put(fetchUserSuccess(responseJson));
     } catch (error: unknown) {
         yield put(fetchUserFailure((error as Error).message));

@@ -1,17 +1,12 @@
 import { LoginResponseData } from "@/types/LoginResponseData";
 import { UserResponseType } from "@/types/UserResponseType";
-import { UserPortfolioState } from "@/types/UserPortfolioState";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-const initialState: UserPortfolioState = {
-    success: false,
-    user: null,
-    error: null
-};
+import { userInitialState } from "../rootInitialState";
+import { updateSkillState } from "./skillSlice";
 
 const fetchUserSlice = createSlice({
     name: 'user',
-    initialState,
+    initialState: userInitialState,
     reducers: {
         updateUserData(state,action: PayloadAction<UserResponseType | null>) {
             state.user = action.payload;
