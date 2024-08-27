@@ -1,4 +1,4 @@
-import { registerUserRequest } from '../../pages/redux/slices/registerSlice';
+import { registerUserRequest } from '@/redux/slices/registerSlice';
 import styles from '@/styles/Dashboard.module.css'
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tooltip, useDisclosure } from '@nextui-org/react';
 import { useRouter } from 'next/router';

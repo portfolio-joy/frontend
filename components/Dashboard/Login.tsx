@@ -3,11 +3,11 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react';
 import portfolioImage from '@/public/portfolio.png'
 import { useRouter } from 'next/router';
-import { loginUserRequest } from '@/pages/redux/slices/loginSlice';
+import { loginUserRequest } from '@/redux/slices/loginSlice';
 import { LoginUserPayload } from '@/types/LoginUserPayload';
 import { LoginResponseData } from '@/types/LoginResponseData';
 import Loader from './Loader';
-import { setLoading } from '@/pages/redux/slices/loadingSlice';
+import { setLoading } from '@/redux/slices/loadingSlice';
 import { useAppSelector, useAppDispatch } from '@/hooks/hooks';
 
 export default function Login() {

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@itseasy21/react-elastic-carousel": "^0.12.3",
     "@nextui-org/react": "^2.4.6",
     "@reduxjs/toolkit": "^2.2.7",
     "framer-motion": "^11.3.23",

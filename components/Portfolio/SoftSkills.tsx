@@ -3,40 +3,35 @@ import styles from "@/styles/Portfolio.module.css"
 import { SkillsType } from "@/types/SkillsType";
 import { Card, CardBody, CardHeader, Tooltip } from "@nextui-org/react"
 import { useState, useEffect } from "react";
+import Carousel from "./Carousel";
 
 export default function PortfolioSoftSkills() {
     const portfolioState = useAppSelector((state) => state.user);
-    const [softSkills, setSoftSkills] = useState<SkillsType[] | null | undefined>(null);
+    const [softSkills, setSoftSkills] = useState<SkillsType[]>([]);
     useEffect(() => {
         if (portfolioState.success) {
-            console.log(portfolioState.user);
-            setSoftSkills(portfolioState.user?.skills.filter((skill) => skill.skillType === 'Soft'));
+            setSoftSkills(portfolioState.user ? portfolioState.user.skills.filter((skill) => skill.skillType === 'Soft') : []);
         }
     }, [portfolioState.success])
     return (
-        <>
-            {
-                softSkills &&
-                <section id="SoftSkills" className={styles['soft-skills']}>
-                    <h1>Soft Skills</h1>
-                    <div>
-                        {
-                            softSkills.map((softSkill, index) =>
-                                <Card className={styles['skill-card']}>
-                                    <CardHeader>
-                                        <h3>{softSkill.name}</h3>
-                                    </CardHeader>
-                                    <Tooltip className='w-96 break-normal' content={softSkill.description}>
-                                        <CardBody className={styles['card-body']}>
-                                            {softSkill.description}
-                                        </CardBody>
-                                    </Tooltip>
-                                </Card>
-                            )
-                        }
-                    </div>
-                </section>
-            }
-        </>
+        <section id="softSkills" className={styles['soft-skills']}>
+            <h1>Soft Skills</h1>
+            <Carousel>
+                {
+                    softSkills.map((softSkill, index) =>
+                        <Card key={index} className={styles['skill-card']}>
+                            <CardHeader>
+                                <h3>{softSkill.name}</h3>
+                            </CardHeader>
+                            <Tooltip className='w-96 break-all' content={softSkill.description}>
+                                <CardBody className={styles['card-body']}>
+                                    {softSkill.description}
+                                </CardBody>
+                            </Tooltip>
+                        </Card>
+                    )
+                }
+            </Carousel>
+        </section>
     )
 }
