@@ -1,17 +1,10 @@
 import { AboutMeType } from "@/types/AboutMeType";
-import { UserPortfolioState } from "@/types/UserPortfolioState";
-import { UserResponseType } from "@/types/UserResponseType";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-const initialState: UserPortfolioState = {
-    success: false,
-    user: null,
-    error: null
-};
+import { userInitialState } from "../rootInitialState";
 
 const aboutMeSlice = createSlice({
     name: 'aboutMe',
-    initialState,
+    initialState: userInitialState,
     reducers: {
         saveAboutMeRequest(state, action: PayloadAction<{ data: AboutMeType, userId: string, token: string, profile: File }>) {
             state.success = false;

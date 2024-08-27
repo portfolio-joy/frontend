@@ -7,7 +7,7 @@ import ProjectData from "./ProjectData";
 import Testimonials from "./Testimonials";
 import Contact from "./Contacts";
 import SocialMedia from "./SocialMedia";
-import { fetchUserData } from "@/pages/redux/slices/fetchUserSlice";
+import { fetchUserData, updateUserData } from "@/redux/slices/fetchUserSlice";
 import { useRouter } from "next/router";
 import { LoginResponseData } from "@/types/LoginResponseData";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";

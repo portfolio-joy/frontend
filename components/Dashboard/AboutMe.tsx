@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { saveAboutMeRequest } from '@/pages/redux/slices/aboutMeSlice';
-import { updateAboutMeRequest } from '@/pages/redux/slices/aboutMeSlice';
+import { saveAboutMeRequest } from '@/redux/slices/aboutMeSlice';
+import { updateAboutMeRequest } from '@/redux/slices/aboutMeSlice';
 import styles from '@/styles/Dashboard.module.css'
 import { AboutMeType } from '@/types/AboutMeType'
 import { ImageType } from '@/types/ImageType';
@@ -13,12 +13,11 @@ import { useEffect, useState } from 'react'
 export default function AboutMe() {
 
     const userState = useAppSelector((state) => state.user);
-    const aboutMeState = useAppSelector((state) => state.aboutMe);
     const [formData, setFormData] = useState<AboutMeType>((userState.user as UserResponseType)?.aboutMe)
     const [isDataPresent, setIsDataPresent] = useState<boolean>(false);
     const [profile, setProfile] = useState<File | null>(null);
     const dispatch = useAppDispatch();
-    const errorJson = JSON.parse(aboutMeState.error ? aboutMeState.error : "{}");
+    const errorJson = JSON.parse(userState.error ? userState.error : "{}");
     useEffect(() => {
         if (userState.success) {
             setProfile(base64ToFile((userState.user as UserResponseType)?.aboutMe?.profile as ImageType))
@@ -55,7 +54,7 @@ export default function AboutMe() {
                 {(errorJson.general) &&
                     <p className={styles["error-message"]} >{errorJson.general}</p>
                 }
-                {(aboutMeState.success) &&
+                {(userState.success) &&
                     <p className={styles["success-message"]} >Data Updated Successfully</p>
                 }
                 <Tooltip className={errorJson.name && styles['error-tooltip']} content={errorJson.name}>

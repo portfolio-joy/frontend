@@ -1,17 +1,12 @@
 import { SkillsType } from "@/types/SkillsType";
-import { UserPortfolioState } from "@/types/UserPortfolioState";
 import { UserResponseType } from "@/types/UserResponseType";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-const initialState: UserPortfolioState = {
-    success: false,
-    user: null,
-    error: null
-};
+import { userInitialState } from "../rootInitialState";
+import { updateUserData } from "./fetchUserSlice";
 
 const skillSlice = createSlice({
     name: 'skill',
-    initialState,
+    initialState: userInitialState,
     reducers: {
         updateSkillState(state,action: PayloadAction<UserResponseType | null>) {
             state.user = action.payload;
@@ -24,7 +19,7 @@ const skillSlice = createSlice({
         saveSkillSuccess(state, action: PayloadAction<SkillsType>) {
             state.success = true;
             if (state.user) {
-                state.user.skills.push(action.payload)
+                state.user.skills.push(action.payload);
             };
             state.error = null;
         },
@@ -41,6 +36,7 @@ const skillSlice = createSlice({
             if (state.user) {
                 const skillIndex = state.user.skills.findIndex((skill) => skill.id === action.payload.id);
                 state.user.skills[skillIndex] = action.payload;
+                updateUserData(state.user);
             }
             state.error = null;
         },
@@ -57,6 +53,7 @@ const skillSlice = createSlice({
             if (state.user) {
                 const skillIndex = state.user.skills.findIndex((skill) => skill.id === action.payload);
                 state.user.skills.splice(skillIndex, 1);
+                updateUserData(state.user);
             }
             state.error = null;
         },

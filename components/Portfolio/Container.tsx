@@ -1,31 +1,39 @@
 import styles from "@/styles/Portfolio.module.css"
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import PortfolioAboutMe from "./AboutMe";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/pages/redux/store";
-import { fetchPortfolioData } from "@/pages/redux/slices/fetchUserSlice";
+import { AppDispatch, RootState } from "@/redux/store";
+import { fetchPortfolioData } from "@/redux/slices/fetchUserSlice";
 import PortfolioTechnicalSkills from "./TechnicalSkills";
 import PortfolioSoftSkills from "./SoftSkills";
+import { useAppSelector } from "@/hooks/hooks";
+import { SkillsType } from "@/types/SkillsType";
 
 export default function PortfolioContainer() {
-    
+
     const dispatch: AppDispatch = useDispatch();
     const router = useRouter();
-    const {error} = useSelector((state: RootState) => state.user);
+    const portfolioState = useAppSelector((state) => state.user);
+    const [technicalSkills, setTechnicalSkills] = useState<SkillsType[] | undefined>([]);
+    const [softSkills, setSoftSkills] = useState<SkillsType[] | undefined>([]);
     useEffect(() => {
-        if (router.query.user) {
+        if (router.query.user && !portfolioState.success) {
             dispatch(fetchPortfolioData(router.query.user as string))
         }
-        if(error) {
+        if (portfolioState.error) {
             router.push('/_error');
         }
-    }, [router.isReady, router.query.user, error]);
+        if (portfolioState.success) {
+            setTechnicalSkills(portfolioState.user?.skills.filter((skill) => skill.skillType === 'Technical'));
+            setSoftSkills(portfolioState.user?.skills.filter((skill) => skill.skillType === 'Soft'));
+        }
+    }, [router.isReady, router.query.user, portfolioState.error, portfolioState.success]);
     return (
-        <section className={styles['portfolio-container']}>
-            <PortfolioAboutMe />
-            <PortfolioTechnicalSkills />
-            <PortfolioSoftSkills />
-        </section>
+        <main className={styles['portfolio-container']}>
+            {portfolioState.user?.aboutMe && <PortfolioAboutMe />}
+            {technicalSkills && technicalSkills?.length !== 0 && <PortfolioTechnicalSkills />}
+            {softSkills && softSkills?.length!==0 && <PortfolioSoftSkills />}
+        </main>
     )
 }

@@ -4,20 +4,20 @@ import { CrossIcon } from '../icons'
 import { useEffect, useState } from 'react';
 import { UserResponseType } from '@/types/UserResponseType';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { removeSkillRequest, saveSkillRequest, updateSkillRequest, updateSkillState } from '@/pages/redux/slices/skillSlice';
+import { removeSkillRequest, saveSkillRequest, updateSkillRequest, updateSkillState } from '@/redux/slices/skillSlice';
 import { SkillsType } from '@/types/SkillsType';
-import { updateUserData } from '@/pages/redux/slices/fetchUserSlice';
+import { updateUserData } from '@/redux/slices/fetchUserSlice';
 
 export default function Skills() {
 
     const userState = useAppSelector(state => state.user);
     const skillState = useAppSelector(state => state.skill);
     const [skills, setSkills] = useState<SkillsType[]>((userState.user as UserResponseType)?.skills);
-    const errorJson = JSON.parse(skillState.error ? skillState.error : "{}");
+    const errorJson = JSON.parse(userState.error ? userState.error : "{}");
     const [deleteSkillIndex, setDeleteSkillIndex] = useState<number>(-1);
     const [updateSkillIndex, setUpdateSkillIndex] = useState<number>(-1);
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
-    const [formData, setFormData] = useState({
+    const initialFormData = {
         name: "",
         skillType: "",
         proficiency: 1,
@@ -25,7 +25,8 @@ export default function Skills() {
         user: {
             id: ""
         }
-    });
+    };
+    const [formData, setFormData] = useState(initialFormData);
     const [skillType, setSkillType] = useState<string>("");
     const [proficiencyValue, setProficiencyValue] = useState<number | number[]>(1);
     const dispatch = useAppDispatch();
@@ -35,11 +36,12 @@ export default function Skills() {
     }
 
     useEffect(() => {
+        console.log("UseEffect : ", userState.success, ", ", userState.user);
         if (userState.success) {
             dispatch(updateSkillState(userState.user));
             setSkills(userState.user?.skills as SkillsType[]);
         }
-    }, [userState.success, skillState.user?.skills])
+    }, [userState.success, userState.user?.skills])
 
     useEffect(() => {
         setFormData((previousFormDataState) => ({ ...previousFormDataState, "proficiency": proficiencyValue as number }));
@@ -54,7 +56,9 @@ export default function Skills() {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (updateSkillIndex === -1) {
+            console.log(userState.success, ", ", userState.user);
             dispatch(saveSkillRequest({ data: formData as SkillsType, userId: (userState.user as UserResponseType).id, token: (userState.user as UserResponseType).token }))
+            console.log(userState.user);
         } else {
             dispatch(updateSkillRequest({ data: formData as SkillsType, skillId: (skills[updateSkillIndex].id), userId: (userState.user as UserResponseType).id, token: (userState.user as UserResponseType).token }))
         }
@@ -70,17 +74,25 @@ export default function Skills() {
 
     const updateForm = (index: number) => {
         setFormData(skills[index]);
-        setSkillType(skills[index].type);
+        setSkillType(skills[index].skillType);
         setProficiencyValue(skills[index].proficiency);
         setUpdateSkillIndex(index);
     }
+
+    const cancelUpdate = () => {
+        setUpdateSkillIndex(-1); 
+        setSkillType("");
+        setProficiencyValue(1);
+        setFormData(initialFormData);
+    }
+
     return (
         <>
             <div className={styles['skills-section']}>
                 {
                     skills?.map((skill, index) =>
-                        <Chip key={index} className={styles['skill-chip']}>
-                            <span onDoubleClick={() => updateForm(index)}>{skill.name}</span>
+                        <Chip key={index} className={`mb-2 ${styles['skill-chip']}`}>
+                            <span className='select-none' onDoubleClick={() => updateForm(index)}>{skill.name}</span>
                             <button onClick={() => handleDelete(index)}><CrossIcon /></button>
                         </Chip>
                     )
@@ -111,7 +123,13 @@ export default function Skills() {
                 <Tooltip className={errorJson.description && styles['error-tooltip']} content={errorJson.description}>
                     <textarea className={errorJson.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} defaultValue={formData.description} onChange={handleChange} required></textarea>
                 </Tooltip>
-                <button type="submit">{updateSkillIndex === -1 ? 'Save' : 'Update'}</button>
+                <fieldset className='flex'>
+                    {
+                        updateSkillIndex !== -1 &&
+                        <button className='w-full' type="button" onClick={cancelUpdate}>Cancel</button>
+                    }
+                    <button className='w-full' type="submit">{updateSkillIndex === -1 ? 'Save' : 'Update'}</button>
+                </fieldset>
             </form>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
