@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { removeSkillRequest, saveSkillRequest, updateSkillRequest, updateSkillState } from '@/redux/slices/skillSlice';
 import { SkillsType } from '@/types/SkillsType';
 import { updateUserData } from '@/redux/slices/fetchUserSlice';
+import { toast } from 'react-toastify';
 
 export default function Skills() {
 
@@ -36,12 +37,11 @@ export default function Skills() {
     }
 
     useEffect(() => {
-        console.log("UseEffect : ", userState.success, ", ", userState.user);
         if (userState.success) {
             dispatch(updateSkillState(userState.user));
-            setSkills(userState.user?.skills as SkillsType[]);
+            setSkills(skillState.user?.skills as SkillsType[]);
         }
-    }, [userState.success, userState.user?.skills])
+    }, [userState.success, skillState.user?.skills])
 
     useEffect(() => {
         setFormData((previousFormDataState) => ({ ...previousFormDataState, "proficiency": proficiencyValue as number }));
@@ -49,18 +49,19 @@ export default function Skills() {
 
     useEffect(() => {
         if (skillState.success) {
-            dispatch(updateUserData(skillState.user));
-        };
-    }, [skillState.success])
+            toast.success("Data Updated Successfully");
+        }  else if(errorJson.general) {
+            toast.error(errorJson.general);
+        }
+    }, [skillState.success, errorJson.general])
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setFormData((previousFormDataState)=>({...previousFormDataState,'user':{'id':(userState.user as UserResponseType).id}}));
         if (updateSkillIndex === -1) {
-            console.log(userState.success, ", ", userState.user);
-            dispatch(saveSkillRequest({ data: formData as SkillsType, userId: (userState.user as UserResponseType).id, token: (userState.user as UserResponseType).token }))
-            console.log(userState.user);
+            dispatch(saveSkillRequest({ data: formData as SkillsType, token: (userState.user as UserResponseType).token }))
         } else {
-            dispatch(updateSkillRequest({ data: formData as SkillsType, skillId: (skills[updateSkillIndex].id), userId: (userState.user as UserResponseType).id, token: (userState.user as UserResponseType).token }))
+            dispatch(updateSkillRequest({ data: formData as SkillsType, skillId: (skills[updateSkillIndex].id), token: (userState.user as UserResponseType).token }))
         }
     }
     const handleDelete = (index: number) => {
@@ -101,12 +102,6 @@ export default function Skills() {
             <Divider />
             <form className={styles['dashboard-form']} onSubmit={handleSubmit}>
                 <h2>Skill Form</h2>
-                {(errorJson.general) &&
-                    <p className={styles["error-message"]} >{errorJson.general}</p>
-                }
-                {(skillState.success) &&
-                    <p className={styles["success-message"]} >Data Updated Successfully</p>
-                }
                 <Tooltip className={errorJson.name && styles['error-tooltiip']} content={errorJson.name}>
                     <input className={errorJson.name ? styles['input-error'] : styles['input-normal']} name='name' type='text' placeholder='Name' defaultValue={formData.name} onChange={handleChange} required></input>
                 </Tooltip>
