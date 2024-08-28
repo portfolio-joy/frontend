@@ -1,9 +1,10 @@
+import { ImageType } from "./ImageType"
 import { ProjectDataType } from "./ProjectDataType"
 
-export type ProjectsType = {
+export interface ProjectsType extends Response {
     id : string,
     name : string,
     briefDetail : string,
-    image : File,
+    image : ImageType | File,
     projectData : ProjectDataType[]
 }

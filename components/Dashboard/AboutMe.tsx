@@ -59,7 +59,6 @@ export default function AboutMe() {
     }
 
     return (
-        <>
             <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
                 <h2>About Me Form</h2>
                 <Tooltip className={errorJson.name && styles['error-tooltip']} content={errorJson.name}>
@@ -77,6 +76,5 @@ export default function AboutMe() {
                 </Tooltip>
                 <button type="submit"> {isDataPresent ? 'Update' : 'Save'} </button>
             </form>
-        </>
     )
 }
