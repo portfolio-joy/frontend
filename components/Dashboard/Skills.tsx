@@ -6,7 +6,6 @@ import { UserResponseType } from '@/types/UserResponseType';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { removeSkillRequest, saveSkillRequest, updateSkillRequest, updateSkillState } from '@/redux/slices/skillSlice';
 import { SkillsType } from '@/types/SkillsType';
-import { updateUserData } from '@/redux/slices/fetchUserSlice';
 import { toast } from 'react-toastify';
 
 export default function Skills() {
@@ -89,7 +88,7 @@ export default function Skills() {
 
     return (
         <>
-            <div className={styles['skills-section']}>
+            <div className={styles['data-chips']}>
                 {
                     skills?.map((skill, index) =>
                         <Chip key={index} className={`mb-2 ${styles['skill-chip']}`}>
