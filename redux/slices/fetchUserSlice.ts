@@ -2,7 +2,6 @@ import { LoginResponseData } from "@/types/LoginResponseData";
 import { UserResponseType } from "@/types/UserResponseType";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { userInitialState } from "../rootInitialState";
-import { updateSkillState } from "./skillSlice";
 
 const fetchUserSlice = createSlice({
     name: 'user',

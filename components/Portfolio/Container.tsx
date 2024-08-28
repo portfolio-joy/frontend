@@ -9,6 +9,7 @@ import PortfolioTechnicalSkills from "./TechnicalSkills";
 import PortfolioSoftSkills from "./SoftSkills";
 import { useAppSelector } from "@/hooks/hooks";
 import { SkillsType } from "@/types/SkillsType";
+import Projects from "./Projects";
 
 export default function PortfolioContainer() {
 
@@ -34,6 +35,7 @@ export default function PortfolioContainer() {
             {portfolioState.user?.aboutMe && <PortfolioAboutMe />}
             {technicalSkills && technicalSkills?.length !== 0 && <PortfolioTechnicalSkills />}
             {softSkills && softSkills?.length!==0 && <PortfolioSoftSkills />}
+            <Projects />
         </main>
     )
 }

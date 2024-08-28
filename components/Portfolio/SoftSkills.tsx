@@ -23,7 +23,7 @@ export default function PortfolioSoftSkills() {
                             <CardHeader>
                                 <h3>{softSkill.name}</h3>
                             </CardHeader>
-                            <Tooltip className='w-96 break-all' content={softSkill.description}>
+                            <Tooltip className='w-96 break-all shadow-sm shadow-secondary' content={softSkill.description}>
                                 <CardBody className={styles['card-body']}>
                                     {softSkill.description}
                                 </CardBody>

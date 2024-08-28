@@ -12,7 +12,7 @@ const skillSlice = createSlice({
             state.user = action.payload;
             state.error = null;
         },
-        saveSkillRequest(state, action: PayloadAction<{ data: SkillsType, userId: string, token: string }>) {
+        saveSkillRequest(state, action: PayloadAction<{ data: SkillsType, token: string }>) {
             state.success = false;
             state.error = null;
         },
@@ -27,7 +27,7 @@ const skillSlice = createSlice({
             state.success = false;
             state.error = action.payload;
         },
-        updateSkillRequest(state, action: PayloadAction<{ data: SkillsType, skillId: string, userId: string, token: string }>) {
+        updateSkillRequest(state, action: PayloadAction<{ data: SkillsType, skillId: string, token: string }>) {
             state.success = false;
             state.error = null;
         },

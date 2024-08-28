@@ -8,11 +8,13 @@ import { UserResponseType } from '@/types/UserResponseType';
 import { base64ToFile } from '@/util/base64ToFile';
 import { Tooltip } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify';
 
 
 export default function AboutMe() {
 
     const userState = useAppSelector((state) => state.user);
+    const aboutMeState = useAppSelector((state)=>state.aboutMe);
     const [formData, setFormData] = useState<AboutMeType>((userState.user as UserResponseType)?.aboutMe)
     const [isDataPresent, setIsDataPresent] = useState<boolean>(false);
     const [profile, setProfile] = useState<File | null>(null);
@@ -22,9 +24,17 @@ export default function AboutMe() {
         if (userState.success) {
             setProfile(base64ToFile((userState.user as UserResponseType)?.aboutMe?.profile as ImageType))
             setFormData((userState.user as UserResponseType).aboutMe)
-            if ((userState.user as UserResponseType).aboutMe) setIsDataPresent(true);
+            if (userState.user?.aboutMe) setIsDataPresent(true);
         }
     }, [userState.success])
+
+    useEffect(()=>{
+        if(aboutMeState.success) {
+            toast.success('Data updated Successfully');
+        } else if(errorJson.general) {
+            toast.error(errorJson.general);
+        }
+    },[aboutMeState.success, errorJson.general]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
@@ -39,11 +49,12 @@ export default function AboutMe() {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setFormData((previousFormDataState)=>({...previousFormDataState,'user':{'id':(userState.user as UserResponseType).id}}));
         if (isDataPresent) {
-            dispatch(updateAboutMeRequest({ data: formData, aboutMeId: formData.id, userId: (userState.user as UserResponseType).id, token: (userState.user as UserResponseType).token, profile: profile as File }));
+            dispatch(updateAboutMeRequest({ data: formData, aboutMeId: formData.id, token: (userState.user as UserResponseType).token, profile: profile as File }));
         }
         else {
-            dispatch(saveAboutMeRequest({ data: formData, userId: (userState.user as UserResponseType).id, token: (userState.user as UserResponseType).token, profile: profile as File }));
+            dispatch(saveAboutMeRequest({ data: formData, token: (userState.user as UserResponseType).token, profile: profile as File }));
         }
     }
 
@@ -51,12 +62,6 @@ export default function AboutMe() {
         <>
             <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
                 <h2>About Me Form</h2>
-                {(errorJson.general) &&
-                    <p className={styles["error-message"]} >{errorJson.general}</p>
-                }
-                {(userState.success) &&
-                    <p className={styles["success-message"]} >Data Updated Successfully</p>
-                }
                 <Tooltip className={errorJson.name && styles['error-tooltip']} content={errorJson.name}>
                     <input className={styles['input-normal']} name="name" type="text" placeholder="Name" defaultValue={formData?.name} onChange={handleChange} required></input>
                 </Tooltip>

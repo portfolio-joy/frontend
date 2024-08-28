@@ -11,6 +11,7 @@ import { fetchUserData, updateUserData } from "@/redux/slices/fetchUserSlice";
 import { useRouter } from "next/router";
 import { LoginResponseData } from "@/types/LoginResponseData";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import { ToastContainer } from "react-toastify";
 
 export default function DashboardContainer() {
   const dispatch = useAppDispatch();
@@ -60,6 +61,12 @@ export default function DashboardContainer() {
 
   return (
     <section className={styles["dashboard-main"]}>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        rtl={false} />
       <div className={styles["left-panel"]}>
         <ul>
           {
