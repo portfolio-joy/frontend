@@ -54,7 +54,8 @@
     letter-spacing: 1.5px;
 }
 
-.user-image img {
+.user-image img,
+.project-data div img {
     width: 80%;
     border-radius: 48px;
     margin: auto;
@@ -78,6 +79,26 @@
     margin-bottom: 12px;
     align-self: center;
     word-break: break-all;
+}
+
+.project-data>div:nth-child(odd) {
+    display: flex;
+}
+
+.project-data>div:nth-child(even) {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.project-data>div,
+.project-data>h1 {
+    padding: 24px;
+}
+
+.project-data>div p,
+.project-data>div h3,
+.project-data>h1 {
+    margin: 12px
 }
 
 @media screen and (max-width: 767px) {
@@ -104,6 +125,17 @@
     .skill-chips {
         text-align: center;
         padding: 24px;
+    }
+
+    .project-data>div:nth-child(n) {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .project-data,
+    .project-data>div>div {
+        margin-top: 12px;
+        text-align: center;
     }
 
 }
