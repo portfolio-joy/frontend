@@ -19,25 +19,23 @@ export default function PortfolioTechnicalSkills() {
             <Carousel>
                 {
                     technicalSkills.map((technicalSkill, index) =>
-                        <Card key={index} className={`${styles['skill-card']}`}>
+                        <Card key={index} className={`${styles['common-card']}`}>
                             <CardHeader>
                                 <h3>{technicalSkill.name}</h3>
                             </CardHeader>
-                            <Tooltip className='w-96 break-all' content={technicalSkill.description}>
+                            <Tooltip className='w-96 break-all shadow-sm shadow-secondary' content={technicalSkill.description}>
                                 <CardBody className={styles['card-body']}>
                                     {technicalSkill.description}
                                 </CardBody>
                             </Tooltip>
                             <CardFooter className={`justify-center ${styles['card-footer']}`}>
-                                <CircularProgress
-                                    classNames={{
+                                <CircularProgress classNames={{
                                         svg: "w-36 h-36 drop-shadow-md",
                                         indicator: "stroke-secondary",
                                         track: "stroke-secondary/10",
                                         value: "text-3xl font-semibold text-black",
                                       }}
                                     label="Proficiency"
-                                    size="lg"
                                     value={technicalSkill.proficiency}
                                     color="success"
                                     showValueLabel={true}

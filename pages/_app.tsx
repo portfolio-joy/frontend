@@ -4,6 +4,7 @@ import type { AppProps } from "next/app";
 import { Kalnia } from "next/font/google"
 import { Provider } from "react-redux";
 import store from "@/redux/store";
+import 'react-toastify/dist/ReactToastify.css';
 
 const kalnia = Kalnia({
   weight: '400',

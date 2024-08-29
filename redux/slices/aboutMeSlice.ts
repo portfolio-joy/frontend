@@ -6,7 +6,7 @@ const aboutMeSlice = createSlice({
     name: 'aboutMe',
     initialState: userInitialState,
     reducers: {
-        saveAboutMeRequest(state, action: PayloadAction<{ data: AboutMeType, userId: string, token: string, profile: File }>) {
+        saveAboutMeRequest(state, action: PayloadAction<{ data: AboutMeType, token: string, profile: File }>) {
             state.success = false;
             state.error = null;
         },
@@ -19,7 +19,7 @@ const aboutMeSlice = createSlice({
             state.success = false;
             state.error = action.payload;
         },
-        updateAboutMeRequest(state, action: PayloadAction<{ data: AboutMeType, aboutMeId: string, userId: string, token: string, profile: File }>) {
+        updateAboutMeRequest(state, action: PayloadAction<{ data: AboutMeType, aboutMeId: string, token: string, profile: File }>) {
             state.success = false;
             state.error = null;
         },

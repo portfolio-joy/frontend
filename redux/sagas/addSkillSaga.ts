@@ -1,11 +1,11 @@
 import { SkillsType } from "@/types/SkillsType";
 import { call, CallEffect, put, PutEffect } from "redux-saga/effects";
-import { updateSkillFaliure, updateSkillSuccess } from "../slices/skillSlice";
+import { addSkillSuccess, addSkillFaliure } from "../slices/skillSlice";
 
-export default function* updateSkillSaga(action: { type: string; payload: { data: SkillsType, skillId: string, token: string } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, SkillsType> {
+export default function* addSkillSaga(action: { type: string; payload: { data: SkillsType, token: string } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, SkillsType> {
     try {
-        const response: SkillsType = yield call(fetch, `http://localhost:8080/user/skill/${action.payload.skillId}`, {
-            method: 'PUT',
+        const response: SkillsType = yield call(fetch, 'http://localhost:8080/user/skill', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': 'http://localhost:3000',
@@ -17,8 +17,8 @@ export default function* updateSkillSaga(action: { type: string; payload: { data
             throw new Error((yield response.text()) as unknown as string);
         }
         const responseJson = yield response.json();
-        yield put(updateSkillSuccess(responseJson));
+        yield put(addSkillSuccess(responseJson));
     } catch (error: unknown) {
-        yield put(updateSkillFaliure((error as Error).message));
+        yield put(addSkillFaliure((error as Error).message));
     }
 }

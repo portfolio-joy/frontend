@@ -5,6 +5,7 @@ import loadingSlice from "./slices/loadingSlice"
 import fetchUserSlice from "./slices/fetchUserSlice"
 import aboutMeSlice from "./slices/aboutMeSlice"
 import skillSlice from "./slices/skillSlice"
+import projectSlice from "./slices/projectSlice"
 
 const rootReducer = combineReducers({
     register: registerSlice,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     user : fetchUserSlice,
     aboutMe : aboutMeSlice,
     skill : skillSlice,
+    project : projectSlice
 })
 
 export default rootReducer;
