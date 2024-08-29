@@ -4,16 +4,17 @@ import { CrossIcon } from '../icons'
 import { useEffect, useState } from 'react';
 import { UserResponseType } from '@/types/UserResponseType';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { removeSkillRequest, saveSkillRequest, updateSkillRequest, updateSkillState } from '@/redux/slices/skillSlice';
+import { removeSkillRequest, addSkillRequest, updateSkillRequest, updateSkillState } from '@/redux/slices/skillSlice';
 import { SkillsType } from '@/types/SkillsType';
 import { toast } from 'react-toastify';
+import { setLoading } from '@/redux/slices/loadingSlice';
 
 export default function Skills() {
 
     const userState = useAppSelector(state => state.user);
     const skillState = useAppSelector(state => state.skill);
-    const [skills, setSkills] = useState<SkillsType[]>((userState.user as UserResponseType)?.skills);
-    const errorJson = JSON.parse(userState.error ? userState.error : "{}");
+    const [skills, setSkills] = useState<SkillsType[]>((skillState.user as UserResponseType)?.skills);
+    const errorJson = JSON.parse(skillState.error ? skillState.error : "{}");
     const [deleteSkillIndex, setDeleteSkillIndex] = useState<number>(-1);
     const [updateSkillIndex, setUpdateSkillIndex] = useState<number>(-1);
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
@@ -30,17 +31,13 @@ export default function Skills() {
     const [skillType, setSkillType] = useState<string>("");
     const [proficiencyValue, setProficiencyValue] = useState<number | number[]>(1);
     const dispatch = useAppDispatch();
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = event.target;
-        setFormData((previousFormDataState) => ({ ...previousFormDataState, [name]: value }));
-    }
 
     useEffect(() => {
-        if (userState.success) {
+        if (userState.success && skillState.user?.projects?.length === skills?.length) {
             dispatch(updateSkillState(userState.user));
-            setSkills(skillState.user?.skills as SkillsType[]);
+            setSkills(userState.user?.skills as SkillsType[]);
         }
-    }, [userState.success, skillState.user?.skills])
+    }, [])
 
     useEffect(() => {
         setFormData((previousFormDataState) => ({ ...previousFormDataState, "proficiency": proficiencyValue as number }));
@@ -49,19 +46,30 @@ export default function Skills() {
     useEffect(() => {
         if (skillState.success) {
             toast.success("Data Updated Successfully");
-        }  else if(errorJson.general) {
+            setSkills((skillState.user as UserResponseType)?.skills);
+        } else if (errorJson.general) {
             toast.error(errorJson.general);
         }
-    }, [skillState.success, errorJson.general])
+    }, [skillState.success, errorJson.general, skillState.user?.skills, skills])
+
+    useEffect(() => {
+        if (formData.user?.id && formData.user?.id !== '') {
+            if (updateSkillIndex === -1) {
+                dispatch(addSkillRequest({ data: formData as SkillsType, token: (userState.user as UserResponseType).token }))
+            } else {
+                dispatch(updateSkillRequest({ data: formData as SkillsType, skillId: (skills[updateSkillIndex].id), token: (userState.user as UserResponseType).token }))
+            }
+        }
+    }, [formData.user?.id])
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = event.target;
+        setFormData((previousFormDataState) => ({ ...previousFormDataState, [name]: value }));
+    }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setFormData((previousFormDataState)=>({...previousFormDataState,'user':{'id':(userState.user as UserResponseType).id}}));
-        if (updateSkillIndex === -1) {
-            dispatch(saveSkillRequest({ data: formData as SkillsType, token: (userState.user as UserResponseType).token }))
-        } else {
-            dispatch(updateSkillRequest({ data: formData as SkillsType, skillId: (skills[updateSkillIndex].id), token: (userState.user as UserResponseType).token }))
-        }
+        setFormData((previousFormDataState) => ({ ...previousFormDataState, 'user': { 'id': (userState.user as UserResponseType).id } }));
     }
     const handleDelete = (index: number) => {
         setDeleteSkillIndex(index);
@@ -80,7 +88,7 @@ export default function Skills() {
     }
 
     const cancelUpdate = () => {
-        setUpdateSkillIndex(-1); 
+        setUpdateSkillIndex(-1);
         setSkillType("");
         setProficiencyValue(1);
         setFormData(initialFormData);
@@ -115,7 +123,7 @@ export default function Skills() {
                     <Slider name='proficiency' aria-label='proficiency-slider' color='secondary' showTooltip={true} step={1} maxValue={100} minValue={1} defaultValue={formData.proficiency} className={`max-w-md p-5 ${styles['proficiency-slider']}`} value={Number(proficiencyValue)} onChange={setProficiencyValue} />
                 }
                 <Tooltip className={errorJson.description && styles['error-tooltip']} content={errorJson.description}>
-                    <textarea className={errorJson.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} defaultValue={formData.description} onChange={handleChange} required></textarea>
+                    <textarea className={errorJson.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} value={formData.description} onChange={handleChange} required></textarea>
                 </Tooltip>
                 <fieldset className='flex'>
                     {

@@ -9,21 +9,22 @@ const skillSlice = createSlice({
     initialState: userInitialState,
     reducers: {
         updateSkillState(state,action: PayloadAction<UserResponseType | null>) {
+            state.success = false;
             state.user = action.payload;
             state.error = null;
         },
-        saveSkillRequest(state, action: PayloadAction<{ data: SkillsType, token: string }>) {
+        addSkillRequest(state, action: PayloadAction<{ data: SkillsType, token: string }>) {
             state.success = false;
             state.error = null;
         },
-        saveSkillSuccess(state, action: PayloadAction<SkillsType>) {
+        addSkillSuccess(state, action: PayloadAction<SkillsType>) {
             state.success = true;
             if (state.user) {
                 state.user.skills.push(action.payload);
             };
             state.error = null;
         },
-        saveSkillFaliure(state, action: PayloadAction<string>) {
+        addSkillFaliure(state, action: PayloadAction<string>) {
             state.success = false;
             state.error = action.payload;
         },
@@ -36,7 +37,6 @@ const skillSlice = createSlice({
             if (state.user) {
                 const skillIndex = state.user.skills.findIndex((skill) => skill.id === action.payload.id);
                 state.user.skills[skillIndex] = action.payload;
-                updateUserData(state.user);
             }
             state.error = null;
         },
@@ -53,7 +53,6 @@ const skillSlice = createSlice({
             if (state.user) {
                 const skillIndex = state.user.skills.findIndex((skill) => skill.id === action.payload);
                 state.user.skills.splice(skillIndex, 1);
-                updateUserData(state.user);
             }
             state.error = null;
         },
@@ -64,5 +63,5 @@ const skillSlice = createSlice({
     }
 })
 
-export const { updateSkillState, saveSkillRequest, saveSkillSuccess, saveSkillFaliure, updateSkillRequest, updateSkillSuccess, updateSkillFaliure, removeSkillRequest, removeSkillSuccess, removeSkillFaliure } = skillSlice.actions;
+export const { updateSkillState, addSkillRequest, addSkillSuccess, addSkillFaliure, updateSkillRequest, updateSkillSuccess, updateSkillFaliure, removeSkillRequest, removeSkillSuccess, removeSkillFaliure } = skillSlice.actions;
 export default skillSlice.reducer;
