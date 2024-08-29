@@ -19,7 +19,7 @@ export default function PortfolioSoftSkills() {
             <Carousel>
                 {
                     softSkills.map((softSkill, index) =>
-                        <Card key={index} className={styles['skill-card']}>
+                        <Card key={index} className={styles['common-card']}>
                             <CardHeader>
                                 <h3>{softSkill.name}</h3>
                             </CardHeader>
