@@ -2,7 +2,7 @@ import { AboutMeType } from "@/types/AboutMeType";
 import { call, CallEffect, put, PutEffect } from "redux-saga/effects";
 import { updateAboutMeSuccess, updateAboutMeFaliure } from "../slices/aboutMeSlice";
 
-export default function* updateAboutMeSaga(action: { type: string; payload: { data: AboutMeType, aboutMeId: string, userId: string, token: string, profile: File } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, AboutMeType> {
+export default function* updateAboutMeSaga(action: { type: string; payload: { data: AboutMeType, aboutMeId: string, token: string, profile: File } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, AboutMeType> {
     try {
         const formData = new FormData();
         formData.append('aboutMeData', JSON.stringify(action.payload.data));

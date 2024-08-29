@@ -6,5 +6,8 @@ export interface ProjectsType extends Response {
     name : string,
     briefDetail : string,
     image : ImageType | File,
-    projectData : ProjectDataType[]
+    projectData : ProjectDataType[],
+    user : {
+        id : string
+    }
 }
