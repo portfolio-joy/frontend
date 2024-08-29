@@ -60,7 +60,7 @@
     margin: auto;
 }
 
-.skill-card {
+.common-card {
     width: 350px;
     margin: 36px 12px;
     padding-bottom: 24px;
@@ -68,7 +68,6 @@
 
 .card-body {
     height: 124px;
-    width: fit-content;
     display: -webkit-box;
     -webkit-line-clamp: 5;
     line-clamp: 5;
@@ -79,10 +78,6 @@
     margin-bottom: 12px;
     align-self: center;
     word-break: break-all;
-}
-
-.proficiency-bar div div {
-    background-color: rgb(78, 67, 124);
 }
 
 @media screen and (max-width: 767px) {

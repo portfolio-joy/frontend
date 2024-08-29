@@ -19,7 +19,7 @@ export default function PortfolioTechnicalSkills() {
             <Carousel>
                 {
                     technicalSkills.map((technicalSkill, index) =>
-                        <Card key={index} className={`${styles['skill-card']}`}>
+                        <Card key={index} className={`${styles['common-card']}`}>
                             <CardHeader>
                                 <h3>{technicalSkill.name}</h3>
                             </CardHeader>

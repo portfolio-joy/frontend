@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { removeSkillRequest, addSkillRequest, updateSkillRequest, updateSkillState } from '@/redux/slices/skillSlice';
 import { SkillsType } from '@/types/SkillsType';
 import { toast } from 'react-toastify';
-import { setLoading } from '@/redux/slices/loadingSlice';
 
 export default function Skills() {
 
