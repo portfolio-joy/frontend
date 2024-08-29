@@ -11,7 +11,7 @@ import { fetchUserData, updateUserData } from "@/redux/slices/fetchUserSlice";
 import { useRouter } from "next/router";
 import { LoginResponseData } from "@/types/LoginResponseData";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function DashboardContainer() {
   const dispatch = useAppDispatch();
@@ -55,6 +55,7 @@ export default function DashboardContainer() {
     const dataJson: LoginResponseData = JSON.parse(localStorageData ? localStorageData : '{}');
     if (!userState.error && !userState.success) dispatch(fetchUserData(dataJson));
     if (userState.error) {
+      toast.error("Session Expired");
       router.push('/login');
     }
   }, [userState.error, userState.success]);
