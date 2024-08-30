@@ -129,7 +129,7 @@ export default function Skills() {
                         updateSkillIndex !== -1 &&
                         <button className='w-full' type="button" onClick={cancelUpdate}>Cancel</button>
                     }
-                    <button className='w-full' type="submit">{updateSkillIndex === -1 ? 'Save' : 'Update'}</button>
+                    <button className={`w-full ${styles['submit-button']}`} type="submit">{updateSkillIndex === -1 ? 'Save' : 'Update'}</button>
                 </fieldset>
             </form>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
