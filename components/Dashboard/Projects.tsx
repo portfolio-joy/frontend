@@ -126,7 +126,7 @@ export default function Projects() {
                         updateProjectIndex !== -1 &&
                         <button className='w-full' type="button" onClick={cancelUpdate}>Cancel</button>
                     }
-                    <button className='w-full' type="submit">{updateProjectIndex === -1 ? 'Save' : 'Update'}</button>
+                    <button className={`w-full ${styles['submit-button']}`} type="submit">{updateProjectIndex === -1 ? 'Save' : 'Update'}</button>
                 </fieldset>
             </form>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>

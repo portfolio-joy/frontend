@@ -26,7 +26,7 @@ export default function Projects() {
                         <CardHeader>
                             <h3>{project.name}</h3>
                         </CardHeader>
-                        <Tooltip className='w-96 break-all' content={project.briefDetail}>
+                        <Tooltip className='w-96 break-all shadow-sm shadow-secondary' content={project.briefDetail}>
                             <CardBody className={`${styles['card-body']}`}>
                                 {project.briefDetail}
                             </CardBody>

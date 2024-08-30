@@ -78,7 +78,7 @@ export default function AboutMe() {
             <Tooltip className={errorJson?.profile && styles['error-tooltiip']}>
                 <label htmlFor='profile' className={`cursor-pointer ${errorJson?.profile ? styles['input-error'] : styles['input-normal']}`}>Your Profile : <i>{profile?.name}</i></label>
             </Tooltip>
-            <button type="submit"> {isDataPresent ? 'Update' : 'Save'} </button>
+            <button type="submit" className={styles['submit-button']}> {isDataPresent ? 'Update' : 'Save'} </button>
         </form>
     )
 }
