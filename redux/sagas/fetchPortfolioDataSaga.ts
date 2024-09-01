@@ -2,7 +2,7 @@ import { UserResponseType } from "@/types/UserResponseType";
 import { CallEffect, PutEffect, put, call } from "redux-saga/effects";
 import { fetchPortfolioDataFailure, fetchPortfolioDataSuccess } from "../slices/fetchUserSlice";
 
-export default function* fetchPortfolioDataSaga(action: { type: string; payload: string }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, any> {
+export default function* fetchPortfolioDataSaga(action: { type: string; payload: string }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, UserResponseType> {
     try {
         const response: Response = yield call(fetch, `http://localhost:8080/user/portfolio/${action.payload}`, {
             method: 'GET',
@@ -17,7 +17,6 @@ export default function* fetchPortfolioDataSaga(action: { type: string; payload:
         }
 
         const responseJson: UserResponseType = yield call([response, 'json']);
-        // if(responseJson.aboutMe?.profile) responseJson.aboutMe.profile = base64ToFile(responseJson.aboutMe.profile as ImageType);
         yield put(fetchPortfolioDataSuccess(responseJson));
     } catch (error: unknown) {
         yield put(fetchPortfolioDataFailure((error as Error).message));

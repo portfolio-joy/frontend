@@ -3,7 +3,7 @@ import { UserResponseType } from "@/types/UserResponseType";
 import { CallEffect, PutEffect, put, call } from "redux-saga/effects";
 import { fetchUserFailure, fetchUserSuccess } from "../slices/fetchUserSlice";
 
-export default function* fetchUserSaga(action: { type: string; payload: LoginResponseData }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, any> {
+export default function* fetchUserSaga(action: { type: string; payload: LoginResponseData }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, UserResponseType> {
     try {
         const response: Response = yield call(fetch, `http://localhost:8080/user/${action.payload.id}`, {
             method: 'GET',
