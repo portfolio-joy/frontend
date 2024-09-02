@@ -17,7 +17,8 @@ export default function* fetchProjectDataSaga(action: { type: string; payload: {
         const responseJson = yield call(ApiRequest,
             action.payload.token ?
                 `/user/projectData/${action.payload.projectName}`
-                : `/user/portfolio/${action.payload.username}/${action.payload.projectName}`, requestData
+                : `/user/portfolio/${action.payload.username}/${action.payload.projectName}`,
+            requestData
         )
         yield put(fetchProjectDataSuccess(responseJson));
     } catch (error: unknown) {

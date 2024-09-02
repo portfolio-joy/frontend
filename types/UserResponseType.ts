@@ -12,7 +12,6 @@ export interface UserResponseType {
     emailId : string,
     username : string,
     portfolioUrl : string,
-    token : string,
     aboutMe : AboutMeType,
     skills : SkillsType[],
     projects : ProjectsType[],

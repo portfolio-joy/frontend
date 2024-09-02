@@ -30,7 +30,7 @@ export default function Projects() {
     const [formData, setFormData] = useState(initialFormData);
 
     useEffect(() => {
-        if (userState.success) {
+        if (userState.success && !projectState.data) {
             dispatch(updateProjectState(userState?.user?.projects ? userState.user.projects : []));
         }
     }, [])
@@ -47,9 +47,9 @@ export default function Projects() {
     useEffect(() => {
         if (formData.user?.id && formData.user?.id !== '') {
             if (updateProjectIndex === -1) {
-                dispatch(addProjectRequest({ data: formData as ProjectsType, token: (userState.user as UserResponseType).token, image: image as File }))
+                dispatch(addProjectRequest({ data: formData as ProjectsType, token: userState.token, image: image as File }))
             } else {
-                dispatch(updateProjectRequest({ data: formData as ProjectsType, projectId: (projectState.data[updateProjectIndex].id), token: (userState.user as UserResponseType).token, image: image as File }))
+                dispatch(updateProjectRequest({ data: formData as ProjectsType, projectId: (projectState.data![updateProjectIndex].id), token: userState.token, image: image as File }))
             }
         }
     }, [formData.user])
@@ -76,13 +76,13 @@ export default function Projects() {
     }
 
     const removeProject = () => {
-        dispatch(removeProjectRequest({ projectId: (projectState.data[deleteProjectIndex].id), token: (userState.user as UserResponseType).token }));
+        dispatch(removeProjectRequest({ projectId: (projectState.data![deleteProjectIndex].id), token: userState.token }));
         onClose();
     }
 
     const updateForm = (index: number) => {
-        setFormData(projectState.data[index]);
-        setImage(base64ToFile(projectState.data[index]?.image as ImageType));
+        setFormData(projectState.data![index]);
+        setImage(base64ToFile(projectState.data![index]?.image as ImageType));
         setUpdateProjectIndex(index);
     }
 
@@ -96,7 +96,7 @@ export default function Projects() {
         <>
             <div className={styles['data-chips']}>
                 {
-                    projectState.data.map((project, index) =>
+                    projectState.data?.map((project, index) =>
                         <Chip key={index} className={`mb-2 ${styles['skill-chip']}`}>
                             <span className='select-none' onDoubleClick={() => updateForm(index)}>{project.name}</span>
                             <button onClick={() => handleDelete(index)}><CrossIcon /></button>

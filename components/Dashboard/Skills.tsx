@@ -2,7 +2,6 @@ import styles from '@/styles/Dashboard.module.css'
 import { Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, Radio, RadioGroup, Slider, Tooltip, useDisclosure } from '@nextui-org/react'
 import { CrossIcon } from '../icons'
 import { useEffect, useState } from 'react';
-import { UserResponseType } from '@/types/UserResponseType';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { removeSkillRequest, addSkillRequest, updateSkillRequest, updateSkillState, skillFaliure } from '@/redux/slices/skillSlice';
 import { SkillsType } from '@/types/SkillsType';
@@ -20,10 +19,7 @@ export default function Skills() {
         name: "",
         skillType: "",
         proficiency: 1,
-        description: "",
-        user: {
-            id: ""
-        }
+        description: ""
     };
     const [formData, setFormData] = useState(initialFormData);
     const [skillType, setSkillType] = useState<string>("");
@@ -31,7 +27,7 @@ export default function Skills() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (userState.success) {
+        if (userState.success && !skillState.data) {
             dispatch(updateSkillState(userState?.user?.skills ? userState.user.skills : []));
         }
     }, [])
@@ -49,16 +45,6 @@ export default function Skills() {
         }
     }, [skillState.success, error, skillState.data])
 
-    useEffect(() => {
-        if (formData.user?.id && formData.user?.id !== '') {
-            if (updateSkillIndex === -1) {
-                dispatch(addSkillRequest({ data: formData as SkillsType, token: (userState.user as UserResponseType).token }))
-            } else {
-                dispatch(updateSkillRequest({ data: formData as SkillsType, skillId: (skillState.data[updateSkillIndex]?.id), token: (userState.user as UserResponseType).token }))
-            }
-        }
-    }, [formData.user?.id])
-
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
         setFormData((previousFormDataState) => ({ ...previousFormDataState, [name]: value }));
@@ -66,21 +52,26 @@ export default function Skills() {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setFormData((previousFormDataState) => ({ ...previousFormDataState, 'user': { 'id': (userState.user as UserResponseType).id } }));
+        if (updateSkillIndex === -1) {
+            dispatch(addSkillRequest({ data: formData as SkillsType, token: userState.token }))
+        } else {
+            dispatch(updateSkillRequest({ data: formData as SkillsType, skillId: (skillState.data![deleteSkillIndex].id), token: userState.token }))
+        }
     }
+
     const handleDelete = (index: number) => {
         setDeleteSkillIndex(index);
         onOpen();
     }
     const removeSkill = () => {
-        dispatch(removeSkillRequest({ skillId: (skillState.data[deleteSkillIndex]?.id), token: (userState.user as UserResponseType).token }));
+        dispatch(removeSkillRequest({ skillId: (skillState.data![deleteSkillIndex].id), token: userState.token }));
         onClose();
     }
 
     const updateForm = (index: number) => {
-        setFormData(skillState.data[index]);
-        setSkillType(skillState.data[index]?.skillType);
-        setProficiencyValue(skillState.data[index]?.proficiency);
+        setFormData(skillState.data![index]);
+        setSkillType(skillState.data![index].skillType);
+        setProficiencyValue(skillState.data![index].proficiency);
         setUpdateSkillIndex(index);
     }
 

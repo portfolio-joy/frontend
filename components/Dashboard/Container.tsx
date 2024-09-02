@@ -16,7 +16,7 @@ import { toast, ToastContainer } from "react-toastify";
 export default function DashboardContainer() {
   const dispatch = useAppDispatch();
   const userState = useAppSelector(state => state.user);
-  const error = useAppSelector(state=> state.error);
+  const error = useAppSelector(state => state.error);
   const router = useRouter();
   const [activeModule, setActiveModule] = useState<JSX.Element>(<AboutMe />);
   const [activeModuleIndex, setActiveModuleIndex] = useState<number>(0);
@@ -54,7 +54,7 @@ export default function DashboardContainer() {
   useEffect(() => {
     const localStorageData = localStorage.getItem('data');
     const dataJson: LoginResponseData = JSON.parse(localStorageData ? localStorageData : '{}');
-    if (!Object.keys(error).length && !userState.success) dispatch(fetchUserData(dataJson));
+    if (!Object.keys(error).length && !userState.success) dispatch(fetchUserData({ username: null, token: dataJson.token }));
     if (Object.keys(error).length && error.general === 'Session Expired') {
       dispatch(fetchUserFailure());
       toast.error("Session Expired");

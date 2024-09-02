@@ -1,17 +1,16 @@
-import { LoginResponseData } from "@/types/LoginResponseData";
 import { UserResponseType } from "@/types/UserResponseType";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { userInitialState } from "../rootInitialState";
-
 const fetchUserSlice = createSlice({
     name: 'user',
     initialState: userInitialState,
     reducers: {
-        updateUserData(state,action: PayloadAction<UserResponseType | null>) {
+        updateUserData(state, action: PayloadAction<UserResponseType | null>) {
             state.user = action.payload;
         },
-        fetchUserData(state, action: PayloadAction<LoginResponseData>) {
+        fetchUserData(state, action: PayloadAction<{ token: string | null, username: string | null }>) {
             state.success = false;
+            state.token = action.payload.token;
         },
         fetchUserSuccess(state, action: PayloadAction<UserResponseType>) {
             state.success = true;
@@ -20,20 +19,9 @@ const fetchUserSlice = createSlice({
         fetchUserFailure(state) {
             state.success = false;
             state.user = null;
-        },
-        fetchPortfolioData(state, action: PayloadAction<string>) {
-            state.success = false;
-        },
-        fetchPortfolioDataSuccess(state, action: PayloadAction<UserResponseType>) {
-            state.success = true;
-            state.user = action.payload;
-        },
-        fetchPortfolioDataFailure(state) {
-            state.success = false;
-            state.user = null;
         }
     }
 });
 
-export const { updateUserData, fetchUserData, fetchUserSuccess, fetchUserFailure, fetchPortfolioData, fetchPortfolioDataSuccess, fetchPortfolioDataFailure } = fetchUserSlice.actions;
+export const { updateUserData, fetchUserData, fetchUserSuccess, fetchUserFailure } = fetchUserSlice.actions;
 export default fetchUserSlice.reducer;

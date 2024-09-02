@@ -1,5 +1,6 @@
 export interface LoginResponseData {
     id : string | null,
     token : string | null,
-    expiresIn : Date
+    firstName : string | null,
+    portfolioUrl : string | null
 }

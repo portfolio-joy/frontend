@@ -9,22 +9,28 @@ const initialState: LoginUserState = {
 };
 
 const loginSlice = createSlice({
-    name: 'login',
+    name: 'auth',
     initialState,
     reducers: {
-        loginUserRequest(state,action : PayloadAction<LoginUserPayload>) {
+        loginUserRequest(state, action: PayloadAction<LoginUserPayload>) {
             state.success = false;
         },
-        loginUserSuccess(state, action : PayloadAction<LoginResponseData>){
+        loginUserSuccess(state, action: PayloadAction<LoginResponseData>) {
             state.success = true;
             state.data = action.payload;
         },
-        loginUserFailure(state) {
+        logoutUserRequest(state, action: PayloadAction<{ token: string }>) {
+            state.success = false;
+        },
+        logoutUserSuccess(state) {
+            state.success = true;
+        },
+        authUserFailure(state) {
             state.success = false;
             state.data = null;
         },
     },
 });
 
-export const { loginUserRequest, loginUserSuccess, loginUserFailure } = loginSlice.actions;
+export const { loginUserRequest, loginUserSuccess, authUserFailure, logoutUserRequest, logoutUserSuccess } = loginSlice.actions;
 export default loginSlice.reducer;
