@@ -8,7 +8,6 @@ import { motion, useAnimation, useInView } from "framer-motion";
 export default function ProjectData() {
     const router = useRouter();
     useEffect(() => {
-        console.log((router.query.user as string[])[1]);
     }, [])
     const controls = useAnimation();
     const ref = useRef(null);

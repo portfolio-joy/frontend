@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import Carousel from "./Carousel";
 
 export default function PortfolioSoftSkills() {
-    const portfolioState = useAppSelector((state) => state.user);
+    const portfolioState = useAppSelector(state => state.user);
     const [softSkills, setSoftSkills] = useState<SkillsType[]>([]);
     useEffect(() => {
         if (portfolioState.success) {

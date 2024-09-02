@@ -1,7 +1,6 @@
-import { ProjectDataType } from "./ProjectDataType";
+import { ProjectDataType } from "../types/ProjectDataType";
 
 export type ProjectDataState = {
     success: boolean;
     data: ProjectDataType[];
-    error: any;
 }

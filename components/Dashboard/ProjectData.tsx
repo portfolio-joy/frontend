@@ -7,18 +7,17 @@ import { base64ToFile } from "@/util/base64ToFile";
 import { useEffect, useState } from "react";
 import { ProjectDataType } from '@/types/ProjectDataType';
 import { toast } from 'react-toastify';
-import { fetchProjectDataRequest } from '@/redux/slices/projectDataSlice';
+import { fetchProjectDataRequest, projectDataFaliure } from '@/redux/slices/projectDataSlice';
 
 export default function ProjectData() {
 
     const userState = useAppSelector(state => state.user);
     const projectDataState = useAppSelector(state => state.projectData);
-    const errorJson = projectDataState.error;
+    const error = useAppSelector(state => state.error);
     const [selectedProject, setSelectedProject] = useState<string>("");
     const [deleteProjectIndex, setDeleteProjectIndex] = useState<number>(-1);
     const [updateProjectIndex, setUpdateProjectIndex] = useState<number>(-1);
     const [projects, setProjects] = useState(userState.user?.projects);
-    const [projectData, setProjectData] = useState<ProjectDataType[]>([])
     const [image, setImage] = useState<File | null>(null);
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const dispatch = useAppDispatch();
@@ -30,18 +29,16 @@ export default function ProjectData() {
 
     useEffect(() => {
         if (selectedProject.length) {
-            dispatch(fetchProjectDataRequest({projectName: selectedProject, token: userState.user? userState.user.token : ""}));
+            dispatch(fetchProjectDataRequest({projectName: selectedProject, token: userState.token}));
         }
     }, [selectedProject])
 
     useEffect(()=>{
-        if(projectDataState.success) {
-            setProjectData(projectDataState.data);
+        if(Object.keys(error).length) {
+            dispatch(projectDataFaliure());
+            toast.error(error.general);
         }
-        if(projectDataState.error?.general) {
-            toast.error(projectDataState.error?.general);
-        }
-    },[projectDataState.success,projectDataState.error])
+    },[error])
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = event.target;
@@ -75,8 +72,8 @@ export default function ProjectData() {
     }
 
     const updateForm = (index: number) => {
-        setFormData(projectData[index]);
-        setImage(base64ToFile(projectData[index]?.image as ImageType));
+        setFormData(projectDataState.data[index]);
+        setImage(base64ToFile(projectDataState.data[index]?.image as ImageType));
         setUpdateProjectIndex(index);
     }
 
@@ -90,9 +87,9 @@ export default function ProjectData() {
         <>
             <div className={styles['data-chips']}>
                 {
-                    projectData?.map((data, index) =>
+                    projectDataState.data.map((projectData, index) =>
                         <Chip key={index} className={`mb-2 ${styles['skill-chip']}`}>
-                            <span className='select-none' onDoubleClick={() => updateForm(index)}>{data.heading}</span>
+                            <span className='select-none' onDoubleClick={() => updateForm(index)}>{projectData.heading}</span>
                             <button onClick={() => handleDelete(index)}><CrossIcon /></button>
                         </Chip>
                     )
@@ -104,15 +101,15 @@ export default function ProjectData() {
                 <Select id='project' name='project' aria-label='Your Projects' items={projects ? projects : []} placeholder="Select your project" className={'p-5'} variant='bordered' onChange={handleChange}>
                     {(project) => <SelectItem key={project.name}>{project.name}</SelectItem>}
                 </Select>
-                <Tooltip className={errorJson?.heading && styles['error-tooltip']} content={errorJson?.heading}>
-                    <input className={errorJson?.heading ? styles['input-error'] : styles['input-normal']} name="heading" type="text" placeholder="Heading" defaultValue={formData.heading} onChange={handleChange} required></input>
+                <Tooltip className={error.heading && styles['error-tooltip']} content={error.heading}>
+                    <input className={error.heading ? styles['input-error'] : styles['input-normal']} name="heading" type="text" placeholder="Heading" defaultValue={formData.heading} onChange={handleChange} required></input>
                 </Tooltip>
-                <Tooltip className={errorJson?.description && styles['error-tooltiip']}>
-                    <textarea className={errorJson?.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={300} value={formData.description} onChange={handleChange} required></textarea>
+                <Tooltip className={error.description && styles['error-tooltiip']}>
+                    <textarea className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={300} value={formData.description} onChange={handleChange} required></textarea>
                 </Tooltip>
                 <input id='image' type="file" name="image" accept="image/*" onChange={handleFileChange} hidden />
-                <Tooltip className={errorJson?.image && styles['error-tooltiip']}>
-                    <label htmlFor='image' className={`cursor-pointer ${errorJson?.image ? styles['input-error'] : styles['input-normal']}`}>Project Data Image : <i>{image?.name}</i></label>
+                <Tooltip className={error.image && styles['error-tooltiip']}>
+                    <label htmlFor='image' className={`cursor-pointer ${error.image ? styles['input-error'] : styles['input-normal']}`}>Project Data Image : <i>{image?.name}</i></label>
                 </Tooltip>
                 <fieldset className='flex'>
                     {

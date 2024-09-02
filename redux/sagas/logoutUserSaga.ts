@@ -1,20 +1,21 @@
+import { LoginResponseData } from "@/types/LoginResponseData";
 import { call, CallEffect, put, PutEffect } from "redux-saga/effects";
-import { skillFaliure, removeSkillSuccess } from "../slices/skillSlice";
+import { logoutUserSuccess } from "../slices/authSlice";
 import { CommonHeaders } from "@/util/headers";
 import ApiRequest from "@/util/api";
 import { setErrors } from "../slices/errorSlice";
 
-export default function* removeSkillSaga(action: { type: string; payload: { skillId: string, token: string } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, {id: string}> {
+export default function* logoutUserSaga(action: { type: string; payload: { token: string } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, LoginResponseData> {
     const requestData: RequestInit = {
-        method: 'DELETE',
+        method: 'POST',
         headers: {
             ...CommonHeaders(),
             'Authorization': `Bearer ${action.payload.token}`,
         }
     }
     try {
-        const responseJson = yield call(ApiRequest, `/user/skill/${action.payload.skillId}`,requestData);
-        yield put(removeSkillSuccess(responseJson));
+        const responseJson = yield call(ApiRequest, '/user/logout', requestData);
+        yield put(logoutUserSuccess());
     } catch (error: unknown) {
         yield put(setErrors((error as Error).message));
     }

@@ -1,67 +1,48 @@
 import { SkillsType } from "@/types/SkillsType";
-import { UserResponseType } from "@/types/UserResponseType";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { userInitialState } from "../rootInitialState";
-import { updateUserData } from "./fetchUserSlice";
+import { SkillState } from "@/states/SkillState";
+
+const initialState: SkillState = {
+    success: false,
+    data: null
+}
 
 const skillSlice = createSlice({
     name: 'skill',
-    initialState: userInitialState,
+    initialState,
     reducers: {
-        updateSkillState(state,action: PayloadAction<UserResponseType | null>) {
+        updateSkillState(state, action: PayloadAction<SkillsType[]>) {
             state.success = false;
-            state.user = action.payload;
-            state.error = null;
+            state.data = action.payload;
         },
-        addSkillRequest(state, action: PayloadAction<{ data: SkillsType, token: string }>) {
+        addSkillRequest(state, action: PayloadAction<{ data: SkillsType, token: string | null }>) {
             state.success = false;
-            state.error = null;
         },
         addSkillSuccess(state, action: PayloadAction<SkillsType>) {
             state.success = true;
-            if (state.user) {
-                state.user.skills.push(action.payload);
-            };
-            state.error = null;
+            state.data?.push(action.payload);
         },
-        addSkillFaliure(state, action: PayloadAction<string>) {
+        updateSkillRequest(state, action: PayloadAction<{ data: SkillsType, skillId: string, token: string | null }>) {
             state.success = false;
-            state.error = action.payload;
-        },
-        updateSkillRequest(state, action: PayloadAction<{ data: SkillsType, skillId: string, token: string }>) {
-            state.success = false;
-            state.error = null;
         },
         updateSkillSuccess(state, action: PayloadAction<SkillsType>) {
             state.success = true;
-            if (state.user) {
-                const skillIndex = state.user.skills.findIndex((skill) => skill.id === action.payload.id);
-                state.user.skills[skillIndex] = action.payload;
-            }
-            state.error = null;
+            const skillIndex = state.data!.findIndex((skill) => skill.id === action.payload.id);
+            state.data![skillIndex] = action.payload;
         },
-        updateSkillFaliure(state, action: PayloadAction<string>) {
+        removeSkillRequest(state, action: PayloadAction<{ skillId: string, token: string | null }>) {
             state.success = false;
-            state.error = action.payload;
         },
-        removeSkillRequest(state, action: PayloadAction<{ skillId: string, token: string }>) {
-            state.success = false;
-            state.error = null;
-        },
-        removeSkillSuccess(state, action: PayloadAction<string>) {
+        removeSkillSuccess(state, action: PayloadAction<{ id: string }>) {
             state.success = true;
-            if (state.user) {
-                const skillIndex = state.user.skills.findIndex((skill) => skill.id === action.payload);
-                state.user.skills.splice(skillIndex, 1);
-            }
-            state.error = null;
+            const skillIndex = state.data!.findIndex((skill) => skill.id === action.payload.id);
+            state.data!.splice(skillIndex, 1);
         },
-        removeSkillFaliure(state, action: PayloadAction<string>) {
+        skillFaliure(state) {
             state.success = false;
-            state.error = action.payload;
         }
     }
 })
 
-export const { updateSkillState, addSkillRequest, addSkillSuccess, addSkillFaliure, updateSkillRequest, updateSkillSuccess, updateSkillFaliure, removeSkillRequest, removeSkillSuccess, removeSkillFaliure } = skillSlice.actions;
+export const { updateSkillState, addSkillRequest, addSkillSuccess, updateSkillRequest, updateSkillSuccess, removeSkillRequest, removeSkillSuccess, skillFaliure } = skillSlice.actions;
 export default skillSlice.reducer;
