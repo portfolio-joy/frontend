@@ -19,12 +19,12 @@ export default function AboutMe() {
     const error = useAppSelector(state => state.error);
     const [formData, setFormData] = useState<AboutMeType>((userState.user as UserResponseType)?.aboutMe)
     const [isDataPresent, setIsDataPresent] = useState<boolean>(false);
-    const [profile, setProfile] = useState<File | null>(null);
+    const [image, setImage] = useState<File | null>(null);
     const dispatch = useAppDispatch();
     useEffect(() => {
         if (userState.success) {
             dispatch(clearAllErrors());
-            setProfile(base64ToFile((userState.user as UserResponseType)?.aboutMe?.profile as ImageType))
+            setImage(base64ToFile((userState.user as UserResponseType)?.aboutMe?.image as ImageType))
             setFormData((userState.user as UserResponseType).aboutMe)
             if (userState.user?.aboutMe) setIsDataPresent(true);
         }
@@ -46,17 +46,17 @@ export default function AboutMe() {
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
-            setProfile(event.target.files[0]);
+            setImage(event.target.files[0]);
         }
     }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (isDataPresent) {
-            dispatch(updateAboutMeRequest({ data: formData, aboutMeId: formData.id, token: userState.token!, profile: profile as File }));
+            dispatch(updateAboutMeRequest({ data: formData, aboutMeId: formData.id, token: userState.token!, image: image as File }));
         }
         else {
-            dispatch(saveAboutMeRequest({ data: formData, token: userState.token!, profile: profile as File }));
+            dispatch(saveAboutMeRequest({ data: formData, token: userState.token!, image: image as File }));
         }
     }
 
@@ -72,9 +72,9 @@ export default function AboutMe() {
             <Tooltip className={error.description && styles['error-tooltiip']}>
                 <textarea className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} defaultValue={formData?.description} onChange={handleChange} required></textarea>
             </Tooltip>
-            <input id='profile' type="file" name="profile" accept="image/*" onChange={handleFileChange} hidden />
-            <Tooltip className={error.profile && styles['error-tooltiip']}>
-                <label htmlFor='profile' className={`cursor-pointer ${error.profile ? styles['input-error'] : styles['input-normal']}`}>Your Profile : <i>{profile?.name}</i></label>
+            <input id='image' type="file" name="image" accept="image/*" onChange={handleFileChange} hidden />
+            <Tooltip className={error.image && styles['error-tooltiip']}>
+                <label htmlFor='image' className={`cursor-pointer ${error.image ? styles['input-error'] : styles['input-normal']}`}>Your Profile : <i>{image?.name}</i></label>
             </Tooltip>
             <button type="submit" className={styles['submit-button']}> {isDataPresent ? 'Update' : 'Save'} </button>
         </form>
