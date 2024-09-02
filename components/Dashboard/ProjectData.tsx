@@ -18,7 +18,6 @@ export default function ProjectData() {
     const [deleteProjectIndex, setDeleteProjectIndex] = useState<number>(-1);
     const [updateProjectIndex, setUpdateProjectIndex] = useState<number>(-1);
     const [projects, setProjects] = useState(userState.user?.projects);
-    const [projectData, setProjectData] = useState<ProjectDataType[]>([])
     const [image, setImage] = useState<File | null>(null);
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const dispatch = useAppDispatch();
@@ -35,14 +34,11 @@ export default function ProjectData() {
     }, [selectedProject])
 
     useEffect(()=>{
-        if(projectDataState.success) {
-            setProjectData(projectDataState.data);
-        }
         if(Object.keys(error).length) {
             dispatch(projectDataFaliure());
             toast.error(error.general);
         }
-    },[projectDataState.success,error])
+    },[error])
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = event.target;
@@ -76,8 +72,8 @@ export default function ProjectData() {
     }
 
     const updateForm = (index: number) => {
-        setFormData(projectData[index]);
-        setImage(base64ToFile(projectData[index]?.image as ImageType));
+        setFormData(projectDataState.data[index]);
+        setImage(base64ToFile(projectDataState.data[index]?.image as ImageType));
         setUpdateProjectIndex(index);
     }
 
@@ -91,9 +87,9 @@ export default function ProjectData() {
         <>
             <div className={styles['data-chips']}>
                 {
-                    projectData?.map((data, index) =>
+                    projectDataState.data.map((projectData, index) =>
                         <Chip key={index} className={`mb-2 ${styles['skill-chip']}`}>
-                            <span className='select-none' onDoubleClick={() => updateForm(index)}>{data.heading}</span>
+                            <span className='select-none' onDoubleClick={() => updateForm(index)}>{projectData.heading}</span>
                             <button onClick={() => handleDelete(index)}><CrossIcon /></button>
                         </Chip>
                     )

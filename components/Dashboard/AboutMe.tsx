@@ -33,9 +33,9 @@ export default function AboutMe() {
     useEffect(() => {
         if (aboutMeState.success) {
             toast.success('Data updated Successfully');
-        } else if (error) {
+        } else if (Object.keys(error).length) {
             dispatch(aboutMeFaliure())
-            toast.error(error?.general);
+            toast.error(error.general);
         }
     }, [aboutMeState.success, error]);
 
@@ -64,18 +64,18 @@ export default function AboutMe() {
     return (
         <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
             <h2>About Me Form</h2>
-            <Tooltip className={error?.name && styles['error-tooltip']} content={error?.name}>
+            <Tooltip className={error.name && styles['error-tooltip']} content={error.name}>
                 <input autoComplete='true' className={styles['input-normal']} name="name" type="text" placeholder="Name" defaultValue={formData?.name} onChange={handleChange} required></input>
             </Tooltip>
-            <Tooltip className={error?.skills ? styles['error-tooltip'] : styles['info-tooltip']} content={error?.skills ? error?.skills : `Seperate the skills using comma`}>
-                <input className={error?.skills ? styles['input-error'] : styles['input-normal']} name="skills" type="text" placeholder="Skills" maxLength={255} defaultValue={formData?.skills} onChange={handleChange} required></input>
+            <Tooltip className={error.skills ? styles['error-tooltip'] : styles['info-tooltip']} content={error.skills ? error.skills : `Seperate the skills using comma`}>
+                <input className={error.skills ? styles['input-error'] : styles['input-normal']} name="skills" type="text" placeholder="Skills" maxLength={255} defaultValue={formData?.skills} onChange={handleChange} required></input>
             </Tooltip>
-            <Tooltip className={error?.description && styles['error-tooltiip']}>
-                <textarea className={error?.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} defaultValue={formData?.description} onChange={handleChange} required></textarea>
+            <Tooltip className={error.description && styles['error-tooltiip']}>
+                <textarea className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} defaultValue={formData?.description} onChange={handleChange} required></textarea>
             </Tooltip>
             <input id='profile' type="file" name="profile" accept="image/*" onChange={handleFileChange} hidden />
-            <Tooltip className={error?.profile && styles['error-tooltiip']}>
-                <label htmlFor='profile' className={`cursor-pointer ${error?.profile ? styles['input-error'] : styles['input-normal']}`}>Your Profile : <i>{profile?.name}</i></label>
+            <Tooltip className={error.profile && styles['error-tooltiip']}>
+                <label htmlFor='profile' className={`cursor-pointer ${error.profile ? styles['input-error'] : styles['input-normal']}`}>Your Profile : <i>{profile?.name}</i></label>
             </Tooltip>
             <button type="submit" className={styles['submit-button']}> {isDataPresent ? 'Update' : 'Save'} </button>
         </form>
