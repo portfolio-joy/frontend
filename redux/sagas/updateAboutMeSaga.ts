@@ -3,6 +3,7 @@ import { call, CallEffect, put, PutEffect } from "redux-saga/effects";
 import {aboutMeFaliure, aboutMeSuccess } from "../slices/aboutMeSlice";
 import { CommonHeaders } from "@/util/headers";
 import ApiRequest from "@/util/api";
+import { setErrors } from "../slices/errorSlice";
 
 export default function* updateAboutMeSaga(action: { type: string; payload: { data: AboutMeType, aboutMeId: string, token: string, profile: File } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, AboutMeType> {
     const formData = new FormData();
@@ -20,6 +21,6 @@ export default function* updateAboutMeSaga(action: { type: string; payload: { da
         const responseJson = yield call(ApiRequest,`/user/aboutMe/${action.payload.aboutMeId}`,requestData);
         yield put(aboutMeSuccess(responseJson));
     } catch (error: unknown) {
-        yield put(aboutMeFaliure((error as Error).message));
+        yield put(setErrors((error as Error).message));
     }
 }

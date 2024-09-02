@@ -1,17 +1,18 @@
-import { registerUserRequest } from '@/redux/slices/registerSlice';
+import { registerUserFailure, registerUserRequest } from '@/redux/slices/registerSlice';
 import styles from '@/styles/Dashboard.module.css'
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tooltip, useDisclosure } from '@nextui-org/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { CorrectIcon } from '../icons';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { toast } from 'react-toastify';
 
 const Register = () => {
+    const registerState = useAppSelector(state => state.register);
+    const error = useAppSelector(state=> state.error);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const dispatch = useAppDispatch();
     const router = useRouter();
-    const registerState = useAppSelector((state) => state.register);
-    const errorJson = registerState.error;
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -25,8 +26,11 @@ const Register = () => {
     useEffect(() => {
         if (registerState.success) {
             onOpen();
+        } else if(Object.keys(error).length) {
+            dispatch(registerUserFailure());
+            toast.error(error.general);
         }
-    }, [registerState.success, router]);
+    }, [registerState.success, error]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -60,28 +64,25 @@ const Register = () => {
         <>
             <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
                 <h2>Welcome Aboard! Let’s Get You Registered</h2>
-                <Tooltip className={errorJson?.firstName && styles['error-tooltip']} content={errorJson?.firstName}>
-                    <input name="firstName" type="text" placeholder="First Name *" value={formData.firstName} onChange={handleChange} className={errorJson?.firstName ? styles["input-error"] : styles["input-normal"]} required title='' />
+                <Tooltip className={error.firstName && styles['error-tooltip']} content={error.firstName}>
+                    <input name="firstName" type="text" placeholder="First Name *" value={formData.firstName} onChange={handleChange} className={error.firstName ? styles["input-error"] : styles["input-normal"]} required title='' />
                 </Tooltip>
-                <Tooltip className={errorJson?.lastName && styles['error-tooltip']} content={errorJson?.lastName}>
-                    <input name="lastName" type="text" placeholder="Last Name" value={formData.lastName} onChange={handleChange} className={errorJson?.lastName ? styles["input-error"] : styles["input-normal"]} />
+                <Tooltip className={error.lastName && styles['error-tooltip']} content={error.lastName}>
+                    <input name="lastName" type="text" placeholder="Last Name" value={formData.lastName} onChange={handleChange} className={error.lastName ? styles["input-error"] : styles["input-normal"]} />
                 </Tooltip>
-                <Tooltip className={errorJson?.emailId && styles['error-tooltip']} content={errorJson?.emailId}>
-                    <input name="emailId" type="email" placeholder="Email Id *" value={formData.emailId} onChange={handleChange} className={errorJson?.emailId ? styles["input-error"] : styles["input-normal"]} required title='' />
+                <Tooltip className={error.emailId && styles['error-tooltip']} content={error.emailId}>
+                    <input name="emailId" type="email" placeholder="Email Id *" value={formData.emailId} onChange={handleChange} className={error.emailId ? styles["input-error"] : styles["input-normal"]} required title='' />
                 </Tooltip>
-                <Tooltip className={errorJson?.username && styles['error-tooltip']} content={errorJson?.username}>
-                    <input name="username" type="text" placeholder="Username *" minLength={6} maxLength={16} value={formData.username} onChange={handleChange} className={errorJson?.username ? styles["input-error"] : styles["input-normal"]} required title='' />
+                <Tooltip className={error.username && styles['error-tooltip']} content={error.username}>
+                    <input name="username" type="text" placeholder="Username *" minLength={6} maxLength={16} value={formData.username} onChange={handleChange} className={error.username ? styles["input-error"] : styles["input-normal"]} required title='' />
                 </Tooltip>
-                <Tooltip className={errorJson?.password && styles['error-tooltip']} content={errorJson?.password}>
-                    <input name="password" type="password" placeholder="Password *" minLength={8} maxLength={20} value={formData.password} onChange={handleChange} className={errorJson?.password ? styles["input-error"] : styles["input-normal"]} required title='' />
+                <Tooltip className={error.password && styles['error-tooltip']} content={error.password}>
+                    <input name="password" type="password" placeholder="Password *" minLength={8} maxLength={20} value={formData.password} onChange={handleChange} className={error.password ? styles["input-error"] : styles["input-normal"]} required title='' />
                 </Tooltip>
                 <Tooltip className={passwordMismatch &&  styles['error-tooltip']} showArrow={true} content={passwordMismatch}>
                     <input name="confirmPassword" type="password" placeholder="Confirm Password *" minLength={8} maxLength={20} value={formData.confirmPassword} onChange={handleChange} className={passwordMismatch ? styles["input-error"] : styles["input-normal"]} required title='' />
                 </Tooltip>
                 <button type="submit" disabled={registerState.success && !isOpen} className={styles['submit-button']}>Register</button>
-                {errorJson?.general &&
-                    <p className={styles["error-message"]} >{errorJson?.general}</p>
-                }
             </form>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} className={styles['registered-modal']}>
                 <ModalContent>

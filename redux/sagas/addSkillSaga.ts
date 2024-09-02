@@ -3,6 +3,7 @@ import { call, CallEffect, put, PutEffect } from "redux-saga/effects";
 import { addSkillSuccess, skillFaliure } from "../slices/skillSlice";
 import { CommonHeaders } from "@/util/headers";
 import ApiRequest from "@/util/api";
+import { setErrors } from "../slices/errorSlice";
 
 export default function* addSkillSaga(action: { type: string; payload: { data: SkillsType, token: string } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, SkillsType> {
     const requestData: RequestInit = {
@@ -18,6 +19,6 @@ export default function* addSkillSaga(action: { type: string; payload: { data: S
         const responseJson = yield call(ApiRequest, '/user/skill',requestData);
         yield put(addSkillSuccess(responseJson));
     } catch (error: unknown) {
-        yield put(skillFaliure((error as Error).message));
+        yield put(setErrors((error as Error).message));
     }
 }

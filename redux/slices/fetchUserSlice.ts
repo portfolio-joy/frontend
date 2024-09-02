@@ -9,35 +9,28 @@ const fetchUserSlice = createSlice({
     reducers: {
         updateUserData(state,action: PayloadAction<UserResponseType | null>) {
             state.user = action.payload;
-            state.error = null;
         },
         fetchUserData(state, action: PayloadAction<LoginResponseData>) {
             state.success = false;
-            state.error = null;
         },
         fetchUserSuccess(state, action: PayloadAction<UserResponseType>) {
             state.success = true;
             state.user = action.payload;
-            state.error = null;
         },
-        fetchUserFailure(state, action: PayloadAction<string>) {
+        fetchUserFailure(state) {
             state.success = false;
             state.user = null;
-            state.error = JSON.parse(action.payload);
         },
         fetchPortfolioData(state, action: PayloadAction<string>) {
             state.success = false;
-            state.error = null;
         },
         fetchPortfolioDataSuccess(state, action: PayloadAction<UserResponseType>) {
             state.success = true;
             state.user = action.payload;
-            state.error = null;
         },
-        fetchPortfolioDataFailure(state, action: PayloadAction<string>) {
+        fetchPortfolioDataFailure(state) {
             state.success = false;
             state.user = null;
-            state.error = JSON.parse(action.payload);
         }
     }
 });

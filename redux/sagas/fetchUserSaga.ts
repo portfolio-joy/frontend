@@ -4,6 +4,7 @@ import { CallEffect, PutEffect, put, call } from "redux-saga/effects";
 import { fetchUserFailure, fetchUserSuccess } from "../slices/fetchUserSlice";
 import { CommonHeaders } from "@/util/headers";
 import ApiRequest from "@/util/api";
+import { setErrors } from "../slices/errorSlice";
 
 export default function* fetchUserSaga(action: { type: string; payload: LoginResponseData }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, UserResponseType> {
     const requestData: RequestInit = {
@@ -18,6 +19,6 @@ export default function* fetchUserSaga(action: { type: string; payload: LoginRes
         const responseJson = yield call(ApiRequest, `/user/${action.payload.id}`, requestData);
         yield put(fetchUserSuccess(responseJson));
     } catch (error: unknown) {
-        yield put(fetchUserFailure((error as Error).message));
+        yield put(setErrors((error as Error).message));
     }
 }

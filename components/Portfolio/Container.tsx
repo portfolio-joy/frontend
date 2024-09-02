@@ -16,7 +16,8 @@ export default function PortfolioContainer() {
 
     const dispatch: AppDispatch = useDispatch();
     const router = useRouter();
-    const portfolioState = useAppSelector((state) => state.user);
+    const portfolioState = useAppSelector(state => state.user);
+    const error = useAppSelector(state => state.error);
     const [technicalSkills, setTechnicalSkills] = useState<SkillsType[] | undefined>([]);
     const [softSkills, setSoftSkills] = useState<SkillsType[] | undefined>([]);
     const [projectPage, setProjectPage] = useState(false);
@@ -32,7 +33,7 @@ export default function PortfolioContainer() {
                 return;
             }
         }
-        if (portfolioState.error) {
+        if (Object.keys(error).length) {
             router.push('/_error');
             return;
         }
@@ -40,7 +41,7 @@ export default function PortfolioContainer() {
             setTechnicalSkills(portfolioState.user?.skills.filter((skill) => skill.skillType === 'Technical'));
             setSoftSkills(portfolioState.user?.skills.filter((skill) => skill.skillType === 'Soft'));
         }
-    }, [router.isReady, router.query.user, portfolioState.error, portfolioState.success]);
+    }, [router.isReady, router.query.user, error, portfolioState.success]);
     return (
         <main className={styles['portfolio-container']}>
             {

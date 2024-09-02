@@ -2,6 +2,7 @@ import { call, CallEffect, put, PutEffect } from "redux-saga/effects";
 import { skillFaliure, removeSkillSuccess } from "../slices/skillSlice";
 import { CommonHeaders } from "@/util/headers";
 import ApiRequest from "@/util/api";
+import { setErrors } from "../slices/errorSlice";
 
 export default function* removeSkillSaga(action: { type: string; payload: { skillId: string, token: string } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, {id: string}> {
     const requestData: RequestInit = {
@@ -15,6 +16,6 @@ export default function* removeSkillSaga(action: { type: string; payload: { skil
         const responseJson = yield call(ApiRequest, `/user/skill/${action.payload.skillId}`,requestData);
         yield put(removeSkillSuccess(responseJson));
     } catch (error: unknown) {
-        yield put(skillFaliure((error as Error).message));
+        yield put(setErrors((error as Error).message));
     }
 }
