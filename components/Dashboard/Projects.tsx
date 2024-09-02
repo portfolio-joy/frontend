@@ -112,7 +112,7 @@ export default function Projects() {
             <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
                 <h2>Projects Form</h2>
                 <Tooltip className={errorJson.name && styles['error-tooltip']} content={errorJson.name}>
-                    <input className={errorJson.name ? styles['input-error'] : styles['input-normal']} name="name" type="text" placeholder="Name" defaultValue={formData.name} onChange={handleChange} required></input>
+                    <input  autoComplete='true' className={errorJson.name ? styles['input-error'] : styles['input-normal']} name="name" type="text" placeholder="Name" defaultValue={formData.name} onChange={handleChange} required></input>
                 </Tooltip>
                 <Tooltip className={errorJson.briefDetail && styles['error-tooltiip']}>
                     <textarea className={errorJson.briefDetail ? styles['input-error'] : styles['input-normal']} name="briefDetail" rows={5} placeholder="Brief Detail" maxLength={300} value={formData.briefDetail} onChange={handleChange} required></textarea>
