@@ -17,7 +17,6 @@ export default function Projects() {
     const error = useAppSelector(state => state.error);
     const [deleteProjectIndex, setDeleteProjectIndex] = useState<number>(-1);
     const [updateProjectIndex, setUpdateProjectIndex] = useState<number>(-1);
-    const [projects, setProjects] = useState<ProjectsType[]>((projectState.user as UserResponseType)?.projects)
     const [image, setImage] = useState<File | null>(null);
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const dispatch = useAppDispatch();
@@ -32,27 +31,25 @@ export default function Projects() {
 
     useEffect(() => {
         if (userState.success) {
-            dispatch(updateProjectState(userState.user));
-            setProjects(userState.user?.projects as ProjectsType[]);
+            dispatch(updateProjectState(userState?.user?.projects ? userState.user.projects : []));
         }
     }, [])
 
     useEffect(() => {
         if (projectState.success) {
             toast.success("Data Updated Successfully");
-            setProjects((projectState.user as UserResponseType)?.projects);
         } else if (Object.keys(error).length) {
             dispatch(projectFaliure());
             toast.error(error.general);
         }
-    }, [projectState.success, error, projectState.user?.projects, projects])
+    }, [projectState.success, error, projectState.data])
 
     useEffect(() => {
         if (formData.user?.id && formData.user?.id !== '') {
             if (updateProjectIndex === -1) {
                 dispatch(addProjectRequest({ data: formData as ProjectsType, token: (userState.user as UserResponseType).token, image: image as File }))
             } else {
-                dispatch(updateProjectRequest({ data: formData as ProjectsType, projectId: (projects[updateProjectIndex].id), token: (userState.user as UserResponseType).token, image: image as File }))
+                dispatch(updateProjectRequest({ data: formData as ProjectsType, projectId: (projectState.data[updateProjectIndex].id), token: (userState.user as UserResponseType).token, image: image as File }))
             }
         }
     }, [formData.user])
@@ -79,13 +76,13 @@ export default function Projects() {
     }
 
     const removeProject = () => {
-        dispatch(removeProjectRequest({ projectId: (projects[deleteProjectIndex].id), token: (userState.user as UserResponseType).token }));
+        dispatch(removeProjectRequest({ projectId: (projectState.data[deleteProjectIndex].id), token: (userState.user as UserResponseType).token }));
         onClose();
     }
 
     const updateForm = (index: number) => {
-        setFormData(projects[index]);
-        setImage(base64ToFile(projects[index]?.image as ImageType));
+        setFormData(projectState.data[index]);
+        setImage(base64ToFile(projectState.data[index]?.image as ImageType));
         setUpdateProjectIndex(index);
     }
 
@@ -99,7 +96,7 @@ export default function Projects() {
         <>
             <div className={styles['data-chips']}>
                 {
-                    projects?.map((project, index) =>
+                    projectState.data.map((project, index) =>
                         <Chip key={index} className={`mb-2 ${styles['skill-chip']}`}>
                             <span className='select-none' onDoubleClick={() => updateForm(index)}>{project.name}</span>
                             <button onClick={() => handleDelete(index)}><CrossIcon /></button>

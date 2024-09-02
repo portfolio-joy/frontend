@@ -13,7 +13,6 @@ export default function Skills() {
     const userState = useAppSelector(state => state.user);
     const skillState = useAppSelector(state => state.skill);
     const error = useAppSelector(state => state.error);
-    const [skills, setSkills] = useState<SkillsType[]>((skillState.user as UserResponseType)?.skills);
     const [deleteSkillIndex, setDeleteSkillIndex] = useState<number>(-1);
     const [updateSkillIndex, setUpdateSkillIndex] = useState<number>(-1);
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
@@ -32,9 +31,8 @@ export default function Skills() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (userState.success && skillState.user?.projects?.length === skills?.length) {
-            dispatch(updateSkillState(userState.user));
-            setSkills(userState.user?.skills as SkillsType[]);
+        if (userState.success) {
+            dispatch(updateSkillState(userState?.user?.skills ? userState.user.skills : []));
         }
     }, [])
 
@@ -45,19 +43,18 @@ export default function Skills() {
     useEffect(() => {
         if (skillState.success) {
             toast.success("Data Updated Successfully");
-            setSkills((skillState.user as UserResponseType)?.skills);
         } else if (Object.keys(error).length) {
             dispatch(skillFaliure());
             toast.error(error.general);
         }
-    }, [skillState.success, error, skillState.user?.skills, skills])
+    }, [skillState.success, error, skillState.data])
 
     useEffect(() => {
         if (formData.user?.id && formData.user?.id !== '') {
             if (updateSkillIndex === -1) {
                 dispatch(addSkillRequest({ data: formData as SkillsType, token: (userState.user as UserResponseType).token }))
             } else {
-                dispatch(updateSkillRequest({ data: formData as SkillsType, skillId: (skills[updateSkillIndex].id), token: (userState.user as UserResponseType).token }))
+                dispatch(updateSkillRequest({ data: formData as SkillsType, skillId: (skillState.data[updateSkillIndex]?.id), token: (userState.user as UserResponseType).token }))
             }
         }
     }, [formData.user?.id])
@@ -76,14 +73,14 @@ export default function Skills() {
         onOpen();
     }
     const removeSkill = () => {
-        dispatch(removeSkillRequest({ skillId: (skills[deleteSkillIndex].id), token: (userState.user as UserResponseType).token }));
+        dispatch(removeSkillRequest({ skillId: (skillState.data[deleteSkillIndex]?.id), token: (userState.user as UserResponseType).token }));
         onClose();
     }
 
     const updateForm = (index: number) => {
-        setFormData(skills[index]);
-        setSkillType(skills[index].skillType);
-        setProficiencyValue(skills[index].proficiency);
+        setFormData(skillState.data[index]);
+        setSkillType(skillState.data[index]?.skillType);
+        setProficiencyValue(skillState.data[index]?.proficiency);
         setUpdateSkillIndex(index);
     }
 
@@ -98,7 +95,7 @@ export default function Skills() {
         <>
             <div className={styles['data-chips']}>
                 {
-                    skills?.map((skill, index) =>
+                    skillState.data?.map((skill, index) =>
                         <Chip key={index} className={`mb-2 ${styles['skill-chip']}`}>
                             <span className='select-none' onDoubleClick={() => updateForm(index)}>{skill.name}</span>
                             <button onClick={() => handleDelete(index)}><CrossIcon /></button>
