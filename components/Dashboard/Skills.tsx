@@ -109,7 +109,7 @@ export default function Skills() {
             <form className={styles['dashboard-form']} onSubmit={handleSubmit}>
                 <h2>Skill Form</h2>
                 <Tooltip className={errorJson.name && styles['error-tooltiip']} content={errorJson.name}>
-                    <input className={errorJson.name ? styles['input-error'] : styles['input-normal']} name='name' type='text' placeholder='Name' defaultValue={formData.name} onChange={handleChange} required></input>
+                    <input autoComplete='true' className={errorJson.name ? styles['input-error'] : styles['input-normal']} name='name' type='text' placeholder='Name' defaultValue={formData.name} onChange={handleChange} required></input>
                 </Tooltip>
                 <Tooltip className={errorJson.type && styles['error-tooltiip']} content={errorJson.type}>
                     <RadioGroup name='skillType' aria-label='skill-type' color='secondary' orientation="horizontal" value={formData.skillType} onValueChange={setSkillType} isRequired onChange={handleChange}>
@@ -129,7 +129,7 @@ export default function Skills() {
                         updateSkillIndex !== -1 &&
                         <button className='w-full' type="button" onClick={cancelUpdate}>Cancel</button>
                     }
-                    <button className='w-full' type="submit">{updateSkillIndex === -1 ? 'Save' : 'Update'}</button>
+                    <button className={`w-full ${styles['submit-button']}`} type="submit">{updateSkillIndex === -1 ? 'Save' : 'Update'}</button>
                 </fieldset>
             </form>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>

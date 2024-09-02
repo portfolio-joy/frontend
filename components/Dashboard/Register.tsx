@@ -78,7 +78,7 @@ const Register = () => {
                 <Tooltip className={passwordMismatch &&  styles['error-tooltip']} showArrow={true} content={passwordMismatch}>
                     <input name="confirmPassword" type="password" placeholder="Confirm Password *" minLength={8} maxLength={20} value={formData.confirmPassword} onChange={handleChange} className={passwordMismatch ? styles["input-error"] : styles["input-normal"]} required title='' />
                 </Tooltip>
-                <button type="submit" disabled={success && !isOpen}>Register</button>
+                <button type="submit" disabled={success && !isOpen} className={styles['submit-button']}>Register</button>
                 {errorJson.general &&
                     <p className={styles["error-message"]} >{errorJson.general}</p>
                 }

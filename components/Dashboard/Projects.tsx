@@ -54,7 +54,7 @@ export default function Projects() {
                 dispatch(updateProjectRequest({ data: formData as ProjectsType, projectId: (projects[updateProjectIndex].id), token: (userState.user as UserResponseType).token, image: image as File }))
             }
         }
-    }, [formData.user?.id])
+    }, [formData.user])
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
@@ -111,12 +111,8 @@ export default function Projects() {
             <Divider />
             <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
                 <h2>Projects Form</h2>
-                {
-                    updateProjectIndex !== -1 &&
-                    <label>project id : {projects[updateProjectIndex].id}</label>
-                }
                 <Tooltip className={errorJson.name && styles['error-tooltip']} content={errorJson.name}>
-                    <input className={styles['input-normal']} name="name" type="text" placeholder="Name" defaultValue={formData.name} onChange={handleChange} required></input>
+                    <input  autoComplete='true' className={errorJson.name ? styles['input-error'] : styles['input-normal']} name="name" type="text" placeholder="Name" defaultValue={formData.name} onChange={handleChange} required></input>
                 </Tooltip>
                 <Tooltip className={errorJson.briefDetail && styles['error-tooltiip']}>
                     <textarea className={errorJson.briefDetail ? styles['input-error'] : styles['input-normal']} name="briefDetail" rows={5} placeholder="Brief Detail" maxLength={300} value={formData.briefDetail} onChange={handleChange} required></textarea>
@@ -130,7 +126,7 @@ export default function Projects() {
                         updateProjectIndex !== -1 &&
                         <button className='w-full' type="button" onClick={cancelUpdate}>Cancel</button>
                     }
-                    <button className='w-full' type="submit">{updateProjectIndex === -1 ? 'Save' : 'Update'}</button>
+                    <button className={`w-full ${styles['submit-button']}`} type="submit">{updateProjectIndex === -1 ? 'Save' : 'Update'}</button>
                 </fieldset>
             </form>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>

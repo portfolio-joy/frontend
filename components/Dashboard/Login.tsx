@@ -58,7 +58,7 @@ export default function Login() {
                     }
                     <input name="loginId" className={styles['input-normal']} type="text" placeholder="Email Id or Username *" value={formData.loginId} onChange={handleChange} required title='' disabled={loading}/>
                     <input name="password" className={styles['input-normal']} type="password" placeholder="Password *" value={formData.password} onChange={handleChange} required title='' disabled={loading}/>
-                    <button type="submit" disabled={loading}>Login</button>
+                    <button type="submit" disabled={loading} className={styles['submit-button']}>Login</button>
                 </form>
             </div>
         </section>

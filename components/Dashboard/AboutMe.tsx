@@ -66,7 +66,7 @@ export default function AboutMe() {
         <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
             <h2>About Me Form</h2>
             <Tooltip className={errorJson?.name && styles['error-tooltip']} content={errorJson?.name}>
-                <input className={styles['input-normal']} name="name" type="text" placeholder="Name" defaultValue={formData?.name} onChange={handleChange} required></input>
+                <input autoComplete='true' className={styles['input-normal']} name="name" type="text" placeholder="Name" defaultValue={formData?.name} onChange={handleChange} required></input>
             </Tooltip>
             <Tooltip className={errorJson?.skills ? styles['error-tooltip'] : styles['info-tooltip']} content={errorJson?.skills ? errorJson?.skills : `Seperate the skills using comma`}>
                 <input className={errorJson?.skills ? styles['input-error'] : styles['input-normal']} name="skills" type="text" placeholder="Skills" maxLength={255} defaultValue={formData?.skills} onChange={handleChange} required></input>
@@ -78,7 +78,7 @@ export default function AboutMe() {
             <Tooltip className={errorJson?.profile && styles['error-tooltiip']}>
                 <label htmlFor='profile' className={`cursor-pointer ${errorJson?.profile ? styles['input-error'] : styles['input-normal']}`}>Your Profile : <i>{profile?.name}</i></label>
             </Tooltip>
-            <button type="submit"> {isDataPresent ? 'Update' : 'Save'} </button>
+            <button type="submit" className={styles['submit-button']}> {isDataPresent ? 'Update' : 'Save'} </button>
         </form>
     )
 }

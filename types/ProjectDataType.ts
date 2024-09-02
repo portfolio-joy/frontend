@@ -1,6 +1,8 @@
-export type ProjectDataType = {
+import { ImageType } from "./ImageType"
+
+export interface ProjectDataType{
     id : string,
     heading : string,
     description : string,
-    image : File
+    image : File | ImageType
 }
