@@ -3,5 +3,5 @@ import { UserPortfolioState } from "@/states/UserPortfolioState";
 export const userInitialState: UserPortfolioState = {
     success: false,
     user: null,
-    error: null
+    token: null,
 };

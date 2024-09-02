@@ -1,7 +1,7 @@
 import { LoginResponseData } from "@/types/LoginResponseData";
 import { LoginUserPayload } from "@/types/LoginUserPayload";
 import { call, CallEffect, put, PutEffect } from "redux-saga/effects";
-import { loginUserFailure, loginUserSuccess } from "../slices/loginSlice";
+import { loginUserSuccess } from "../slices/authSlice";
 import { CommonHeaders } from "@/util/headers";
 import ApiRequest from "@/util/api";
 import { setErrors } from "../slices/errorSlice";

@@ -5,8 +5,5 @@ export interface AboutMeType {
     name: string,
     description: string,
     skills: string,
-    profile: ImageType | File,
-    user: {
-        id: string
-    }
+    profile: ImageType | File
 }

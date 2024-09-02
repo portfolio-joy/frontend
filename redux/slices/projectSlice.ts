@@ -1,12 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { userInitialState } from "../rootInitialState";
-import { UserResponseType } from "@/types/UserResponseType";
 import { ProjectsType } from "@/types/ProjectsType";
 import { ProjectState } from "@/states/ProjectState";
 
 const initialState: ProjectState = {
     success: false,
-    data: []
+    data: null
 }
 
 const projectSlice = createSlice({
@@ -17,28 +15,28 @@ const projectSlice = createSlice({
             state.success = false;
             state.data = action.payload;
         },
-        addProjectRequest(state, action: PayloadAction<{ data: ProjectsType, token: string, image: File }>) {
+        addProjectRequest(state, action: PayloadAction<{ data: ProjectsType, token: string | null, image: File }>) {
             state.success = false;
         },
         addProjectSuccess(state, action: PayloadAction<ProjectsType>) {
             state.success = true;
-            state.data.push(action.payload);
+            state.data!.push(action.payload);
         },
-        updateProjectRequest(state, action: PayloadAction<{ data: ProjectsType, projectId: string, token: string, image: File }>) {
+        updateProjectRequest(state, action: PayloadAction<{ data: ProjectsType, projectId: string, token: string | null, image: File }>) {
             state.success = false;
         },
         updateProjectSuccess(state, action: PayloadAction<ProjectsType>) {
             state.success = true;
-            const skillIndex = state.data.findIndex((project) => project.id === action.payload.id);
-            state.data[skillIndex] = action.payload;
+            const skillIndex = state.data!.findIndex((project) => project.id === action.payload.id);
+            state.data![skillIndex] = action.payload;
         },
-        removeProjectRequest(state, action: PayloadAction<{ projectId: string, token: string }>) {
+        removeProjectRequest(state, action: PayloadAction<{ projectId: string, token: string | null }>) {
             state.success = false;
         },
         removeProjectSuccess(state, action: PayloadAction<{ id: string }>) {
             state.success = true;
-            const projectIndex = state.data.findIndex((project) => project.id === action.payload.id);
-            state.data.splice(projectIndex, 1);
+            const projectIndex = state.data!.findIndex((project) => project.id === action.payload.id);
+            state.data!.splice(projectIndex, 1);
         },
         projectFaliure(state) {
             state.success = false;

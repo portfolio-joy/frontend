@@ -4,29 +4,65 @@ import Link from 'next/link'
 import { ArrowDownIcon } from '../icons'
 import { useEffect, useState } from 'react';
 import { UserResponseType } from '@/types/UserResponseType';
-import { useAppSelector } from '@/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { logoutUserRequest } from '@/redux/slices/authSlice';
+import { useRouter } from 'next/router';
+import { LoginResponseData } from '@/types/LoginResponseData';
+import { Url } from 'url';
 
 export default function Header() {
-    const [userData,setUserData] = useState<UserResponseType | null>(null);
+    const initialUserData: LoginResponseData = {
+        id: null,
+        token: null,
+        firstName: null,
+        portfolioUrl: null
+    }
+    const [isDataPresent, setIsDataPresent] = useState(false);
     const userState = useAppSelector(state => state.user);
+    const [userData, setUserData] = useState<LoginResponseData>({
+        id: null,
+        token: null,
+        firstName: null,
+        portfolioUrl: null
+    });
+    const dispatch = useAppDispatch();
+    const router = useRouter();
     useEffect(() => {
-        if(userState.success) {
-            setUserData(userState.user as UserResponseType);
+        if (typeof window !== 'undefined') {
+            const storedUserData = localStorage.getItem('data');
+            if (storedUserData) {
+                const parsedUserData = JSON.parse(storedUserData) as LoginResponseData;
+                setUserData(parsedUserData);
+                if (parsedUserData.token && parsedUserData.firstName && parsedUserData.portfolioUrl) {
+                    setIsDataPresent(true);
+                }
+            } else {
+                setIsDataPresent(false);
+            }
         }
-    }, [userState.success]);
+    }, []);
+
+    const logoutUser = () => {
+        dispatch(logoutUserRequest({ token: userData.token ? userData.token : '' }));
+        localStorage.removeItem('data');
+        setUserData({ id: null, token: null, firstName: null, portfolioUrl: null });
+        setIsDataPresent(false);
+        router.push('/login');
+    }
+
     return (
         <header className={styles['header']}>
             <Link className={styles['header-link']} href='/'>Home</Link>
             {
-                userData ?
+                isDataPresent ?
                     <Dropdown>
                         <DropdownTrigger>
                             <Button className={styles['header-link']}> {userData.firstName}<ArrowDownIcon></ArrowDownIcon> </Button>
                         </DropdownTrigger>
                         <DropdownMenu className={styles['dropdown-menu']}>
-                            <DropdownItem key="dashboard" className={styles['header-link']}><Link href='/dashboard'> Dashboard </Link></DropdownItem>
-                            <DropdownItem key="logout" className={styles['header-link']}><Link href='/login'> Logout </Link></DropdownItem>
-                            <DropdownItem className={styles['header-link']}><Link target='_blank' href={userData.portfolioUrl}>Your Portfolio</Link></DropdownItem>
+                            <DropdownItem textValue='dashboard' key="dashboard" className={styles['header-link']}><Link href='/dashboard'> Dashboard </Link></DropdownItem>
+                            <DropdownItem textValue='logout' key="logout" className={styles['header-link']}><button onClick={logoutUser} className='bg-transparent'> Logout </button></DropdownItem>
+                            <DropdownItem textValue='portfolioUrl' className={styles['header-link']}><Link target='_blank' href={userData.portfolioUrl ? userData.portfolioUrl : ''}>Your Portfolio</Link></DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     :

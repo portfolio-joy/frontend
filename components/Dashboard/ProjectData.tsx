@@ -29,7 +29,7 @@ export default function ProjectData() {
 
     useEffect(() => {
         if (selectedProject.length) {
-            dispatch(fetchProjectDataRequest({projectName: selectedProject, token: userState.user? userState.user.token : ""}));
+            dispatch(fetchProjectDataRequest({projectName: selectedProject, token: userState.token}));
         }
     }, [selectedProject])
 

@@ -52,12 +52,11 @@ export default function AboutMe() {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setFormData((previousFormDataState) => ({ ...previousFormDataState, 'user': { 'id': (userState.user as UserResponseType).id } }));
         if (isDataPresent) {
-            dispatch(updateAboutMeRequest({ data: formData, aboutMeId: formData.id, token: (userState.user as UserResponseType).token, profile: profile as File }));
+            dispatch(updateAboutMeRequest({ data: formData, aboutMeId: formData.id, token: userState.token!, profile: profile as File }));
         }
         else {
-            dispatch(saveAboutMeRequest({ data: formData, token: (userState.user as UserResponseType).token, profile: profile as File }));
+            dispatch(saveAboutMeRequest({ data: formData, token: userState.token!, profile: profile as File }));
         }
     }
 

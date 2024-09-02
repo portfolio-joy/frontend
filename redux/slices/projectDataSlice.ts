@@ -11,7 +11,7 @@ const projectDataSlice = createSlice({
     name: 'projectData',
     initialState,
     reducers: {
-        fetchProjectDataRequest(state, action: PayloadAction<{username?: string, projectName: string, token?: string}>) {
+        fetchProjectDataRequest(state, action: PayloadAction<{username?: string, projectName: string, token: string | null}>) {
             state.success = false;
         },
         fetchProjectDataSuccess(state, action: PayloadAction<ProjectDataType[]>) {

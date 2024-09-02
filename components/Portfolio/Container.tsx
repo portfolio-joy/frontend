@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import PortfolioAboutMe from "./AboutMe";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { fetchPortfolioData } from "@/redux/slices/fetchUserSlice";
+import { fetchPortfolioData, fetchUserData } from "@/redux/slices/fetchUserSlice";
 import PortfolioTechnicalSkills from "./TechnicalSkills";
 import PortfolioSoftSkills from "./SoftSkills";
 import { useAppSelector } from "@/hooks/hooks";
@@ -24,8 +24,7 @@ export default function PortfolioContainer() {
     useEffect(() => {
         if (router.query.user && !portfolioState.success) {
             if (router.query.user.length === 1) {
-                console.log(router.query.user)
-                dispatch(fetchPortfolioData(router.query.user[0]));
+                dispatch(fetchUserData({ username: router.query.user[0], token: null }));
             } else if (router.query.user.length === 2) {
                 setProjectPage(true);
             } else {
@@ -50,9 +49,9 @@ export default function PortfolioContainer() {
                     :
                     <>
                         {portfolioState.user?.aboutMe && <PortfolioAboutMe />}
-                        {technicalSkills && technicalSkills?.length!==0 && <PortfolioTechnicalSkills />}
-                        {softSkills && softSkills?.length!==0 && <PortfolioSoftSkills />}
-                        {portfolioState && portfolioState.user?.projects?.length!==0 && <Projects />}
+                        {technicalSkills && technicalSkills?.length !== 0 && <PortfolioTechnicalSkills />}
+                        {softSkills && softSkills?.length !== 0 && <PortfolioSoftSkills />}
+                        {portfolioState && portfolioState.user?.projects?.length !== 0 && <Projects />}
                     </>
             }
         </main>
