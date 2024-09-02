@@ -21,10 +21,10 @@ const projectDataSlice = createSlice({
             state.data = action.payload;
             state.error = null;
         },
-        projectDataFaliure(state, action: PayloadAction<unknown>) {
+        projectDataFaliure(state, action: PayloadAction<string>) {
             state.success = false;
             state.data = [];
-            state.error = action.payload;
+            state.error = JSON.parse(action.payload);
         }
     }
 })

@@ -13,7 +13,7 @@ export default function Skills() {
     const userState = useAppSelector(state => state.user);
     const skillState = useAppSelector(state => state.skill);
     const [skills, setSkills] = useState<SkillsType[]>((skillState.user as UserResponseType)?.skills);
-    const errorJson = JSON.parse(skillState.error ? skillState.error : "{}");
+    const errorJson = skillState.error
     const [deleteSkillIndex, setDeleteSkillIndex] = useState<number>(-1);
     const [updateSkillIndex, setUpdateSkillIndex] = useState<number>(-1);
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
@@ -46,10 +46,10 @@ export default function Skills() {
         if (skillState.success) {
             toast.success("Data Updated Successfully");
             setSkills((skillState.user as UserResponseType)?.skills);
-        } else if (errorJson.general) {
-            toast.error(errorJson.general);
+        } else if (errorJson?.general) {
+            toast.error(errorJson?.general);
         }
-    }, [skillState.success, errorJson.general, skillState.user?.skills, skills])
+    }, [skillState.success, errorJson?.general, skillState.user?.skills, skills])
 
     useEffect(() => {
         if (formData.user?.id && formData.user?.id !== '') {
@@ -108,10 +108,10 @@ export default function Skills() {
             <Divider />
             <form className={styles['dashboard-form']} onSubmit={handleSubmit}>
                 <h2>Skill Form</h2>
-                <Tooltip className={errorJson.name && styles['error-tooltiip']} content={errorJson.name}>
-                    <input autoComplete='true' className={errorJson.name ? styles['input-error'] : styles['input-normal']} name='name' type='text' placeholder='Name' defaultValue={formData.name} onChange={handleChange} required></input>
+                <Tooltip className={errorJson?.name && styles['error-tooltiip']} content={errorJson?.name}>
+                    <input autoComplete='true' className={errorJson?.name ? styles['input-error'] : styles['input-normal']} name='name' type='text' placeholder='Name' defaultValue={formData.name} onChange={handleChange} required></input>
                 </Tooltip>
-                <Tooltip className={errorJson.type && styles['error-tooltiip']} content={errorJson.type}>
+                <Tooltip className={errorJson?.type && styles['error-tooltiip']} content={errorJson?.type}>
                     <RadioGroup name='skillType' aria-label='skill-type' color='secondary' orientation="horizontal" value={formData.skillType} onValueChange={setSkillType} isRequired onChange={handleChange}>
                         <Radio value="Technical">Technical</Radio>
                         <Radio value="Soft">Soft</Radio>
@@ -121,8 +121,8 @@ export default function Skills() {
                     skillType === 'Technical' &&
                     <Slider name='proficiency' aria-label='proficiency-slider' color='secondary' showTooltip={true} step={1} maxValue={100} minValue={1} defaultValue={formData.proficiency} className={`max-w-md p-5 ${styles['proficiency-slider']}`} value={Number(proficiencyValue)} onChange={setProficiencyValue} />
                 }
-                <Tooltip className={errorJson.description && styles['error-tooltip']} content={errorJson.description}>
-                    <textarea className={errorJson.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} value={formData.description} onChange={handleChange} required></textarea>
+                <Tooltip className={errorJson?.description && styles['error-tooltip']} content={errorJson?.description}>
+                    <textarea className={errorJson?.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} value={formData.description} onChange={handleChange} required></textarea>
                 </Tooltip>
                 <fieldset className='flex'>
                     {

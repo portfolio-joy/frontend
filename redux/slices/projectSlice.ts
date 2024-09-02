@@ -39,17 +39,17 @@ const projectSlice = createSlice({
             state.success = false;
             state.error = null;
         },
-        removeProjectSuccess(state, action: PayloadAction<string>) {
+        removeProjectSuccess(state, action: PayloadAction<{id: string}>) {
             state.success = true;
             if(state.user) {
-                const projectIndex = state.user.projects.findIndex((project) => project.id === action.payload);
+                const projectIndex = state.user.projects.findIndex((project) => project.id === action.payload.id);
                 state.user.projects.splice(projectIndex, 1);
             };
             state.error = null;
         },
         projectFaliure(state, action: PayloadAction<string>) {
             state.success = false;
-            state.error = action.payload;
+            state.error = JSON.parse(action.payload);
         }
     }
 })

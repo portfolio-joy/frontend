@@ -23,7 +23,7 @@ const fetchUserSlice = createSlice({
         fetchUserFailure(state, action: PayloadAction<string>) {
             state.success = false;
             state.user = null;
-            state.error = action.payload;
+            state.error = JSON.parse(action.payload);
         },
         fetchPortfolioData(state, action: PayloadAction<string>) {
             state.success = false;
@@ -37,7 +37,7 @@ const fetchUserSlice = createSlice({
         fetchPortfolioDataFailure(state, action: PayloadAction<string>) {
             state.success = false;
             state.user = null;
-            state.error = action.payload;
+            state.error = JSON.parse(action.payload);
         }
     }
 });

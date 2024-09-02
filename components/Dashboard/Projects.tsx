@@ -1,5 +1,5 @@
 import styles from '@/styles/Dashboard.module.css'
-import { Chip, Divider, image, Modal, ModalBody, ModalContent, ModalFooter, Tooltip, useDisclosure } from '@nextui-org/react'
+import { Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, Tooltip, useDisclosure } from '@nextui-org/react'
 import { CrossIcon } from '../icons'
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { useEffect, useState } from 'react';
@@ -18,7 +18,7 @@ export default function Projects() {
     const [updateProjectIndex, setUpdateProjectIndex] = useState<number>(-1);
     const [projects, setProjects] = useState<ProjectsType[]>((projectState.user as UserResponseType)?.projects)
     const [image, setImage] = useState<File | null>(null);
-    const errorJson = JSON.parse(projectState.error ? projectState.error : "{}");
+    const errorJson = projectState.error ? projectState.error : {};
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const dispatch = useAppDispatch();
     const initialFormData = {
@@ -112,7 +112,7 @@ export default function Projects() {
             <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
                 <h2>Projects Form</h2>
                 <Tooltip className={errorJson.name && styles['error-tooltip']} content={errorJson.name}>
-                    <input  autoComplete='true' className={errorJson.name ? styles['input-error'] : styles['input-normal']} name="name" type="text" placeholder="Name" defaultValue={formData.name} onChange={handleChange} required></input>
+                    <input  autoComplete='true' className={errorJson.name ? styles['input-error'] : styles['input-normal']} name="name" type="text" placeholder="Name" value={formData.name} onChange={handleChange} required></input>
                 </Tooltip>
                 <Tooltip className={errorJson.briefDetail && styles['error-tooltiip']}>
                     <textarea className={errorJson.briefDetail ? styles['input-error'] : styles['input-normal']} name="briefDetail" rows={5} placeholder="Brief Detail" maxLength={300} value={formData.briefDetail} onChange={handleChange} required></textarea>

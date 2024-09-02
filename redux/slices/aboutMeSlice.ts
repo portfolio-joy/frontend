@@ -10,30 +10,21 @@ const aboutMeSlice = createSlice({
             state.success = false;
             state.error = null;
         },
-        saveAboutMeSuccess(state, action: PayloadAction<AboutMeType>) {
-            state.success = true;
-            if (state.user) state.user.aboutMe = action.payload;
-            state.error = null;
-        },
-        saveAboutMeFaliure(state, action: PayloadAction<string>) {
-            state.success = false;
-            state.error = action.payload;
-        },
         updateAboutMeRequest(state, action: PayloadAction<{ data: AboutMeType, aboutMeId: string, token: string, profile: File }>) {
             state.success = false;
             state.error = null;
         },
-        updateAboutMeSuccess(state, action: PayloadAction<AboutMeType>) {
+        aboutMeSuccess(state, action: PayloadAction<AboutMeType>) {
             state.success = true;
             if (state.user) state.user.aboutMe = action.payload;
             state.error = null;
         },
-        updateAboutMeFaliure(state, action: PayloadAction<string>) {
+        aboutMeFaliure(state, action: PayloadAction<string>) {
             state.success = false;
-            state.error = action.payload;
+            state.error = JSON.parse(action.payload);
         }
     }
-})
+});
 
-export const { saveAboutMeRequest, saveAboutMeSuccess, saveAboutMeFaliure, updateAboutMeRequest, updateAboutMeSuccess, updateAboutMeFaliure } = aboutMeSlice.actions;
+export const { saveAboutMeRequest, updateAboutMeRequest, aboutMeSuccess, aboutMeFaliure } = aboutMeSlice.actions;
 export default aboutMeSlice.reducer;

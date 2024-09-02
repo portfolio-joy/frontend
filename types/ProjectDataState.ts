@@ -3,5 +3,5 @@ import { ProjectDataType } from "./ProjectDataType";
 export type ProjectDataState = {
     success: boolean;
     data: ProjectDataType[];
-    error: any;
+    error: Record<string,string> | null;
 }
