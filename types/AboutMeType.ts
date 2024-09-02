@@ -1,6 +1,6 @@
 import { ImageType } from "./ImageType"
 
-export interface AboutMeType extends Response {
+export interface AboutMeType {
     id: string,
     name: string,
     description: string,

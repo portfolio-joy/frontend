@@ -55,6 +55,7 @@ export default function DashboardContainer() {
     const dataJson: LoginResponseData = JSON.parse(localStorageData ? localStorageData : '{}');
     if (!userState.error && !userState.success) dispatch(fetchUserData(dataJson));
     if (userState.error) {
+      console.log(userState.error);
       toast.error("Session Expired");
       router.push('/login');
     }

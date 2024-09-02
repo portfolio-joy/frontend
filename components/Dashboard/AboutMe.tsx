@@ -19,11 +19,7 @@ export default function AboutMe() {
     const [isDataPresent, setIsDataPresent] = useState<boolean>(false);
     const [profile, setProfile] = useState<File | null>(null);
     const dispatch = useAppDispatch();
-    try {
-        var errorJson = JSON.parse(userState.error ? userState.error : "{}");
-    } catch (error : unknown) {
-        console.log(error)
-    }
+    var errorJson = aboutMeState.error;
     useEffect(() => {
         if (userState.success) {
             setProfile(base64ToFile((userState.user as UserResponseType)?.aboutMe?.profile as ImageType))

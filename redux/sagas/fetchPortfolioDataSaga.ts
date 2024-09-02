@@ -1,22 +1,16 @@
 import { UserResponseType } from "@/types/UserResponseType";
 import { CallEffect, PutEffect, put, call } from "redux-saga/effects";
 import { fetchPortfolioDataFailure, fetchPortfolioDataSuccess } from "../slices/fetchUserSlice";
+import { CommonHeaders } from "@/util/headers";
+import ApiRequest from "@/util/api";
 
 export default function* fetchPortfolioDataSaga(action: { type: string; payload: string }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, UserResponseType> {
+    const requestData = {
+        method: 'GET',
+        headers: CommonHeaders(),
+    }
     try {
-        const response: Response = yield call(fetch, `http://localhost:8080/user/portfolio/${action.payload}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': 'http://localhost:3000',
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error((yield response.text()) as unknown as string);
-        }
-
-        const responseJson: UserResponseType = yield call([response, 'json']);
+        const responseJson = yield call(ApiRequest, `/user/portfolio/${action.payload}`,requestData);
         yield put(fetchPortfolioDataSuccess(responseJson));
     } catch (error: unknown) {
         yield put(fetchPortfolioDataFailure((error as Error).message));
