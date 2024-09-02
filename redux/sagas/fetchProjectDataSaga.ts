@@ -3,6 +3,7 @@ import { fetchProjectDataSuccess, projectDataFaliure } from "../slices/projectDa
 import { ProjectDataType } from "@/types/ProjectDataType";
 import ApiRequest from "@/util/api";
 import { CommonHeaders } from "@/util/headers";
+import { setErrors } from "../slices/errorSlice";
 
 export default function* fetchProjectDataSaga(action: { type: string; payload: { username?: string, projectName: string, token?: string } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, ProjectDataType[]> {
     const requestData: RequestInit = {
@@ -20,6 +21,6 @@ export default function* fetchProjectDataSaga(action: { type: string; payload: {
         )
         yield put(fetchProjectDataSuccess(responseJson));
     } catch (error: unknown) {
-        yield put(projectDataFaliure((error as Error).message));
+        yield put(setErrors((error as Error).message));
     }
 }

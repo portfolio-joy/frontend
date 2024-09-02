@@ -8,7 +8,7 @@ import { useAppSelector } from '@/hooks/hooks';
 
 export default function Header() {
     const [userData,setUserData] = useState<UserResponseType | null>(null);
-    const userState = useAppSelector((state) => state.user);
+    const userState = useAppSelector(state => state.user);
     useEffect(() => {
         if(userState.success) {
             setUserData(userState.user as UserResponseType);

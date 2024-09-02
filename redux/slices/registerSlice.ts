@@ -1,10 +1,9 @@
 import { RegisterUserPayload } from '@/types/RegisterUserPayload';
-import { RegisterUserState } from '@/types/RegisterUserState';
+import { RegisterUserState } from '@/states/RegisterUserState';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: RegisterUserState = {
     success: false,
-    error: null,
 };
 
 const registerSlice = createSlice({
@@ -13,15 +12,12 @@ const registerSlice = createSlice({
     reducers: {
         registerUserRequest(state,action : PayloadAction<RegisterUserPayload>) {
             state.success = false;
-            state.error = null;
         },
         registerUserSuccess(state){
             state.success = true;
-            state.error = null;
         },
-        registerUserFailure(state, action: PayloadAction<string>) {
+        registerUserFailure(state) {
             state.success = false;
-            state.error = JSON.parse(action.payload);
         },
     },
 });

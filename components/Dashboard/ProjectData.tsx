@@ -7,13 +7,13 @@ import { base64ToFile } from "@/util/base64ToFile";
 import { useEffect, useState } from "react";
 import { ProjectDataType } from '@/types/ProjectDataType';
 import { toast } from 'react-toastify';
-import { fetchProjectDataRequest } from '@/redux/slices/projectDataSlice';
+import { fetchProjectDataRequest, projectDataFaliure } from '@/redux/slices/projectDataSlice';
 
 export default function ProjectData() {
 
     const userState = useAppSelector(state => state.user);
     const projectDataState = useAppSelector(state => state.projectData);
-    const errorJson = projectDataState.error;
+    const error = useAppSelector(state => state.error);
     const [selectedProject, setSelectedProject] = useState<string>("");
     const [deleteProjectIndex, setDeleteProjectIndex] = useState<number>(-1);
     const [updateProjectIndex, setUpdateProjectIndex] = useState<number>(-1);
@@ -38,10 +38,11 @@ export default function ProjectData() {
         if(projectDataState.success) {
             setProjectData(projectDataState.data);
         }
-        if(projectDataState.error?.general) {
-            toast.error(projectDataState.error?.general);
+        if(Object.keys(error).length) {
+            dispatch(projectDataFaliure());
+            toast.error(error.general);
         }
-    },[projectDataState.success,projectDataState.error])
+    },[projectDataState.success,error])
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = event.target;
@@ -104,15 +105,15 @@ export default function ProjectData() {
                 <Select id='project' name='project' aria-label='Your Projects' items={projects ? projects : []} placeholder="Select your project" className={'p-5'} variant='bordered' onChange={handleChange}>
                     {(project) => <SelectItem key={project.name}>{project.name}</SelectItem>}
                 </Select>
-                <Tooltip className={errorJson?.heading && styles['error-tooltip']} content={errorJson?.heading}>
-                    <input className={errorJson?.heading ? styles['input-error'] : styles['input-normal']} name="heading" type="text" placeholder="Heading" defaultValue={formData.heading} onChange={handleChange} required></input>
+                <Tooltip className={error.heading && styles['error-tooltip']} content={error.heading}>
+                    <input className={error.heading ? styles['input-error'] : styles['input-normal']} name="heading" type="text" placeholder="Heading" defaultValue={formData.heading} onChange={handleChange} required></input>
                 </Tooltip>
-                <Tooltip className={errorJson?.description && styles['error-tooltiip']}>
-                    <textarea className={errorJson?.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={300} value={formData.description} onChange={handleChange} required></textarea>
+                <Tooltip className={error.description && styles['error-tooltiip']}>
+                    <textarea className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={300} value={formData.description} onChange={handleChange} required></textarea>
                 </Tooltip>
                 <input id='image' type="file" name="image" accept="image/*" onChange={handleFileChange} hidden />
-                <Tooltip className={errorJson?.image && styles['error-tooltiip']}>
-                    <label htmlFor='image' className={`cursor-pointer ${errorJson?.image ? styles['input-error'] : styles['input-normal']}`}>Project Data Image : <i>{image?.name}</i></label>
+                <Tooltip className={error.image && styles['error-tooltiip']}>
+                    <label htmlFor='image' className={`cursor-pointer ${error.image ? styles['input-error'] : styles['input-normal']}`}>Project Data Image : <i>{image?.name}</i></label>
                 </Tooltip>
                 <fieldset className='flex'>
                     {

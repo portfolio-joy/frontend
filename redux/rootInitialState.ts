@@ -1,4 +1,4 @@
-import { UserPortfolioState } from "@/types/UserPortfolioState";
+import { UserPortfolioState } from "@/states/UserPortfolioState";
 
 export const userInitialState: UserPortfolioState = {
     success: false,

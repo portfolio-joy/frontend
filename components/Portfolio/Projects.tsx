@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import { ImageType } from "@/types/ImageType";
 import { useRouter } from "next/router";
 export default function Projects() {
-    const portfolioState = useAppSelector((state) => state.user);
+    const portfolioState = useAppSelector(state => state.user);
     const [projects, setProjects] = useState<ProjectsType[]>([]);
     const router = useRouter();
     useEffect(() => {

@@ -10,11 +10,12 @@ import Loader from './Loader';
 import { setLoading } from '@/redux/slices/loadingSlice';
 import { useAppSelector, useAppDispatch } from '@/hooks/hooks';
 import { toast } from 'react-toastify';
+import { clearAllErrors } from '@/redux/slices/errorSlice';
 
 export default function Login() {
-    const loginState = useAppSelector((state) => state.login);
-    const { loading } = useAppSelector((state ) => state.loading)
-    const errorJson = loginState.error;
+    const loginState = useAppSelector(state => state.login);
+    const error = useAppSelector(state => state.error);
+    const { loading } = useAppSelector(state => state.loading)
     const dispatch = useAppDispatch();
     const router = useRouter();
     const [formData, setFormData] = useState<LoginUserPayload>({
@@ -22,17 +23,22 @@ export default function Login() {
         password: ''
     })
 
+    useEffect(()=>{
+        localStorage.clear();
+    },[]);
+
     useEffect(() => {
-        if (loginState.success&& loginState.data) {
+        if (loginState.success && loginState.data) {
+            dispatch(clearAllErrors());
             const responseData = loginState.data as LoginResponseData;
-            localStorage.setItem('data',JSON.stringify(responseData));
+            localStorage.setItem('data', JSON.stringify(responseData));
             router.push('/dashboard');
         }
-        if(errorJson?.general) {
+        if (Object.keys(error).length) {
             dispatch(setLoading(false));
-            toast.error(errorJson.general);
+            toast.error(error.general);
         }
-    },[loginState.success,errorJson])
+    }, [loginState.success, error])
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -45,7 +51,7 @@ export default function Login() {
         setFormData((previousFormDataState) => ({ ...previousFormDataState, [name]: value }));
     }
     return (
-        <section className={`${styles['login-page']} ${loading && styles['overlay']}` }>
+        <section className={`${styles['login-page']} ${loading && styles['overlay']}`}>
             {loading && (
                 <Loader />
             )}
@@ -55,8 +61,8 @@ export default function Login() {
             <div className={styles['login-page-form']}>
                 <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
                     <h2>Welcome Back!!</h2>
-                    <input name="loginId" className={styles['input-normal']} type="text" placeholder="Email Id or Username *" value={formData.loginId} onChange={handleChange} required title='' disabled={loading}/>
-                    <input name="password" className={styles['input-normal']} type="password" placeholder="Password *" value={formData.password} onChange={handleChange} required title='' disabled={loading}/>
+                    <input name="loginId" className={styles['input-normal']} type="text" placeholder="Email Id or Username *" value={formData.loginId} onChange={handleChange} required title='' disabled={loading} />
+                    <input name="password" className={styles['input-normal']} type="password" placeholder="Password *" value={formData.password} onChange={handleChange} required title='' disabled={loading} />
                     <button type="submit" disabled={loading} className={styles['submit-button']}>Login</button>
                 </form>
             </div>
