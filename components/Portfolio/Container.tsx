@@ -53,7 +53,7 @@ export default function PortfolioContainer() {
                         {technicalSkills && technicalSkills?.length !== 0 && <PortfolioTechnicalSkills />}
                         {softSkills && softSkills?.length !== 0 && <PortfolioSoftSkills />}
                         {portfolioState && portfolioState.user?.projects?.length !== 0 && <PortfolioProjects />}
-                        <PortfolioContact />
+                        {portfolioState && portfolioState.user?.contact && <PortfolioContact />}
                     </>
             }
         </main>

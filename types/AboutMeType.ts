@@ -5,5 +5,5 @@ export interface AboutMeType {
     name: string,
     description: string,
     skills: string,
-    image: ImageType | File
+    image: ImageType | File | null
 }
