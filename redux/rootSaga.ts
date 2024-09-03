@@ -15,8 +15,6 @@ import logoutUserSaga from './sagas/logoutUserSaga';
 import addProjectDataSaga from './sagas/addProjectDataSaga';
 import updateProjectDataSaga from './sagas/updateProjectDataSaga';
 import removeProjectDataSaga from './sagas/removeProjectDataSaga';
-import saveContactSaga from './sagas/saveContactSaga';
-import updateContactSaga from './sagas/updateContactSaga';
 
 
 function* rootSaga() {
@@ -36,8 +34,6 @@ function* rootSaga() {
     yield takeEvery('projectData/addProjectDataRequest',addProjectDataSaga);
     yield takeEvery('projectData/updateProjectDataRequest',updateProjectDataSaga);
     yield takeEvery('projectData/removeProjectDataRequest',removeProjectDataSaga);
-    yield takeEvery('contact/saveContactRequest', saveContactSaga);
-    yield takeEvery('contact/updateContactRequest', updateContactSaga);
 }
 
 export default rootSaga;
