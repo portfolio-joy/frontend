@@ -1,24 +1,24 @@
 import { LoginResponseData } from "@/types/LoginResponseData";
 import { LoginUserPayload } from "@/types/LoginUserPayload";
 import { call, CallEffect, put, PutEffect } from "redux-saga/effects";
-import { loginUserFailure, loginUserSuccess } from "../slices/loginSlice";
+import { loginUserSuccess } from "../slices/authSlice";
+import { CommonHeaders } from "@/util/headers";
+import ApiRequest from "@/util/api";
+import { setErrors } from "../slices/errorSlice";
 
-export default function* loginUserSaga(action: { type: string; payload: LoginUserPayload }): Generator<CallEffect<Response> | PutEffect<{ payload: LoginResponseData | string; type: "login/loginUserSuccess" | "login/loginUserFailure"; }> | Promise<string>, void, LoginResponseData> {
+export default function* loginUserSaga(action: { type: string; payload: LoginUserPayload }): Generator<CallEffect<Response> | PutEffect<{ type: string; payload: LoginResponseData | string; }> | Promise<string>, void, LoginResponseData> {
+    const requestData: RequestInit = {
+        method: 'POST',
+        headers: {
+            ...CommonHeaders(),
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(action.payload),
+    }
     try {
-        const response: LoginResponseData | null = yield call(fetch, 'http://localhost:8080/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': 'http://localhost:3000',
-            },
-            body: JSON.stringify(action.payload),
-        });
-        if (!response.ok) {
-            throw new Error((yield response.text()) as unknown as string);
-        }
-        const responseJson = yield response.json();
+        const responseJson = yield call(ApiRequest, '/auth/login', requestData);
         yield put(loginUserSuccess(responseJson));
     } catch (error: unknown) {
-        yield put(loginUserFailure((error as Error).message));
+        yield put(setErrors((error as Error).message));
     }
 }

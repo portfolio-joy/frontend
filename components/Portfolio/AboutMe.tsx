@@ -33,7 +33,7 @@ export default function PortfolioAboutMe() {
                 </div>
             </div>
             <div className={styles['user-image']}>
-                <img src={`data:${(aboutMe?.profile as ImageType)?.type};base64,${(aboutMe?.profile as ImageType)?.imageData}`}></img>
+                <img src={`data:${(aboutMe?.image as ImageType)?.type};base64,${(aboutMe?.image as ImageType)?.imageData}`}></img>
             </div>
         </section>
     )

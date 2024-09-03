@@ -1,11 +1,11 @@
-import { ProjectsType } from "@/types/ProjectsType";
 import { call, CallEffect, put, PutEffect } from "redux-saga/effects";
-import { addProjectSuccess } from "../slices/projectSlice";
 import { CommonHeaders } from "@/util/headers";
 import ApiRequest from "@/util/api";
 import { setErrors } from "../slices/errorSlice";
+import { ProjectDataType } from "@/types/ProjectDataType";
+import { addProjectDataSuccess } from "../slices/projectDataSlice";
 
-export default function* addProjectSaga(action: { type: string; payload: { data: ProjectsType, token: string, image: File } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, ProjectsType> {
+export default function* addProjectDataSaga(action: { type: string; payload: { data: ProjectDataType, token: string, image: File } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, ProjectDataType> {
     const formData = new FormData();
     formData.append('projectData', JSON.stringify(action.payload.data));
     formData.append('image', action.payload.image);
@@ -18,8 +18,8 @@ export default function* addProjectSaga(action: { type: string; payload: { data:
         body: formData,
     }
     try {
-        const responseJson = yield call(ApiRequest,'/user/project', requestData);
-        yield put(addProjectSuccess(responseJson));
+        const responseJson = yield call(ApiRequest,'/user/projectData', requestData);
+        yield put(addProjectDataSuccess(responseJson));
     } catch (error: unknown) {
         yield put(setErrors((error as Error).message));
     }

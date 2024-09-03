@@ -2,9 +2,8 @@ import styles from '@/styles/Dashboard.module.css'
 import { Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, Radio, RadioGroup, Slider, Tooltip, useDisclosure } from '@nextui-org/react'
 import { CrossIcon } from '../icons'
 import { useEffect, useState } from 'react';
-import { UserResponseType } from '@/types/UserResponseType';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { removeSkillRequest, addSkillRequest, updateSkillRequest, updateSkillState } from '@/redux/slices/skillSlice';
+import { removeSkillRequest, addSkillRequest, updateSkillRequest, updateSkillState, skillFaliure } from '@/redux/slices/skillSlice';
 import { SkillsType } from '@/types/SkillsType';
 import { toast } from 'react-toastify';
 
@@ -12,19 +11,15 @@ export default function Skills() {
 
     const userState = useAppSelector(state => state.user);
     const skillState = useAppSelector(state => state.skill);
-    const [skills, setSkills] = useState<SkillsType[]>((skillState.user as UserResponseType)?.skills);
-    const errorJson = JSON.parse(skillState.error ? skillState.error : "{}");
-    const [deleteSkillIndex, setDeleteSkillIndex] = useState<number>(-1);
+    const error = useAppSelector(state => state.error);
+    const [removeSkillIndex, setRemoveSkillIndex] = useState<number>(-1);
     const [updateSkillIndex, setUpdateSkillIndex] = useState<number>(-1);
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const initialFormData = {
         name: "",
         skillType: "",
         proficiency: 1,
-        description: "",
-        user: {
-            id: ""
-        }
+        description: ""
     };
     const [formData, setFormData] = useState(initialFormData);
     const [skillType, setSkillType] = useState<string>("");
@@ -32,9 +27,8 @@ export default function Skills() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (userState.success && skillState.user?.projects?.length === skills?.length) {
-            dispatch(updateSkillState(userState.user));
-            setSkills(userState.user?.skills as SkillsType[]);
+        if (userState.success && !skillState.data) {
+            dispatch(updateSkillState(userState?.user?.skills ? userState.user.skills : []));
         }
     }, [])
 
@@ -45,21 +39,11 @@ export default function Skills() {
     useEffect(() => {
         if (skillState.success) {
             toast.success("Data Updated Successfully");
-            setSkills((skillState.user as UserResponseType)?.skills);
-        } else if (errorJson.general) {
-            toast.error(errorJson.general);
+        } else if (Object.keys(error).length) {
+            dispatch(skillFaliure());
+            toast.error(error.general);
         }
-    }, [skillState.success, errorJson.general, skillState.user?.skills, skills])
-
-    useEffect(() => {
-        if (formData.user?.id && formData.user?.id !== '') {
-            if (updateSkillIndex === -1) {
-                dispatch(addSkillRequest({ data: formData as SkillsType, token: (userState.user as UserResponseType).token }))
-            } else {
-                dispatch(updateSkillRequest({ data: formData as SkillsType, skillId: (skills[updateSkillIndex].id), token: (userState.user as UserResponseType).token }))
-            }
-        }
-    }, [formData.user?.id])
+    }, [skillState.success, error, skillState.data])
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
@@ -68,21 +52,26 @@ export default function Skills() {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setFormData((previousFormDataState) => ({ ...previousFormDataState, 'user': { 'id': (userState.user as UserResponseType).id } }));
+        if (updateSkillIndex === -1) {
+            dispatch(addSkillRequest({ data: formData as SkillsType, token: userState.token }))
+        } else {
+            dispatch(updateSkillRequest({ data: formData as SkillsType, skillId: (skillState.data![removeSkillIndex].id), token: userState.token }))
+        }
     }
-    const handleDelete = (index: number) => {
-        setDeleteSkillIndex(index);
+
+    const handleRemove = (index: number) => {
+        setRemoveSkillIndex(index);
         onOpen();
     }
     const removeSkill = () => {
-        dispatch(removeSkillRequest({ skillId: (skills[deleteSkillIndex].id), token: (userState.user as UserResponseType).token }));
+        dispatch(removeSkillRequest({ skillId: (skillState.data![removeSkillIndex].id), token: userState.token }));
         onClose();
     }
 
     const updateForm = (index: number) => {
-        setFormData(skills[index]);
-        setSkillType(skills[index].skillType);
-        setProficiencyValue(skills[index].proficiency);
+        setFormData(skillState.data![index]);
+        setSkillType(skillState.data![index].skillType);
+        setProficiencyValue(skillState.data![index].proficiency);
         setUpdateSkillIndex(index);
     }
 
@@ -97,10 +86,10 @@ export default function Skills() {
         <>
             <div className={styles['data-chips']}>
                 {
-                    skills?.map((skill, index) =>
+                    skillState.data?.map((skill, index) =>
                         <Chip key={index} className={`mb-2 ${styles['skill-chip']}`}>
                             <span className='select-none' onDoubleClick={() => updateForm(index)}>{skill.name}</span>
-                            <button onClick={() => handleDelete(index)}><CrossIcon /></button>
+                            <button onClick={() => handleRemove(index)}><CrossIcon /></button>
                         </Chip>
                     )
                 }
@@ -108,10 +97,10 @@ export default function Skills() {
             <Divider />
             <form className={styles['dashboard-form']} onSubmit={handleSubmit}>
                 <h2>Skill Form</h2>
-                <Tooltip className={errorJson.name && styles['error-tooltiip']} content={errorJson.name}>
-                    <input autoComplete='true' className={errorJson.name ? styles['input-error'] : styles['input-normal']} name='name' type='text' placeholder='Name' defaultValue={formData.name} onChange={handleChange} required></input>
+                <Tooltip className={error.name && styles['error-tooltiip']} content={error.name}>
+                    <input autoComplete='true' className={error.name ? styles['input-error'] : styles['input-normal']} name='name' type='text' placeholder='Name' defaultValue={formData.name} onChange={handleChange} required></input>
                 </Tooltip>
-                <Tooltip className={errorJson.type && styles['error-tooltiip']} content={errorJson.type}>
+                <Tooltip className={error.type && styles['error-tooltiip']} content={error.type}>
                     <RadioGroup name='skillType' aria-label='skill-type' color='secondary' orientation="horizontal" value={formData.skillType} onValueChange={setSkillType} isRequired onChange={handleChange}>
                         <Radio value="Technical">Technical</Radio>
                         <Radio value="Soft">Soft</Radio>
@@ -121,8 +110,8 @@ export default function Skills() {
                     skillType === 'Technical' &&
                     <Slider name='proficiency' aria-label='proficiency-slider' color='secondary' showTooltip={true} step={1} maxValue={100} minValue={1} defaultValue={formData.proficiency} className={`max-w-md p-5 ${styles['proficiency-slider']}`} value={Number(proficiencyValue)} onChange={setProficiencyValue} />
                 }
-                <Tooltip className={errorJson.description && styles['error-tooltip']} content={errorJson.description}>
-                    <textarea className={errorJson.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} value={formData.description} onChange={handleChange} required></textarea>
+                <Tooltip className={error.description && styles['error-tooltip']} content={error.description}>
+                    <textarea className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} value={formData.description} onChange={handleChange} required></textarea>
                 </Tooltip>
                 <fieldset className='flex'>
                     {
