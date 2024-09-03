@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { aboutMeFaliure, saveAboutMeRequest } from '@/redux/slices/aboutMeSlice';
 import { updateAboutMeRequest } from '@/redux/slices/aboutMeSlice';
 import { clearAllErrors } from '@/redux/slices/errorSlice';
+import { updateUserData } from '@/redux/slices/fetchUserSlice';
 import styles from '@/styles/Dashboard.module.css'
 import { AboutMeType } from '@/types/AboutMeType'
 import { ImageType } from '@/types/ImageType';
@@ -33,6 +34,7 @@ export default function AboutMe() {
     useEffect(() => {
         if (aboutMeState.success) {
             toast.success('Data updated Successfully');
+            updateUserData(aboutMeState.user);
         } else if (Object.keys(error).length) {
             dispatch(aboutMeFaliure())
             toast.error(error.general);

@@ -5,7 +5,7 @@ import { CommonHeaders } from "@/util/headers";
 import ApiRequest from "@/util/api";
 import { setErrors } from "../slices/errorSlice";
 
-export default function* saveAboutMeSaga(action: { type: string; payload: { data: AboutMeType, userId: string, token: string, image: File } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, AboutMeType> {
+export default function* saveAboutMeSaga(action: { type: string; payload: { data: AboutMeType, token: string, image: File } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, AboutMeType> {
     const formData = new FormData();
     formData.append('aboutMeData', JSON.stringify(action.payload.data));
     formData.append('image', action.payload.image);
