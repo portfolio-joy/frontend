@@ -8,7 +8,7 @@ import { useAppSelector } from "@/hooks/hooks";
 
 export default function PortfolioAboutMe() {
 
-    const portfolioState = useAppSelector((state: RootState) => state.user);
+    const portfolioState = useAppSelector(state => state.user);
     const [aboutMe, setAboutMe] = useState<AboutMeType | null | undefined>(null);
     const [skillsArray, setSkillsArray] = useState<string[]>();
     useEffect(() => {
