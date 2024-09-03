@@ -1,44 +1,15 @@
-import { useAppDispatch, useAppSelector } from '@/hooks/hooks'
-import { contactFaliure, saveContactRequest, updateContactRequest } from '@/redux/slices/contactSlice'
-import { clearAllErrors } from '@/redux/slices/errorSlice'
-import { updateUserData } from '@/redux/slices/fetchUserSlice'
+import { useAppSelector } from '@/hooks/hooks'
 import styles from '@/styles/Dashboard.module.css'
 import { ContactType } from '@/types/ContactType'
 import { UserResponseType } from '@/types/UserResponseType'
 import { Tooltip } from '@nextui-org/react'
-import { useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
+import { useState } from 'react'
 
 export default function Contact() {
     const userState = useAppSelector(state => state.user);
-    const contactState = useAppSelector(state => state.contact);
     const error = useAppSelector(state => state.error);
-    const dispatch = useAppDispatch();
-    const [formData, setFormData] = useState<ContactType>({
-        id: '',
-        emailId: '',
-        address: '',
-        phoneNo: ''
-    })
+    const [formData, setFormData] = useState<ContactType>((userState.user as UserResponseType)?.contact)
     const [isDataPresent, setIsDataPresent] = useState<boolean>(false);
-
-    useEffect(() => {
-        dispatch(clearAllErrors());
-        if (userState.success && userState.user?.contact) {
-            setFormData((userState.user as UserResponseType).contact)
-            setIsDataPresent(true);
-        }
-    }, [userState.success])
-
-    useEffect(() => {
-        if (contactState.success) {
-            toast.success('Data updated Successfully');
-            updateUserData(contactState.user);
-        } else if (Object.keys(error).length) {
-            dispatch(contactFaliure())
-            toast.error(error.general);
-        }
-    }, [contactState.success, error]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
@@ -47,12 +18,7 @@ export default function Contact() {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (isDataPresent) {
-            dispatch(updateContactRequest({ data: formData, contactId: formData.id, token: userState.token! }));
-        }
-        else {
-            dispatch(saveContactRequest({ data: formData, token: userState.token! }));
-        }
+        console.log(formData);
     }
     return (
         <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
@@ -60,7 +26,7 @@ export default function Contact() {
             <Tooltip className={error.emailId && styles['error-tooltip']} content={error.emailId}>
                 <input autoComplete='true' className={error.emailId ? styles['input-error'] : styles['input-normal']} name="emailId" type="email" placeholder="Email Id" defaultValue={formData?.emailId} onChange={handleChange} required></input>
             </Tooltip>
-            <Tooltip className={error.address && styles['error-tooltip']} content={error.address}>
+            <Tooltip className={error.address && styles['error-tooltiip']} content={error.address}>
                 <textarea className={error.address ? styles['input-error'] : styles['input-normal']} name="address" rows={5} placeholder="Address" maxLength={255} defaultValue={formData?.address} onChange={handleChange} required></textarea>
             </Tooltip>
             <Tooltip className={error.phoneNo && styles['error-tooltip']} content={error.phoneNo}>
