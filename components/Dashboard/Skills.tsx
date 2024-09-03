@@ -12,7 +12,7 @@ export default function Skills() {
     const userState = useAppSelector(state => state.user);
     const skillState = useAppSelector(state => state.skill);
     const error = useAppSelector(state => state.error);
-    const [deleteSkillIndex, setDeleteSkillIndex] = useState<number>(-1);
+    const [removeSkillIndex, setRemoveSkillIndex] = useState<number>(-1);
     const [updateSkillIndex, setUpdateSkillIndex] = useState<number>(-1);
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const initialFormData = {
@@ -55,16 +55,16 @@ export default function Skills() {
         if (updateSkillIndex === -1) {
             dispatch(addSkillRequest({ data: formData as SkillsType, token: userState.token }))
         } else {
-            dispatch(updateSkillRequest({ data: formData as SkillsType, skillId: (skillState.data![deleteSkillIndex].id), token: userState.token }))
+            dispatch(updateSkillRequest({ data: formData as SkillsType, skillId: (skillState.data![removeSkillIndex].id), token: userState.token }))
         }
     }
 
-    const handleDelete = (index: number) => {
-        setDeleteSkillIndex(index);
+    const handleRemove = (index: number) => {
+        setRemoveSkillIndex(index);
         onOpen();
     }
     const removeSkill = () => {
-        dispatch(removeSkillRequest({ skillId: (skillState.data![deleteSkillIndex].id), token: userState.token }));
+        dispatch(removeSkillRequest({ skillId: (skillState.data![removeSkillIndex].id), token: userState.token }));
         onClose();
     }
 
@@ -89,7 +89,7 @@ export default function Skills() {
                     skillState.data?.map((skill, index) =>
                         <Chip key={index} className={`mb-2 ${styles['skill-chip']}`}>
                             <span className='select-none' onDoubleClick={() => updateForm(index)}>{skill.name}</span>
-                            <button onClick={() => handleDelete(index)}><CrossIcon /></button>
+                            <button onClick={() => handleRemove(index)}><CrossIcon /></button>
                         </Chip>
                     )
                 }

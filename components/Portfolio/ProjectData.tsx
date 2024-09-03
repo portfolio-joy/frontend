@@ -1,77 +1,38 @@
 import styles from "@/styles/Portfolio.module.css"
 import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
-import UserImage from "@/public/user.jpg"
-import Image from "next/image";
-import { motion, useAnimation, useInView } from "framer-motion";
+import { useEffect } from "react";
+import { Image } from "@nextui-org/react";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import { fetchProjectDataRequest } from "@/redux/slices/projectDataSlice";
+import { ImageType } from "@/types/ImageType";
 
 export default function ProjectData() {
     const router = useRouter();
-    useEffect(() => {
-    }, [])
-    const controls = useAnimation();
-    const ref = useRef(null);
-    const inView = useInView(ref,{amount: "some", once: true});
+    const dispatch = useAppDispatch();
+    const projectDataState = useAppSelector(state => state.projectData);
 
     useEffect(() => {
-        if (inView) {
-            controls.start({ opacity: 1, x: 0, transition: { duration: 1 } });
-        } else {
-            controls.start({ opacity: 0, x: "-100%", transition: { duration: 1 }});
+        if (router.query.user && !projectDataState.success) {
+            const username = router.query.user[0];
+            const projectName = router.query.user[1];
+            dispatch(fetchProjectDataRequest({ username: username, projectName: projectName, token: null }));
         }
-    }, [controls, inView]);
+    }, [projectDataState, router.query.user, dispatch])
 
     return (
         <section className={styles['project-data']}>
-            <h1>Server Us</h1>
-            <motion.div
-                ref={ref}
-                className="project-detail"
-                initial={{ opacity: 0, x: -50 }}
-                animate={controls}
-            >
-                <Image alt="User Image" src={UserImage}></Image>
-                <div>
-                    <h3>Project Data Heading</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A vel assumenda, modi veritatis mollitia quam nemo distinctio provident numquam dolorem nostrum libero possimus impedit, quasi doloribus beatae harum aspernatur nihil!</p>
-                </div>
-            </motion.div>
-            <motion.div
-                ref={ref}
-                className="project-detail"
-                initial={{ opacity: 0, x: -50 }}
-                animate={controls}
-            >
-                <Image alt="User Image" src={UserImage}></Image>
-                <div>
-                    <h3>Project Data Heading</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A vel assumenda, modi veritatis mollitia quam nemo distinctio provident numquam dolorem nostrum libero possimus impedit, quasi doloribus beatae harum aspernatur nihil!</p>
-                </div>
-            </motion.div>
-            <motion.div
-                ref={ref}
-                className="project-detail"
-                initial={{ opacity: 0, x: -50 }}
-                animate={controls}
-            >
-                <Image alt="User Image" src={UserImage}></Image>
-                <div>
-                    <h3>Project Data Heading</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A vel assumenda, modi veritatis mollitia quam nemo distinctio provident numquam dolorem nostrum libero possimus impedit, quasi doloribus beatae harum aspernatur nihil!</p>
-                </div>
-            </motion.div>
-            <motion.div
-                ref={ref}
-                className="project-detail"
-                initial={{ opacity: 0, x: -50 }}
-                animate={controls}
-            >
-                <Image alt="User Image" src={UserImage}></Image>
-                <div>
-                    <h3>Project Data Heading</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A vel assumenda, modi veritatis mollitia quam nemo distinctio provident numquam dolorem nostrum libero possimus impedit, quasi doloribus beatae harum aspernatur nihil!</p>
-                </div>
-            </motion.div>
+            <h1>{router.query.user![1].toUpperCase()}</h1>
+            {
+                projectDataState.data.map((projectData, index) =>
+                    <div key={index} className={index%2===0 ? styles['slide-left'] : styles['slide-right']}>
+                        <Image alt="Project Data Image" src={`data:${(projectData.image as ImageType)?.type};base64,${(projectData?.image as ImageType)?.imageData}`} className="rounded-none"></Image>
+                        <div>
+                            <h3>{projectData.heading}</h3>
+                            <p>{projectData.description}</p>
+                        </div>
+                    </div>
+                )
+            }
         </section>
     )
 }
