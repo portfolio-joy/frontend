@@ -2,15 +2,16 @@ import styles from "@/styles/Portfolio.module.css"
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import PortfolioAboutMe from "./AboutMe";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
-import { fetchPortfolioData, fetchUserData } from "@/redux/slices/fetchUserSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch} from "@/redux/store";
 import PortfolioTechnicalSkills from "./TechnicalSkills";
 import PortfolioSoftSkills from "./SoftSkills";
 import { useAppSelector } from "@/hooks/hooks";
 import { SkillsType } from "@/types/SkillsType";
-import Projects from "./Projects";
-import ProjectData from "./ProjectData";
+import PortfolioProjects from "./Projects";
+import PortfolioProjectData from "./ProjectData";
+import { fetchUserData } from "@/redux/slices/fetchUserSlice";
+import PortfolioContact from "./Contact";
 
 export default function PortfolioContainer() {
 
@@ -45,13 +46,14 @@ export default function PortfolioContainer() {
         <main className={styles['portfolio-container']}>
             {
                 projectPage ?
-                    <ProjectData />
+                    <PortfolioProjectData />
                     :
                     <>
                         {portfolioState.user?.aboutMe && <PortfolioAboutMe />}
                         {technicalSkills && technicalSkills?.length !== 0 && <PortfolioTechnicalSkills />}
                         {softSkills && softSkills?.length !== 0 && <PortfolioSoftSkills />}
-                        {portfolioState && portfolioState.user?.projects?.length !== 0 && <Projects />}
+                        {portfolioState && portfolioState.user?.projects?.length !== 0 && <PortfolioProjects />}
+                        <PortfolioContact />
                     </>
             }
         </main>
