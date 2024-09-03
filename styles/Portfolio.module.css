@@ -80,12 +80,13 @@
     word-break: break-word;
 }
 
-.project-data>div:nth-child(odd) {
+.project-data>div:nth-child(n) {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .project-data>div:nth-child(even) {
-    display: flex;
     flex-direction: row-reverse;
 }
 
@@ -99,6 +100,36 @@
 .project-data>h1 {
     margin: 12px;
     width: 80%;
+}
+
+@keyframes slideInFromLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromRight {
+    0% {
+        opacity: 0;
+        transform: translateX(50%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.slide-left {
+    animation: slideInFromLeft 1s forwards;
+}
+
+.slide-right {
+    animation: slideInFromRight 1s forwards;
 }
 
 @media screen and (max-width: 767px) {
