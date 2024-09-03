@@ -9,6 +9,7 @@ import projectSlice from "./slices/projectSlice"
 import projectDataSlice from "./slices/projectDataSlice"
 import errorSlice from "./slices/errorSlice"
 import contactSlice from "./slices/contactSlice"
+import socialMediaSlice from "./slices/socialMediaSlice"
 
 const rootReducer = combineReducers({
     register: registerSlice,
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
     project: projectSlice,
     projectData: projectDataSlice,
     contact: contactSlice,
+    socialMedia: socialMediaSlice,
     error: errorSlice
 })
 

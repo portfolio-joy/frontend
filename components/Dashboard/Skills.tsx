@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { removeSkillRequest, addSkillRequest, updateSkillRequest, updateSkillState, skillFaliure } from '@/redux/slices/skillSlice';
 import { SkillsType } from '@/types/SkillsType';
 import { toast } from 'react-toastify';
+import { clearAllErrors } from '@/redux/slices/errorSlice';
 
 export default function Skills() {
 
@@ -27,6 +28,7 @@ export default function Skills() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
+        dispatch(clearAllErrors());
         if (userState.success && !skillState.data) {
             dispatch(updateSkillState(userState?.user?.skills ? userState.user.skills : []));
         }
@@ -55,7 +57,7 @@ export default function Skills() {
         if (updateSkillIndex === -1) {
             dispatch(addSkillRequest({ data: formData as SkillsType, token: userState.token }))
         } else {
-            dispatch(updateSkillRequest({ data: formData as SkillsType, skillId: (skillState.data![removeSkillIndex].id), token: userState.token }))
+            dispatch(updateSkillRequest({ data: formData as SkillsType, skillId: (skillState.data![updateSkillIndex].id), token: userState.token }))
         }
     }
 
