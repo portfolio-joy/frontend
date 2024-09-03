@@ -34,7 +34,8 @@
 .about-me,
 .technical-skills,
 .soft-skills,
-.projects {
+.projects,
+.contact-me {
     padding: 48px 72px;
 }
 
@@ -132,12 +133,33 @@
     animation: slideInFromRight 1s forwards;
 }
 
+.contact-details {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 12px;
+}
+
+.contact-details div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+    text-align: center;
+    width: 35%;
+}
+
+.contact-details div address {
+    font-weight: 600;
+    margin: 24px;
+}
+
 @media screen and (max-width: 767px) {
 
     .about-me,
     .technical-skills,
     .soft-skills,
-    .projects {
+    .projects,
+    .contact-me {
         padding: 12px;
     }
 
@@ -183,5 +205,14 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+
+    .contact-details {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .contact-details > div {
+        width: 100%;
     }
 }

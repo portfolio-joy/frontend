@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { fetchProjectDataRequest } from "@/redux/slices/projectDataSlice";
 import { ImageType } from "@/types/ImageType";
 
-export default function ProjectData() {
+export default function PortfolioProjectData() {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const projectDataState = useAppSelector(state => state.projectData);
