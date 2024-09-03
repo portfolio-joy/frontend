@@ -17,6 +17,10 @@ import updateProjectDataSaga from './sagas/updateProjectDataSaga';
 import removeProjectDataSaga from './sagas/removeProjectDataSaga';
 import saveContactSaga from './sagas/saveContactSaga';
 import updateContactSaga from './sagas/updateContactSaga';
+import addSocialMediaSaga from './sagas/addSocialMediaSaga';
+import { updateSocialMediaRequest } from './slices/socialMediaSlice';
+import updateSocialMediaSaga from './sagas/updateSocialMediaSaga';
+import removeSocialMediaSaga from './sagas/removeSocialMediaSaga';
 
 
 function* rootSaga() {
@@ -38,6 +42,9 @@ function* rootSaga() {
     yield takeEvery('projectData/removeProjectDataRequest',removeProjectDataSaga);
     yield takeEvery('contact/saveContactRequest', saveContactSaga);
     yield takeEvery('contact/updateContactRequest', updateContactSaga);
+    yield takeEvery('socialMedia/addSocialMediaRequest',addSocialMediaSaga);
+    yield takeEvery('socialMedia/updateSocialMediaRequest',updateSocialMediaSaga);
+    yield takeEvery('socialMedia/removeSocialMediaRequest',removeSocialMediaSaga);
 }
 
 export default rootSaga;
