@@ -1,10 +1,10 @@
 import { CallEffect, PutEffect, call, put } from "redux-saga/effects";
-import { removeProjectSuccess } from "../slices/projectSlice";
 import { CommonHeaders } from "@/util/headers";
 import ApiRequest from "@/util/api";
 import { setErrors } from "../slices/errorSlice";
+import { removeProjectDataSuccess } from "../slices/projectDataSlice";
 
-export default function* removeProjectSaga(action: { type: string; payload: { projectId: string, token: string } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, { id: string }> {
+export default function* removeProjectDataSaga(action: { type: string; payload: { projectDataId: string, token: string } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, {id: string}> {
     const requestData = {
         method: 'DELETE',
         headers: {
@@ -13,8 +13,8 @@ export default function* removeProjectSaga(action: { type: string; payload: { pr
         }
     }
     try {
-        const responseJson = yield call(ApiRequest, `/user/project/${action.payload.projectId}`, requestData);
-        yield put(removeProjectSuccess(responseJson));
+        const responseJson = yield call(ApiRequest, `/user/projectData/${action.payload.projectDataId}`,requestData);
+        yield put(removeProjectDataSuccess(responseJson));
     } catch (error: unknown) {
         yield put(setErrors((error as Error).message));
     }

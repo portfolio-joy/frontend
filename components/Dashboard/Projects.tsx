@@ -15,17 +15,14 @@ export default function Projects() {
     const userState = useAppSelector(state => state.user);
     const projectState = useAppSelector(state => state.project);
     const error = useAppSelector(state => state.error);
-    const [deleteProjectIndex, setDeleteProjectIndex] = useState<number>(-1);
+    const [removeProjectIndex, setRemoveProjectIndex] = useState<number>(-1);
     const [updateProjectIndex, setUpdateProjectIndex] = useState<number>(-1);
     const [image, setImage] = useState<File | null>(null);
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const dispatch = useAppDispatch();
     const initialFormData = {
         name: "",
-        briefDetail: "",
-        user: {
-            id: ""
-        }
+        briefDetail: ""
     };
     const [formData, setFormData] = useState(initialFormData);
 
@@ -44,16 +41,6 @@ export default function Projects() {
         }
     }, [projectState.success, error, projectState.data])
 
-    useEffect(() => {
-        if (formData.user?.id && formData.user?.id !== '') {
-            if (updateProjectIndex === -1) {
-                dispatch(addProjectRequest({ data: formData as ProjectsType, token: userState.token, image: image as File }))
-            } else {
-                dispatch(updateProjectRequest({ data: formData as ProjectsType, projectId: (projectState.data![updateProjectIndex].id), token: userState.token, image: image as File }))
-            }
-        }
-    }, [formData.user])
-
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
         setFormData((previousFormDataState) => ({ ...previousFormDataState, [name]: value }));
@@ -67,16 +54,20 @@ export default function Projects() {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setFormData((previousFormDataState) => ({ ...previousFormDataState, 'user': { 'id': (userState.user as UserResponseType).id } }));
+        if (updateProjectIndex === -1) {
+            dispatch(addProjectRequest({ data: formData as ProjectsType, token: userState.token, image: image as File }))
+        } else {
+            dispatch(updateProjectRequest({ data: formData as ProjectsType, projectId: (projectState.data![updateProjectIndex].id), token: userState.token, image: image as File }))
+        }
     }
 
-    const handleDelete = (index: number) => {
-        setDeleteProjectIndex(index);
+    const handleRemove = (index: number) => {
+        setRemoveProjectIndex(index);
         onOpen();
     }
 
     const removeProject = () => {
-        dispatch(removeProjectRequest({ projectId: (projectState.data![deleteProjectIndex].id), token: userState.token }));
+        dispatch(removeProjectRequest({ projectId: (projectState.data![removeProjectIndex].id), token: userState.token }));
         onClose();
     }
 
@@ -99,7 +90,7 @@ export default function Projects() {
                     projectState.data?.map((project, index) =>
                         <Chip key={index} className={`mb-2 ${styles['skill-chip']}`}>
                             <span className='select-none' onDoubleClick={() => updateForm(index)}>{project.name}</span>
-                            <button onClick={() => handleDelete(index)}><CrossIcon /></button>
+                            <button onClick={() => handleRemove(index)}><CrossIcon /></button>
                         </Chip>
                     )
                 }

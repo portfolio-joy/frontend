@@ -27,8 +27,8 @@ const projectSlice = createSlice({
         },
         updateProjectSuccess(state, action: PayloadAction<ProjectsType>) {
             state.success = true;
-            const skillIndex = state.data!.findIndex((project) => project.id === action.payload.id);
-            state.data![skillIndex] = action.payload;
+            const projectIndex = state.data!.findIndex((project) => project.id === action.payload.id);
+            state.data![projectIndex] = action.payload;
         },
         removeProjectRequest(state, action: PayloadAction<{ projectId: string, token: string | null }>) {
             state.success = false;
