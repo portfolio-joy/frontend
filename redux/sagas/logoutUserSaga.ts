@@ -14,7 +14,7 @@ export default function* logoutUserSaga(action: { type: string; payload: { token
         }
     }
     try {
-        const responseJson = yield call(ApiRequest, '/user/logout', requestData);
+        yield call(ApiRequest, '/user/logout', requestData);
         yield put(logoutUserSuccess());
     } catch (error: unknown) {
         yield put(setErrors((error as Error).message));
