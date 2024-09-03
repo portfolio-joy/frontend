@@ -8,12 +8,13 @@ export default function SocialMedia() {
 
     const error = useAppSelector(state => state.error);
     const [updateSocialMediaIndex, setUpdateSocialMediaIndex] = useState<number>(-1);
-    const [deleteSocialMediaIndex, setDeleteSocialMediaIndex] = useState<number>(-1);
+    const [removeSocialMediaIndex, setRemoveSocialMediaIndex] = useState<number>(-1);
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
-    const [formData, setFormData] = useState({
+    const initialFormData = {
         name: '',
         url: ''
-    })
+    };
+    const [formData, setFormData] = useState(initialFormData);
     const socialMediaNames = [
         { key: 'Linkedin', label: 'Linkedin' },
         { key: 'X', label: 'X' },
@@ -26,12 +27,19 @@ export default function SocialMedia() {
         { key: 'Gitlab', label: 'Gitlab' }
     ]
 
-    const handleChange = () => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = event.target;
+        setFormData((previousFormDataState) => ({ ...previousFormDataState, [name]: value }));
+    }
 
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        console.log(formData);
     }
 
     const handleRemove = (index: number) => {
-
+        setRemoveSocialMediaIndex(index);
+        onOpen();
     }
 
     const updateForm = (index: number) => {
@@ -39,16 +47,14 @@ export default function SocialMedia() {
     }
 
     const cancelUpdate = () => {
-
+        setUpdateSocialMediaIndex(-1);
+        setFormData(formData);
     }
 
     const removeSkill = () => {
-
+        onClose();
     }
 
-    const handleSubmit = () => {
-
-    }
 
     return (
         <>
