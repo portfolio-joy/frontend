@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react';
 import portfolioImage from '@/public/portfolio.png'
 import { useRouter } from 'next/router';
-import { loginUserRequest } from '@/redux/slices/authSlice';
+import { authUserFailure, loginUserRequest } from '@/redux/slices/authSlice';
 import { LoginUserPayload } from '@/types/LoginUserPayload';
 import { LoginResponseData } from '@/types/LoginResponseData';
 import Loader from './Loader';
@@ -25,6 +25,7 @@ export default function Login() {
 
     useEffect(()=>{
         localStorage.clear();
+        dispatch(setLoading(false));
     },[]);
 
     useEffect(() => {
@@ -36,12 +37,15 @@ export default function Login() {
         }
         if (Object.keys(error).length) {
             dispatch(setLoading(false));
+            dispatch(authUserFailure());
+            console.log(error);
             toast.error(error.general);
         }
     }, [loginState.success, error])
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        dispatch(clearAllErrors());
         dispatch(setLoading(true));
         dispatch(loginUserRequest(formData));
     }

@@ -153,6 +153,17 @@
     margin: 24px;
 }
 
+.footer {
+    display: flex;
+    justify-content: end;
+    flex-wrap: wrap;
+    background-color: rgb(228, 227, 213);
+}
+
+.footer svg {
+    margin: 24px;
+}
+
 @media screen and (max-width: 767px) {
 
     .about-me,
@@ -214,5 +225,10 @@
 
     .contact-details > div {
         width: 100%;
+    }
+
+    .footer {
+        justify-content: center;
+        align-items: center;
     }
 }

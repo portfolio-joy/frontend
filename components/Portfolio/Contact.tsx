@@ -2,7 +2,6 @@ import styles from "@/styles/Portfolio.module.css"
 import { AddressIcon, EmailIcon, MobileIcon } from "../icons"
 import Link from "next/link"
 import { useAppSelector } from "@/hooks/hooks";
-import { RootState } from "@/redux/store";
 import { ContactType } from "@/types/ContactType";
 import { useEffect, useState } from "react";
 

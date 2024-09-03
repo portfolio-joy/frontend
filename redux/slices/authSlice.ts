@@ -24,6 +24,7 @@ const loginSlice = createSlice({
         },
         logoutUserSuccess(state) {
             state.success = true;
+            state.data = null;
         },
         authUserFailure(state) {
             state.success = false;
