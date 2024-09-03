@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { ProjectDataType } from '@/types/ProjectDataType';
 import { toast } from 'react-toastify';
 import { addProjectDataRequest, fetchProjectDataRequest, projectDataFaliure, removeProjectDataRequest, updateProjectDataRequest } from '@/redux/slices/projectDataSlice';
-import { clearAllErrors } from '@/redux/slices/errorSlice';
 
 export default function ProjectData() {
 
@@ -50,7 +49,6 @@ export default function ProjectData() {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = event.target;
         if (name === 'project') {
-            dispatch(clearAllErrors());
             setSelectedProject(value);
             const project = projects && projects.find(project =>project.name === value);
             setFormData((previousFromDataState) => ({ ...previousFromDataState, 'project': { 'id': project ? project.id : '' } }));
@@ -70,7 +68,7 @@ export default function ProjectData() {
         if (!selectedProject.length) {
             toast.error("Please select any project first !!");
         } else if (updateProjectDataIndex !== -1) {
-            dispatch(updateProjectDataRequest({ data: formData as ProjectDataType, projectDataId: projectDataState.data[updateProjectDataIndex]?.id, token: userState.token, image: image as File }))
+            dispatch(updateProjectDataRequest({ data: formData as ProjectDataType, projectDataId: projectDataState.data[updateProjectDataIndex].id, token: userState.token, image: image as File }))
         } else {
             dispatch(addProjectDataRequest({ data: formData as ProjectDataType, token: userState.token, image: image as File }))
         }
