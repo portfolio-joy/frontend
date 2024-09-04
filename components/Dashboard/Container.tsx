@@ -64,12 +64,6 @@ export default function DashboardContainer() {
 
   return (
     <section className={styles["dashboard-main"]}>
-      <ToastContainer
-        position="bottom-left"
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick
-        rtl={false} />
       <div className={styles["left-panel"]}>
         <ul>
           {

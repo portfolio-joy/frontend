@@ -2,7 +2,7 @@ import styles from '@/styles/Home.module.css'
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react'
 import Link from 'next/link'
 import { ArrowDownIcon } from '../icons'
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { UserResponseType } from '@/types/UserResponseType';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { logoutUserRequest } from '@/redux/slices/authSlice';
@@ -43,7 +43,9 @@ export default function Header() {
     }, []);
 
     const logoutUser = () => {
+        console.log("Logout User Request");
         dispatch(logoutUserRequest({ token: userData.token ? userData.token : '' }));
+        console.log("After dispatch logout user request");
         localStorage.removeItem('data');
         setUserData({ id: null, token: null, firstName: null, portfolioUrl: null });
         setIsDataPresent(false);
@@ -60,9 +62,9 @@ export default function Header() {
                             <Button className={styles['header-link']}> {userData.firstName}<ArrowDownIcon></ArrowDownIcon> </Button>
                         </DropdownTrigger>
                         <DropdownMenu className={styles['dropdown-menu']}>
-                            <DropdownItem textValue='dashboard' key="dashboard" className={styles['header-link']}><Link href='/dashboard'> Dashboard </Link></DropdownItem>
-                            <DropdownItem textValue='logout' key="logout" className={styles['header-link']}><button onClick={logoutUser} className='bg-transparent'> Logout </button></DropdownItem>
-                            <DropdownItem textValue='portfolioUrl' className={styles['header-link']}><Link target='_blank' href={userData.portfolioUrl ? userData.portfolioUrl : ''}>Your Portfolio</Link></DropdownItem>
+                            <DropdownItem  href='/dashboard' textValue='dashboard' key="dashboard" className={styles['header-link']}>Dashboard</DropdownItem>
+                            <DropdownItem onClick={logoutUser} textValue='logout' key="logout" className={styles['header-link']}>Logout</DropdownItem>
+                            <DropdownItem href={userData.portfolioUrl ? userData.portfolioUrl : ''} textValue='portfolioUrl' className={styles['header-link']}>Your Portfolio</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     :
