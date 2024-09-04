@@ -4,7 +4,6 @@ import { CrossIcon } from '../icons'
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { useEffect, useState } from 'react';
 import { ProjectsType } from '@/types/ProjectsType';
-import { UserResponseType } from '@/types/UserResponseType';
 import { addProjectRequest, projectFaliure, removeProjectRequest, updateProjectRequest, updateProjectState } from '@/redux/slices/projectSlice';
 import { toast } from 'react-toastify';
 import { base64ToFile } from '@/util/base64ToFile';
