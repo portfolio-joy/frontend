@@ -21,6 +21,9 @@ import addSocialMediaSaga from './sagas/addSocialMediaSaga';
 import { updateSocialMediaRequest } from './slices/socialMediaSlice';
 import updateSocialMediaSaga from './sagas/updateSocialMediaSaga';
 import removeSocialMediaSaga from './sagas/removeSocialMediaSaga';
+import addTestimonialSaga from './sagas/addTestimonialSaga';
+import updateTestimonialSaga from './sagas/updateTestimonialSaga';
+import removeTestimonialSaga from './sagas/removeTestimonialSaga';
 
 
 function* rootSaga() {
@@ -40,6 +43,9 @@ function* rootSaga() {
     yield takeEvery('projectData/addProjectDataRequest',addProjectDataSaga);
     yield takeEvery('projectData/updateProjectDataRequest',updateProjectDataSaga);
     yield takeEvery('projectData/removeProjectDataRequest',removeProjectDataSaga);
+    yield takeEvery('testimonial/addTestimonialRequest',addTestimonialSaga);
+    yield takeEvery('testimonial/updateTestimonialRequest',updateTestimonialSaga);
+    yield takeEvery('testimonial/removeTestimonialRequest',removeTestimonialSaga);
     yield takeEvery('contact/saveContactRequest', saveContactSaga);
     yield takeEvery('contact/updateContactRequest', updateContactSaga);
     yield takeEvery('socialMedia/addSocialMediaRequest',addSocialMediaSaga);
