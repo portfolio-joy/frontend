@@ -13,6 +13,8 @@ import PortfolioProjectData from "./ProjectData";
 import { fetchUserData } from "@/redux/slices/fetchUserSlice";
 import PortfolioContact from "./Contact";
 import PortfolioFooter from "./Footer";
+import PortfolioTestimonials from "./Testimonials";
+
 
 export default function PortfolioContainer() {
 
@@ -54,8 +56,9 @@ export default function PortfolioContainer() {
                         {technicalSkills && technicalSkills?.length !== 0 && <PortfolioTechnicalSkills />}
                         {softSkills && softSkills?.length !== 0 && <PortfolioSoftSkills />}
                         {portfolioState && portfolioState.user?.projects?.length !== 0 && <PortfolioProjects />}
+                        <PortfolioTestimonials />
                         {portfolioState && portfolioState.user?.contact && <PortfolioContact />}
-                        <PortfolioFooter />
+                        {portfolioState && portfolioState.user?.socialMedias?.length !== 0 && <PortfolioFooter />}
                     </>
             }
         </main>
