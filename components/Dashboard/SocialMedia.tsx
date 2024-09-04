@@ -24,7 +24,7 @@ export default function SocialMedia() {
     const [formData, setFormData] = useState(initialFormData);
     const socialMediaNames = [
         { key: 'Linkedin', label: 'Linkedin' },
-        { key: 'X', label: 'X' },
+        { key: 'Twitter', label: 'Twitter' },
         { key: 'Facebook', label: 'Facebook' },
         { key: 'Instagram', label: 'Instagram' },
         { key: 'Medium', label: 'Medium' },
