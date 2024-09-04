@@ -1,6 +1,6 @@
 import { ImageType } from "./ImageType"
 
-export interface ProjectDataType {
+export type ProjectDataType = {
     id: string,
     heading: string,
     description: string,

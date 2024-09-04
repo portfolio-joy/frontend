@@ -1,52 +1,90 @@
 import styles from '@/styles/Dashboard.module.css'
 import { Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, Tooltip, useDisclosure } from "@nextui-org/react";
 import { CrossIcon } from "../icons";
-import { useAppSelector } from '@/hooks/hooks';
-import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { useEffect, useState } from 'react';
+import { addTestimonialRequest, removeTestimonialRequest, testimonialFaliure, updateTestimonialRequest, updateTestimonialState } from '@/redux/slices/testimonialSlice';
+import { clearAllErrors } from '@/redux/slices/errorSlice';
+import { toast } from 'react-toastify';
+import { TestimonialType } from '@/types/TestimonialType';
 
 export default function Testimonials() {
-    const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
+
+    const userState = useAppSelector(state => state.user);
+    const testimonialState = useAppSelector(state => state.testimonial);
     const error = useAppSelector(state => state.error);
+    const dispatch = useAppDispatch();
     const [removeTestimonialIndex, setRemoveTestimonialIndex] = useState<number>(-1);
     const [updateTestimonialIndex, setUpdateTestimonialIndex] = useState<number>(-1);
+    const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const initialFormData = {
         name: "",
         designation: "",
         description: "",
-        rating: NaN
+        rating: 0
     };
     const [formData, setFormData] = useState(initialFormData);
+
+    useEffect(() => {
+        dispatch(clearAllErrors());
+        if (userState.success && !testimonialState.data) {
+            dispatch(updateTestimonialState(userState?.user?.testimonials ? userState.user.testimonials : []));
+        }
+    }, [])
+
+    useEffect(() => {
+        if (testimonialState.success) {
+            toast.success("Data Updated Successfully");
+        } else if (Object.keys(error).length) {
+            dispatch(testimonialFaliure());
+            toast.error(error.general);
+        }
+    }, [testimonialState.success, error, testimonialState.data])
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const {name, value} = event.target;
-        setFormData((previousFormData)=>({...previousFormData,[name]:value}));
+        const { name, value } = event.target;
+        setFormData((previousFormData) => ({ ...previousFormData, [name]: value }));
     }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log(formData);
+        if (updateTestimonialIndex === -1) {
+            dispatch(addTestimonialRequest({ data: formData as TestimonialType, token: userState.token }))
+        } else {
+            dispatch(updateTestimonialRequest({ data: formData as TestimonialType, testimonialId: (testimonialState.data![updateTestimonialIndex].id), token: userState.token }))
+        }
     }
 
     const handleRemove = (index: number) => {
+        setRemoveTestimonialIndex(index);
         onOpen();
     }
     const removeTestimonial = () => {
+        dispatch(removeTestimonialRequest({ testimonialId: (testimonialState.data![removeTestimonialIndex].id), token: userState.token }));
         onClose();
     }
 
     const updateForm = (index: number) => {
+        setFormData(testimonialState.data![index]);
+        setUpdateTestimonialIndex(index);
     }
 
     const cancelUpdate = () => {
-
+        setFormData(initialFormData);
+        setUpdateTestimonialIndex(-1);
     }
 
     return (
         <>
             <div className={styles['data-chips']}>
-                <Chip className={`mb-2 ${styles['skill-chip']}`}>
-                    <span className='select-none' onDoubleClick={() => updateForm(1)}>Testimonial</span>
-                    <button onClick={() => handleRemove(1)}><CrossIcon /></button>
-                </Chip>
+                {
+                    testimonialState.data?.map((testimonial, index) =>
+                        <Chip key={index} className={`mb-2 ${styles['skill-chip']}`}>
+                            <span className='select-none' onDoubleClick={() => updateForm(index)}>{testimonial.name}</span>
+                            <button onClick={() => handleRemove(index)}><CrossIcon /></button>
+                        </Chip>
+                    )
+                }
             </div>
             <Divider />
             <form className={styles['dashboard-form']} onSubmit={handleSubmit}>
@@ -61,7 +99,7 @@ export default function Testimonials() {
                     <textarea className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={400} value={formData.description} onChange={handleChange} required></textarea>
                 </Tooltip>
                 <Tooltip className={error.rating && styles['error-tooltiip']} content={error.rating}>
-                    <input className={error.rating ? styles['input-error'] : styles['input-normal']} name='rating' type='number' placeholder='Rating' min={0} max={5} defaultValue={formData.rating} onChange={handleChange} required></input>
+                    <input className={error.rating ? styles['input-error'] : styles['input-normal']} name='rating' type='number' placeholder='Rating(Optional)' min={0} max={5} value={formData.rating ? formData.rating : undefined} onChange={handleChange}></input>
                 </Tooltip>
                 <fieldset className='flex'>
                     {
