@@ -10,6 +10,7 @@ import projectDataSlice from "./slices/projectDataSlice"
 import errorSlice from "./slices/errorSlice"
 import contactSlice from "./slices/contactSlice"
 import socialMediaSlice from "./slices/socialMediaSlice"
+import testimonialSlice from "./slices/testimonialSlice"
 
 const rootReducer = combineReducers({
     register: registerSlice,
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
     skill: skillSlice,
     project: projectSlice,
     projectData: projectDataSlice,
+    testimonial: testimonialSlice,
     contact: contactSlice,
     socialMedia: socialMediaSlice,
     error: errorSlice

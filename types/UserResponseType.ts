@@ -5,7 +5,7 @@ import { SkillsType } from "./SkillsType"
 import { SocialMediaType } from "./SocialMediaType"
 import { TestimonialType } from "./TestimonialType"
 
-export interface UserResponseType {
+export type UserResponseType = {
     id : string,
     firstName : string,
     lastName : string,
