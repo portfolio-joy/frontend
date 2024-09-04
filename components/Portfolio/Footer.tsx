@@ -31,7 +31,7 @@ export default function PortfolioFooter() {
                 socialMedias.map((socialMedia, index) => {
                     const SocialMediaIcon = dynamic(socialMediaIcons[socialMedia.name]);
                     return (
-                        <Link target="_blank" href={socialMedia.url}>
+                        <Link key={index} target="_blank" href={socialMedia.url}>
                             <SocialMediaIcon />
                         </Link>
                     )

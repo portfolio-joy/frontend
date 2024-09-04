@@ -74,7 +74,7 @@ export default function PortfolioTestimonials() {
                             <div className="flex justify-end">
                                 {
                                     Array.from(Array(testimonials[currentIndex].rating), (rating, index) =>
-                                        <StarIcon />
+                                        <StarIcon key={index}/>
                                     )
                                 }
                             </div>
