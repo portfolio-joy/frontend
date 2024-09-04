@@ -23,11 +23,11 @@ export default function PortfolioContact() {
                 </div>
                 <div>
                     <MobileIcon />
-                    <address><Link target="_blank" href='tel:7440267010'>{contact?.phoneNo}</Link></address>
+                    <address><Link target="_blank" href={`tel:${contact?.phoneNo}`}>{contact?.phoneNo}</Link></address>
                 </div>
                 <div>
                     <EmailIcon />
-                    <address><Link target="_blank" href="mailto:abcd@gmail.com">{contact?.emailId}</Link></address>
+                    <address><Link target="_blank" href={`mailto:${contact?.emailId}`}>{contact?.emailId}</Link></address>
                 </div>
             </div>
         </section >

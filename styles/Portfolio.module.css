@@ -157,7 +157,6 @@
     display: flex;
     justify-content: end;
     flex-wrap: wrap;
-    background-color: rgb(228, 227, 213);
 }
 
 .footer svg {
