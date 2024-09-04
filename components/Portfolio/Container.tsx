@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import PortfolioAboutMe from "./AboutMe";
 import { useDispatch } from "react-redux";
-import { AppDispatch} from "@/redux/store";
+import { AppDispatch } from "@/redux/store";
 import PortfolioTechnicalSkills from "./TechnicalSkills";
 import PortfolioSoftSkills from "./SoftSkills";
 import { useAppSelector } from "@/hooks/hooks";
@@ -56,7 +56,7 @@ export default function PortfolioContainer() {
                         {technicalSkills && technicalSkills?.length !== 0 && <PortfolioTechnicalSkills />}
                         {softSkills && softSkills?.length !== 0 && <PortfolioSoftSkills />}
                         {portfolioState && portfolioState.user?.projects?.length !== 0 && <PortfolioProjects />}
-                        <PortfolioTestimonials />
+                        {portfolioState && portfolioState.user?.testimonials?.length !== 0 && <PortfolioTestimonials />}
                         {portfolioState && portfolioState.user?.contact && <PortfolioContact />}
                         {portfolioState && portfolioState.user?.socialMedias?.length !== 0 && <PortfolioFooter />}
                     </>
