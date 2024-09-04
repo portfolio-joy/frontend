@@ -17,11 +17,13 @@ export default function Testimonials() {
     };
     const [formData, setFormData] = useState(initialFormData);
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-
+        const {name, value} = event.target;
+        setFormData((previousFormData)=>({...previousFormData,[name]:value}));
     }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        console.log(formData);
     }
 
     const handleRemove = (index: number) => {
@@ -35,6 +37,7 @@ export default function Testimonials() {
     }
 
     const cancelUpdate = () => {
+
     }
 
     return (
