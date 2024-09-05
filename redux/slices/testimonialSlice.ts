@@ -44,5 +44,5 @@ const testimonialSlice = createSlice({
     }
 })
 
-export const { updateTestimonialState , addTestimonialRequest, addTestimonialSuccess, updateTestimonialRequest, updateTestimonialSuccess, removeTestimonialRequest, removeTestimonialSuccess, testimonialFaliure } = testimonialSlice.actions;
+export const { updateTestimonialState, addTestimonialRequest, addTestimonialSuccess, updateTestimonialRequest, updateTestimonialSuccess, removeTestimonialRequest, removeTestimonialSuccess, testimonialFaliure } = testimonialSlice.actions;
 export default testimonialSlice.reducer;

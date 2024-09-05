@@ -24,7 +24,7 @@ export default function PortfolioProjectData() {
             <h1>{router.query.user![1].toUpperCase()}</h1>
             {
                 projectDataState.data.map((projectData, index) =>
-                    <div key={index} className={index%2===0 ? styles['slide-left'] : styles['slide-right']}>
+                    <div key={index} className={index % 2 === 0 ? styles['slide-left'] : styles['slide-right']}>
                         <Image alt="Project Data Image" src={`data:${(projectData.image as ImageType)?.type};base64,${(projectData?.image as ImageType)?.imageData}`} className="rounded-none"></Image>
                         <div>
                             <h3>{projectData.heading}</h3>

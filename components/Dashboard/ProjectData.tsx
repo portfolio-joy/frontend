@@ -40,8 +40,8 @@ export default function ProjectData() {
         if (Object.keys(error).length) {
             dispatch(projectDataFaliure());
             toast.error(error.general);
-        } 
-        if(projectDataState.success) {
+        }
+        if (projectDataState.success) {
             toast.success("Data Updated Successfully");
         }
     }, [projectDataState.success, error])
@@ -50,7 +50,7 @@ export default function ProjectData() {
         const { name, value } = event.target;
         if (name === 'project') {
             setSelectedProject(value);
-            const project = projects && projects.find(project =>project.name === value);
+            const project = projects && projects.find(project => project.name === value);
             setFormData((previousFromDataState) => ({ ...previousFromDataState, 'project': { 'id': project ? project.id : '' } }));
         } else {
             setFormData((previousFormDataState) => ({ ...previousFormDataState, [name]: value }));
@@ -85,7 +85,7 @@ export default function ProjectData() {
     }
 
     const updateForm = (index: number) => {
-        setFormData((previousFormDataState)=>({...previousFormDataState,...(projectDataState.data[index])}));
+        setFormData((previousFormDataState) => ({ ...previousFormDataState, ...(projectDataState.data[index]) }));
         setImage(base64ToFile(projectDataState.data[index].image as ImageType));
         setUpdateProjectDataIndex(index);
     }

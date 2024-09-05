@@ -16,7 +16,7 @@ export default function* updateSocialMediaSaga(action: { type: string; payload: 
         body: JSON.stringify(action.payload.data),
     }
     try {
-        const responseJson = yield call(ApiRequest, `/user/socialMedia/${action.payload.socialMediaId}`,requestData);
+        const responseJson = yield call(ApiRequest, `/user/socialMedia/${action.payload.socialMediaId}`, requestData);
         yield put(updateSocialMediaSuccess(responseJson));
     } catch (error: unknown) {
         yield put(setErrors((error as Error).message));

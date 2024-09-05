@@ -16,7 +16,7 @@ export default function* updateSkillSaga(action: { type: string; payload: { data
         body: JSON.stringify(action.payload.data),
     }
     try {
-        const responseJson = yield call(ApiRequest, `/user/skill/${action.payload.skillId}`,requestData);
+        const responseJson = yield call(ApiRequest, `/user/skill/${action.payload.skillId}`, requestData);
         yield put(updateSkillSuccess(responseJson));
     } catch (error: unknown) {
         yield put(setErrors((error as Error).message));

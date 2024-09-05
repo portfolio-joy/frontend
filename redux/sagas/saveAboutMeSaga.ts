@@ -19,7 +19,7 @@ export default function* saveAboutMeSaga(action: { type: string; payload: { data
         body: formData,
     }
     try {
-        const responseJson = yield call(ApiRequest,'/user/aboutMe',requestData);
+        const responseJson = yield call(ApiRequest, '/user/aboutMe', requestData);
         yield put(aboutMeSuccess(responseJson));
     } catch (error: unknown) {
         yield put(setErrors((error as Error).message));

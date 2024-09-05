@@ -40,6 +40,7 @@ export default function Skills() {
 
     useEffect(() => {
         if (skillState.success) {
+            dispatch(clearAllErrors());
             toast.success("Data Updated Successfully");
         } else if (Object.keys(error).length) {
             dispatch(skillFaliure());

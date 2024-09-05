@@ -18,7 +18,7 @@ export default function* addProjectSaga(action: { type: string; payload: { data:
         body: formData,
     }
     try {
-        const responseJson = yield call(ApiRequest,'/user/project', requestData);
+        const responseJson = yield call(ApiRequest, '/user/project', requestData);
         yield put(addProjectSuccess(responseJson));
     } catch (error: unknown) {
         yield put(setErrors((error as Error).message));

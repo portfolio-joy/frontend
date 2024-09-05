@@ -30,11 +30,11 @@ export default function PortfolioTechnicalSkills() {
                             </Tooltip>
                             <CardFooter className={`justify-center ${styles['card-footer']}`}>
                                 <CircularProgress classNames={{
-                                        svg: "w-36 h-36 drop-shadow-md",
-                                        indicator: "stroke-secondary",
-                                        track: "stroke-secondary/10",
-                                        value: "text-3xl font-semibold text-black",
-                                      }}
+                                    svg: "w-36 h-36 drop-shadow-md",
+                                    indicator: "stroke-secondary",
+                                    track: "stroke-secondary/10",
+                                    value: "text-3xl font-semibold text-black",
+                                }}
                                     label="Proficiency"
                                     value={technicalSkill.proficiency}
                                     color="success"

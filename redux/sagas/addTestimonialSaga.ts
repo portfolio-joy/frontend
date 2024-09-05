@@ -16,7 +16,7 @@ export default function* addTestimonialSaga(action: { type: string; payload: { d
         body: JSON.stringify(action.payload.data),
     }
     try {
-        const responseJson = yield call(ApiRequest, '/user/testimonial',requestData);
+        const responseJson = yield call(ApiRequest, '/user/testimonial', requestData);
         yield put(addTestimonialSuccess(responseJson));
     } catch (error: unknown) {
         yield put(setErrors((error as Error).message));
