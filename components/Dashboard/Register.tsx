@@ -89,7 +89,7 @@ const Register = () => {
                     <ModalHeader>Registered Successfully</ModalHeader>
                     <ModalBody className={styles['modal-body-content']}>
                         <CorrectIcon />
-                        <p>Congratulations! You have been registered registerState.successfully.</p>
+                        <p>Congratulations! You have been registered successfully.</p>
                     </ModalBody>
                     <ModalFooter>
                         <button onClick={() => router.push('/login')} className={styles["modal-button"]}>Go to Login Page</button>
