@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 
 const Register = () => {
     const registerState = useAppSelector(state => state.register);
-    const error = useAppSelector(state=> state.error);
+    const error = useAppSelector(state => state.error);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const dispatch = useAppDispatch();
     const router = useRouter();
@@ -21,12 +21,12 @@ const Register = () => {
         password: '',
         confirmPassword: ''
     });
-    const [passwordMismatch, setPasswordMismatch] = useState<string|undefined>(undefined);
+    const [passwordMismatch, setPasswordMismatch] = useState<string | undefined>(undefined);
 
     useEffect(() => {
         if (registerState.success) {
             onOpen();
-        } else if(Object.keys(error).length) {
+        } else if (Object.keys(error).length) {
             dispatch(registerUserFailure());
             toast.error(error.general);
         }
@@ -37,7 +37,7 @@ const Register = () => {
         setFormData((previousFormDataState) => {
             if (name === 'confirmPassword' || name === 'password') {
                 if (previousFormDataState.password !== value && previousFormDataState.confirmPassword !== value) {
-                    setPasswordMismatch("Passwords do not match" );
+                    setPasswordMismatch("Passwords do not match");
                 } else {
                     setPasswordMismatch(undefined);
                 }
@@ -52,7 +52,7 @@ const Register = () => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (formData.password !== formData.confirmPassword) {
-            setPasswordMismatch("Passwords do not match" );
+            setPasswordMismatch("Passwords do not match");
         }
         else {
             setPasswordMismatch(undefined);
@@ -79,7 +79,7 @@ const Register = () => {
                 <Tooltip className={error.password && styles['error-tooltip']} content={error.password}>
                     <input name="password" type="password" placeholder="Password *" minLength={8} maxLength={20} value={formData.password} onChange={handleChange} className={error.password ? styles["input-error"] : styles["input-normal"]} required title='' />
                 </Tooltip>
-                <Tooltip className={passwordMismatch &&  styles['error-tooltip']} showArrow={true} content={passwordMismatch}>
+                <Tooltip className={passwordMismatch && styles['error-tooltip']} showArrow={true} content={passwordMismatch}>
                     <input name="confirmPassword" type="password" placeholder="Confirm Password *" minLength={8} maxLength={20} value={formData.confirmPassword} onChange={handleChange} className={passwordMismatch ? styles["input-error"] : styles["input-normal"]} required title='' />
                 </Tooltip>
                 <button type="submit" disabled={registerState.success && !isOpen} className={styles['submit-button']}>Register</button>

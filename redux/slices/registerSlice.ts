@@ -10,10 +10,10 @@ const registerSlice = createSlice({
     name: 'register',
     initialState,
     reducers: {
-        registerUserRequest(state,action : PayloadAction<RegisterUserPayload>) {
+        registerUserRequest(state, action: PayloadAction<RegisterUserPayload>) {
             state.success = false;
         },
-        registerUserSuccess(state){
+        registerUserSuccess(state) {
             state.success = true;
         },
         registerUserFailure(state) {

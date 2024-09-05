@@ -1,7 +1,7 @@
 import { ImageType } from "@/types/ImageType";
 
 export const base64ToFile = (image: ImageType) => {
-    if(!image) return null;
+    if (!image) return null;
     const byteCharacters = atob(image.imageData);
     const byteNumbers = new Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {

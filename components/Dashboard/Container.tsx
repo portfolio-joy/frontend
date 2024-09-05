@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { LoginResponseData } from "@/types/LoginResponseData";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { toast, ToastContainer } from "react-toastify";
+import Resume from "./Resume";
 
 export default function DashboardContainer() {
   const dispatch = useAppDispatch();
@@ -48,6 +49,10 @@ export default function DashboardContainer() {
     {
       key: <SocialMedia />,
       value: "Social Media",
+    },
+    {
+      key: <Resume />,
+      value: 'Resume'
     }
   ]
 

@@ -109,6 +109,7 @@
         opacity: 0;
         transform: translateX(-50%);
     }
+
     100% {
         opacity: 1;
         transform: translateX(0);
@@ -120,6 +121,7 @@
         opacity: 0;
         transform: translateX(50%);
     }
+
     100% {
         opacity: 1;
         transform: translateX(0);
@@ -142,12 +144,12 @@
     align-items: center;
 }
 
-.quote>p{
+.quote>p {
     text-align: center;
     padding-bottom: 12px;
 }
 
-.quote cite{
+.quote cite {
     display: flex;
     flex-direction: column;
     align-items: end;
@@ -252,7 +254,7 @@
         align-items: center;
     }
 
-    .contact-details > div {
+    .contact-details>div {
         width: 100%;
     }
 
