@@ -18,14 +18,16 @@ export default function PortfolioTestimonials() {
     }, [portfolioState.success])
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) =>
-                prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
-            );
-        }, 5000);
-
-        return () => clearInterval(interval);
-    }, [currentIndex]);
+        if (testimonials.length > 0) {
+            const interval = setInterval(() => {
+                setCurrentIndex((prevIndex) => {
+                    return prevIndex >= testimonials.length - 1 ? 0 : prevIndex + 1
+                }
+                );
+            }, 5000);
+            return () => clearInterval(interval);
+        }
+    }, [currentIndex, testimonials]);
 
     return (
         <section id='testimonials' className={styles['testimonials']}>

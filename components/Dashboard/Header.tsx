@@ -43,9 +43,7 @@ export default function Header() {
     }, []);
 
     const logoutUser = () => {
-        console.log("Logout User Request");
         dispatch(logoutUserRequest({ token: userData.token ? userData.token : '' }));
-        console.log("After dispatch logout user request");
         localStorage.removeItem('data');
         setUserData({ id: null, token: null, firstName: null, portfolioUrl: null });
         setIsDataPresent(false);
