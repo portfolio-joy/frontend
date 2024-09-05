@@ -29,28 +29,28 @@ import removeTestimonialSaga from './sagas/removeTestimonialSaga';
 function* rootSaga() {
     yield takeEvery('register/registerUserRequest', registerUserSaga);
     yield takeEvery('auth/loginUserRequest', loginUserSaga);
-    yield takeEvery('auth/logoutUserRequest',logoutUserSaga)
+    yield takeEvery('auth/logoutUserRequest', logoutUserSaga)
     yield takeEvery('user/fetchUserData', fetchUserSaga);
     yield takeEvery('aboutMe/saveAboutMeRequest', saveAboutMeSaga);
     yield takeEvery('aboutMe/updateAboutMeRequest', updateAboutMeSaga);
-    yield takeEvery('skill/addSkillRequest',addSkillSaga);
-    yield takeEvery('skill/updateSkillRequest',updateSkillSaga);
-    yield takeEvery('skill/removeSkillRequest',removeSkillSaga);
-    yield takeEvery('project/addProjectRequest',addProjectSaga);
-    yield takeEvery('project/updateProjectRequest',updateProjectSaga);
-    yield takeEvery('project/removeProjectRequest',removeProjectSaga);
-    yield takeEvery('projectData/fetchProjectDataRequest',fetchProjectDataSaga);
-    yield takeEvery('projectData/addProjectDataRequest',addProjectDataSaga);
-    yield takeEvery('projectData/updateProjectDataRequest',updateProjectDataSaga);
-    yield takeEvery('projectData/removeProjectDataRequest',removeProjectDataSaga);
-    yield takeEvery('testimonial/addTestimonialRequest',addTestimonialSaga);
-    yield takeEvery('testimonial/updateTestimonialRequest',updateTestimonialSaga);
-    yield takeEvery('testimonial/removeTestimonialRequest',removeTestimonialSaga);
+    yield takeEvery('skill/addSkillRequest', addSkillSaga);
+    yield takeEvery('skill/updateSkillRequest', updateSkillSaga);
+    yield takeEvery('skill/removeSkillRequest', removeSkillSaga);
+    yield takeEvery('project/addProjectRequest', addProjectSaga);
+    yield takeEvery('project/updateProjectRequest', updateProjectSaga);
+    yield takeEvery('project/removeProjectRequest', removeProjectSaga);
+    yield takeEvery('projectData/fetchProjectDataRequest', fetchProjectDataSaga);
+    yield takeEvery('projectData/addProjectDataRequest', addProjectDataSaga);
+    yield takeEvery('projectData/updateProjectDataRequest', updateProjectDataSaga);
+    yield takeEvery('projectData/removeProjectDataRequest', removeProjectDataSaga);
+    yield takeEvery('testimonial/addTestimonialRequest', addTestimonialSaga);
+    yield takeEvery('testimonial/updateTestimonialRequest', updateTestimonialSaga);
+    yield takeEvery('testimonial/removeTestimonialRequest', removeTestimonialSaga);
     yield takeEvery('contact/saveContactRequest', saveContactSaga);
     yield takeEvery('contact/updateContactRequest', updateContactSaga);
-    yield takeEvery('socialMedia/addSocialMediaRequest',addSocialMediaSaga);
-    yield takeEvery('socialMedia/updateSocialMediaRequest',updateSocialMediaSaga);
-    yield takeEvery('socialMedia/removeSocialMediaRequest',removeSocialMediaSaga);
+    yield takeEvery('socialMedia/addSocialMediaRequest', addSocialMediaSaga);
+    yield takeEvery('socialMedia/updateSocialMediaRequest', updateSocialMediaSaga);
+    yield takeEvery('socialMedia/removeSocialMediaRequest', removeSocialMediaSaga);
 }
 
 export default rootSaga;

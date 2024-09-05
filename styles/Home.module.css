@@ -9,8 +9,9 @@
   padding-right: 8px;
 }
 
-.header-link, .header-dropdown {
-  border: none; 
+.header-link,
+.header-dropdown {
+  border: none;
   text-decoration: none;
   color: black;
   font-weight: 500;
@@ -20,10 +21,11 @@
   font-size: 16px;
 }
 
-.header-link:hover, .header-dropdown:hover {
+.header-link:hover,
+.header-dropdown:hover {
   background-color: rgb(78, 67, 124);
   border-radius: 24px;
-  color : rgb(228 227 213);
+  color: rgb(228 227 213);
   transition: .5s ease-in-out;
 }
 

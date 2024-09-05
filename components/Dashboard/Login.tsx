@@ -15,7 +15,7 @@ import { clearAllErrors } from '@/redux/slices/errorSlice';
 export default function Login() {
     const loginState = useAppSelector(state => state.login);
     const error = useAppSelector(state => state.error);
-    const loading  = useAppSelector(state => state.loading)
+    const loading = useAppSelector(state => state.loading)
     const dispatch = useAppDispatch();
     const router = useRouter();
     const [formData, setFormData] = useState<LoginUserPayload>({
@@ -23,10 +23,10 @@ export default function Login() {
         password: ''
     })
 
-    useEffect(()=>{
+    useEffect(() => {
         localStorage.clear();
         dispatch(setLoading(false));
-    },[]);
+    }, []);
 
     useEffect(() => {
         if (loginState.success && loginState.data) {

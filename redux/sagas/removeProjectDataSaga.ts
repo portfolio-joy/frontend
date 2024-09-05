@@ -4,7 +4,7 @@ import ApiRequest from "@/util/api";
 import { setErrors } from "../slices/errorSlice";
 import { removeProjectDataSuccess } from "../slices/projectDataSlice";
 
-export default function* removeProjectDataSaga(action: { type: string; payload: { projectDataId: string, token: string } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, {id: string}> {
+export default function* removeProjectDataSaga(action: { type: string; payload: { projectDataId: string, token: string } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, { id: string }> {
     const requestData = {
         method: 'DELETE',
         headers: {
@@ -13,7 +13,7 @@ export default function* removeProjectDataSaga(action: { type: string; payload: 
         }
     }
     try {
-        const responseJson = yield call(ApiRequest, `/user/projectData/${action.payload.projectDataId}`,requestData);
+        const responseJson = yield call(ApiRequest, `/user/projectData/${action.payload.projectDataId}`, requestData);
         yield put(removeProjectDataSuccess(responseJson));
     } catch (error: unknown) {
         yield put(setErrors((error as Error).message));

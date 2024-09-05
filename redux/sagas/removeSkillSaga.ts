@@ -4,7 +4,7 @@ import { CommonHeaders } from "@/util/headers";
 import ApiRequest from "@/util/api";
 import { setErrors } from "../slices/errorSlice";
 
-export default function* removeSkillSaga(action: { type: string; payload: { skillId: string, token: string } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, {id: string}> {
+export default function* removeSkillSaga(action: { type: string; payload: { skillId: string, token: string } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, { id: string }> {
     const requestData: RequestInit = {
         method: 'DELETE',
         headers: {
@@ -13,7 +13,7 @@ export default function* removeSkillSaga(action: { type: string; payload: { skil
         }
     }
     try {
-        const responseJson = yield call(ApiRequest, `/user/skill/${action.payload.skillId}`,requestData);
+        const responseJson = yield call(ApiRequest, `/user/skill/${action.payload.skillId}`, requestData);
         yield put(removeSkillSuccess(responseJson));
     } catch (error: unknown) {
         yield put(setErrors((error as Error).message));

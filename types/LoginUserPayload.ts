@@ -1,4 +1,4 @@
 export type LoginUserPayload = {
-    loginId : string,
-    password : string
+    loginId: string,
+    password: string
 }

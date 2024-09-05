@@ -1,6 +1,6 @@
 import { LoginResponseData } from "../types/LoginResponseData"
 
 export type LoginUserState = {
-    success : boolean,
-    data : LoginResponseData | null
+    success: boolean,
+    data: LoginResponseData | null
 }
