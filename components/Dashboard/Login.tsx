@@ -38,7 +38,6 @@ export default function Login() {
         if (Object.keys(error).length) {
             dispatch(setLoading(false));
             dispatch(authUserFailure());
-            console.log(error);
             toast.error(error.general);
         }
     }, [loginState.success, error])
