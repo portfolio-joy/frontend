@@ -11,7 +11,7 @@ const skillSlice = createSlice({
     name: 'skill',
     initialState,
     reducers: {
-        updateSkillState(state, action: PayloadAction<SkillsType[]>) {
+        updateSkillState(state, action: PayloadAction<SkillsType[] | null>) {
             state.success = false;
             state.data = action.payload;
         },

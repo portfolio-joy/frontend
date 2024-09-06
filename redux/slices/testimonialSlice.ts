@@ -11,7 +11,7 @@ const testimonialSlice = createSlice({
     name: 'testimonial',
     initialState,
     reducers: {
-        updateTestimonialState(state, action: PayloadAction<TestimonialType[]>) {
+        updateTestimonialState(state, action: PayloadAction<TestimonialType[] | null>) {
             state.success = false;
             state.data = action.payload;
         },
