@@ -11,7 +11,7 @@ const socialMediaSlice = createSlice({
     name: 'socialMedia',
     initialState,
     reducers: {
-        updateSocialMediaState(state, action: PayloadAction<SocialMediaType[]>) {
+        updateSocialMediaState(state, action: PayloadAction<SocialMediaType[] | null>) {
             state.success = false;
             state.data = action.payload;
         },

@@ -11,6 +11,10 @@ const projectDataSlice = createSlice({
     name: 'projectData',
     initialState,
     reducers: {
+        updateProjectDataState(state, action: PayloadAction<ProjectDataType[]>) {
+            state.success = false;
+            state.data = action.payload;
+        },
         fetchProjectDataRequest(state, action: PayloadAction<{ username?: string, projectName: string, token: string | null }>) {
             state.success = false;
         },
@@ -48,5 +52,5 @@ const projectDataSlice = createSlice({
     }
 })
 
-export const { fetchProjectDataRequest, fetchProjectDataSuccess, addProjectDataRequest, addProjectDataSuccess, updateProjectDataRequest, updateProjectDataSuccess, removeProjectDataRequest, removeProjectDataSuccess, projectDataFaliure } = projectDataSlice.actions;
+export const { updateProjectDataState, fetchProjectDataRequest, fetchProjectDataSuccess, addProjectDataRequest, addProjectDataSuccess, updateProjectDataRequest, updateProjectDataSuccess, removeProjectDataRequest, removeProjectDataSuccess, projectDataFaliure } = projectDataSlice.actions;
 export default projectDataSlice.reducer;

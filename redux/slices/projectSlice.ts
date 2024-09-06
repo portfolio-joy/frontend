@@ -11,7 +11,7 @@ const projectSlice = createSlice({
     name: 'project',
     initialState,
     reducers: {
-        updateProjectState(state, action: PayloadAction<ProjectsType[]>) {
+        updateProjectState(state, action: PayloadAction<ProjectsType[] | null>) {
             state.success = false;
             state.data = action.payload;
         },
