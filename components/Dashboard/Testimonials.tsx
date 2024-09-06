@@ -59,6 +59,7 @@ export default function Testimonials() {
         setRemoveTestimonialIndex(index);
         onOpen();
     }
+
     const removeTestimonial = () => {
         dispatch(removeTestimonialRequest({ testimonialId: (testimonialState.data![removeTestimonialIndex].id), token: userState.token }));
         onClose();
@@ -90,10 +91,10 @@ export default function Testimonials() {
             <form className={styles['dashboard-form']} onSubmit={handleSubmit}>
                 <h2>Testimonial Form</h2>
                 <Tooltip className={error.name && styles['error-tooltiip']} content={error.name}>
-                    <input autoComplete='true' className={error.name ? styles['input-error'] : styles['input-normal']} name='name' type='text' placeholder='Name' defaultValue={formData.name} onChange={handleChange} required></input>
+                    <input autoComplete='true' className={error.name ? styles['input-error'] : styles['input-normal']} name='name' type='text' placeholder='Name' value={formData.name} onChange={handleChange} required></input>
                 </Tooltip>
                 <Tooltip className={error.designation && styles['error-tooltiip']} content={error.designation}>
-                    <input className={error.designation ? styles['input-error'] : styles['input-normal']} name='designation' type='text' placeholder='Designation' defaultValue={formData.designation} onChange={handleChange} required></input>
+                    <input autoComplete='true' className={error.designation ? styles['input-error'] : styles['input-normal']} name='designation' type='text' placeholder='Designation' value={formData.designation} onChange={handleChange} required></input>
                 </Tooltip>
                 <Tooltip className={error.description && styles['error-tooltip']} content={error.description}>
                     <textarea className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={400} value={formData.description} onChange={handleChange} required></textarea>
