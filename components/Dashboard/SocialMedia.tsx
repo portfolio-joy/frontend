@@ -102,8 +102,8 @@ export default function SocialMedia() {
                 <Select id='name' name='name' aria-label='Social Media' items={socialMediaNames} placeholder="Select the social media" className={'p-5'} variant='bordered' onChange={handleChange}>
                     {(socialMediaName) => <SelectItem key={socialMediaName.key}>{socialMediaName.label}</SelectItem>}
                 </Select>
-                <Tooltip className={error.url && styles['error-tooltiip']} content={error.url}>
-                    <input autoComplete='true' className={error.url ? styles['input-error'] : styles['input-normal']} name='url' type='text' placeholder='Social Media URL' defaultValue={formData.url} onChange={handleChange} required></input>
+                <Tooltip className={error.url && styles['error-tooltip']} content={error.url}>
+                    <input autoComplete='true' className={error.url ? styles['input-error'] : styles['input-normal']} name='url' type='url' placeholder='Social Media URL' defaultValue={formData.url} onChange={handleChange} required></input>
                 </Tooltip>
                 <fieldset className='flex'>
                     {
