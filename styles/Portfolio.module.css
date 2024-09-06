@@ -86,22 +86,22 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 24px 48px;
 }
 
 .project-data>div:nth-child(even) {
     flex-direction: row-reverse;
 }
 
+.project-data .project-details {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
 .project-data>div,
 .project-data>h1 {
     padding: 24px;
-}
-
-.project-data>div p,
-.project-data>div h3,
-.project-data>h1 {
-    margin: 12px;
-    width: 80%;
 }
 
 @keyframes slideInFromLeft {
