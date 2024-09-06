@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { aboutMeFaliure, saveAboutMeRequest } from '@/redux/slices/aboutMeSlice';
+import { aboutMeFaliure, saveAboutMeRequest, updateAboutMeState } from '@/redux/slices/aboutMeSlice';
 import { updateAboutMeRequest } from '@/redux/slices/aboutMeSlice';
 import { clearAllErrors } from '@/redux/slices/errorSlice';
 import { updateUserData } from '@/redux/slices/fetchUserSlice';
@@ -11,7 +11,6 @@ import { base64ToFile } from '@/util/base64ToFile';
 import { Tooltip } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
-
 
 export default function AboutMe() {
 
@@ -29,23 +28,27 @@ export default function AboutMe() {
     const [image, setImage] = useState<File | null>(null);
     const dispatch = useAppDispatch();
     useEffect(() => {
-        if (userState.success && userState.user?.aboutMe) {
+        if (userState.success && userState.user) {
             dispatch(clearAllErrors());
             setImage(base64ToFile((userState.user as UserResponseType)?.aboutMe?.image as ImageType))
             setFormData((userState.user as UserResponseType).aboutMe)
+            dispatch(updateAboutMeState(userState.user));
             if (userState.user?.aboutMe) setIsDataPresent(true);
         }
     }, [userState.success])
 
     useEffect(() => {
         if (aboutMeState.success) {
-            toast.success('Data updated Successfully');
+            toast.success("Data updated Successfully");
             updateUserData(aboutMeState.user);
+            setImage(base64ToFile((aboutMeState.user as UserResponseType)?.aboutMe?.image as ImageType))
+            setFormData((previousFormData) => ((aboutMeState.user && aboutMeState.user.aboutMe) ? aboutMeState.user.aboutMe : previousFormData));
+            setIsDataPresent(true);
         } else if (Object.keys(error).length) {
             dispatch(aboutMeFaliure())
             toast.error(error.general);
         }
-    }, [aboutMeState.success, error]);
+    }, [aboutMeState.success, error, aboutMeState.user?.aboutMe]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
@@ -72,10 +75,10 @@ export default function AboutMe() {
         <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
             <h2>About Me Form</h2>
             <Tooltip className={error.name && styles['error-tooltip']} content={error.name}>
-                <input autoComplete='true' className={styles['input-normal']} name="name" type="text" placeholder="Name" defaultValue={formData?.name} onChange={handleChange} required></input>
+                <input autoComplete='true' className={styles['input-normal']} name="name" type="text" placeholder="Name" value={formData?.name} onChange={handleChange} required></input>
             </Tooltip>
             <Tooltip className={error.skills ? styles['error-tooltip'] : styles['info-tooltip']} content={error.skills ? error.skills : `Seperate the skills using comma`}>
-                <input className={error.skills ? styles['input-error'] : styles['input-normal']} name="skills" type="text" placeholder="Skills" maxLength={255} defaultValue={formData?.skills} onChange={handleChange} required></input>
+                <input autoComplete='true' className={error.skills ? styles['input-error'] : styles['input-normal']} name="skills" type="text" placeholder="Skills" maxLength={255} value={formData?.skills} onChange={handleChange} required></input>
             </Tooltip>
             <Tooltip className={error.description && styles['error-tooltiip']}>
                 <textarea className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} defaultValue={formData?.description} onChange={handleChange} required></textarea>
