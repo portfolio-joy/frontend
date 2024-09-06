@@ -6,13 +6,16 @@ import { ContactType } from "@/types/ContactType";
 import { useEffect, useState } from "react";
 
 export default function PortfolioContact() {
+
     const portfolioState = useAppSelector(state => state.user);
     const [contact, setContact] = useState<ContactType | undefined>(undefined);
+
     useEffect(() => {
         if (portfolioState.success) {
             setContact(portfolioState.user?.contact);
         }
     }, [portfolioState.success, contact])
+
     return (
         <section id="contact" className={styles['contact-me']}>
             <h1>Contact Me</h1>

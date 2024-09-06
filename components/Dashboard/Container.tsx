@@ -11,8 +11,9 @@ import { fetchUserData, fetchUserFailure } from "@/redux/slices/fetchUserSlice";
 import { useRouter } from "next/router";
 import { LoginResponseData } from "@/types/LoginResponseData";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import Resume from "./Resume";
+import { clearAllErrors } from "@/redux/slices/errorSlice";
 
 export default function DashboardContainer() {
   const dispatch = useAppDispatch();
@@ -57,15 +58,19 @@ export default function DashboardContainer() {
   ]
 
   useEffect(() => {
+    dispatch(clearAllErrors());
     const localStorageData = localStorage.getItem('data');
     const dataJson: LoginResponseData = JSON.parse(localStorageData ? localStorageData : '{}');
-    if (!Object.keys(error).length && !userState.success) dispatch(fetchUserData({ username: null, token: dataJson.token }));
+    dispatch(fetchUserData({ username: null, token: dataJson.token }));
+  }, []);
+
+  useEffect(() => {
     if (Object.keys(error).length && error.general === 'Session Expired') {
       dispatch(fetchUserFailure());
       toast.error("Session Expired");
       router.push('/login');
     }
-  }, [error, userState.success]);
+  }, [error])
 
   return (
     <section className={styles["dashboard-main"]}>

@@ -6,6 +6,7 @@ import { useAppSelector } from "@/hooks/hooks";
 import { SkillsType } from "@/types/SkillsType";
 
 export default function PortfolioHeader() {
+
     const [queryLength, setQueryLength] = useState<number>(1);
     const portfolioState = useAppSelector(state => state.user);
     const router = useRouter();

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { SocialMediaState } from "@/states/SocialMediaState";
+import { SocialMediaState } from "@/types/states/SocialMediaState";
 import { SocialMediaType } from "@/types/SocialMediaType";
 
 const initialState: SocialMediaState = {
@@ -20,7 +20,7 @@ const socialMediaSlice = createSlice({
         },
         addSocialMediaSuccess(state, action: PayloadAction<SocialMediaType>) {
             state.success = true;
-            state.data?.push(action.payload);
+            state.data?.unshift(action.payload);
         },
         updateSocialMediaRequest(state, action: PayloadAction<{ data: SocialMediaType, socialMediaId: string, token: string | null }>) {
             state.success = false;

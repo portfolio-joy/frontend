@@ -8,6 +8,7 @@ import { addProjectRequest, projectFaliure, removeProjectRequest, updateProjectR
 import { toast } from 'react-toastify';
 import { base64ToFile } from '@/util/base64ToFile';
 import { ImageType } from '@/types/ImageType';
+import { clearAllErrors } from '@/redux/slices/errorSlice';
 
 export default function Projects() {
 
@@ -27,12 +28,14 @@ export default function Projects() {
 
     useEffect(() => {
         if (userState.success && !projectState.data) {
+            dispatch(clearAllErrors());
             dispatch(updateProjectState(userState?.user?.projects ? userState.user.projects : []));
         }
     }, [])
 
     useEffect(() => {
         if (projectState.success) {
+            dispatch(clearAllErrors());
             toast.success("Data Updated Successfully");
         } else if (Object.keys(error).length) {
             dispatch(projectFaliure());

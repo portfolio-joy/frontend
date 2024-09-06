@@ -7,7 +7,8 @@ import { CorrectIcon } from '../icons';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { toast } from 'react-toastify';
 
-const Register = () => {
+export default function Register() {
+
     const registerState = useAppSelector(state => state.register);
     const error = useAppSelector(state => state.error);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -99,5 +100,3 @@ const Register = () => {
         </>
     );
 }
-
-export default Register;

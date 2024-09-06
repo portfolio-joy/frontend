@@ -1,11 +1,15 @@
 import { AboutMeType } from "@/types/AboutMeType";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { userInitialState } from "../rootInitialState";
+import { UserResponseType } from "@/types/UserResponseType";
 
 const aboutMeSlice = createSlice({
     name: 'aboutMe',
     initialState: userInitialState,
     reducers: {
+        updateAboutMeState(state, action: PayloadAction<UserResponseType>) {
+            state.user = action.payload;
+        },
         saveAboutMeRequest(state, action: PayloadAction<{ data: AboutMeType, token: string, image: File }>) {
             state.success = false;
         },
@@ -22,5 +26,5 @@ const aboutMeSlice = createSlice({
     }
 });
 
-export const { saveAboutMeRequest, updateAboutMeRequest, aboutMeSuccess, aboutMeFaliure } = aboutMeSlice.actions;
+export const { updateAboutMeState, saveAboutMeRequest, updateAboutMeRequest, aboutMeSuccess, aboutMeFaliure } = aboutMeSlice.actions;
 export default aboutMeSlice.reducer;

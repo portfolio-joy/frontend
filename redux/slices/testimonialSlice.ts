@@ -1,4 +1,4 @@
-import { TestimonialState } from "@/states/TestimonialState";
+import { TestimonialState } from "@/types/states/TestimonialState";
 import { TestimonialType } from "@/types/TestimonialType";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -20,7 +20,7 @@ const testimonialSlice = createSlice({
         },
         addTestimonialSuccess(state, action: PayloadAction<TestimonialType>) {
             state.success = true;
-            state.data?.push(action.payload);
+            state.data?.unshift(action.payload);
         },
         updateTestimonialRequest(state, action: PayloadAction<{ data: TestimonialType, testimonialId: string, token: string | null }>) {
             state.success = false;

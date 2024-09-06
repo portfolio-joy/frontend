@@ -6,13 +6,16 @@ import { useEffect, useState } from "react";
 import Carousel from "./Carousel";
 
 export default function PortfolioTechnicalSkills() {
+
     const portfolioState = useAppSelector((state) => state.user);
     const [technicalSkills, setTechnicalSkills] = useState<SkillsType[]>([]);
+
     useEffect(() => {
         if (portfolioState.success) {
             setTechnicalSkills(portfolioState.user ? portfolioState.user.skills.filter((skill) => skill.skillType === 'Technical') : []);
         }
     }, [portfolioState.success])
+
     return (
         <section id="technicalSkills" className={styles['technical-skills']}>
             <h1>Technical Skills</h1>
