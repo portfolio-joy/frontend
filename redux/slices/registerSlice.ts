@@ -1,5 +1,5 @@
 import { RegisterUserPayload } from '@/types/RegisterUserPayload';
-import { RegisterUserState } from '@/states/RegisterUserState';
+import { RegisterUserState } from '@/types/states/RegisterUserState';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: RegisterUserState = {

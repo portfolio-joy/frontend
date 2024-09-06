@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ProjectsType } from "@/types/ProjectsType";
-import { ProjectState } from "@/states/ProjectState";
+import { ProjectState } from "@/types/states/ProjectState";
 
 const initialState: ProjectState = {
     success: false,
@@ -20,7 +20,7 @@ const projectSlice = createSlice({
         },
         addProjectSuccess(state, action: PayloadAction<ProjectsType>) {
             state.success = true;
-            state.data!.push(action.payload);
+            state.data!.unshift(action.payload);
         },
         updateProjectRequest(state, action: PayloadAction<{ data: ProjectsType, projectId: string, token: string | null, image: File }>) {
             state.success = false;

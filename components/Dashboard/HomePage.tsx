@@ -1,5 +1,6 @@
 import styles from '@/styles/Home.module.css'
 export default function Home() {
+    
     return (
         <section className={styles['home-page']}>
             <div className={styles['heading']}>

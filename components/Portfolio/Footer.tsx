@@ -6,6 +6,7 @@ import { SocialMediaType } from "@/types/SocialMediaType";
 import Link from "next/link";
 
 export default function PortfolioFooter() {
+
     const portfolioState = useAppSelector(state => state.user);
     const [socialMedias, setSocialMedias] = useState<SocialMediaType[]>([]);
     const socialMediaIcons: Record<string, () => Promise<() => JSX.Element>> = {
@@ -19,6 +20,7 @@ export default function PortfolioFooter() {
         Github: () => import("../icons").then(module => module.GithubIcon),
         Gitlab: () => import("../icons").then(module => module.GitlabIcon)
     }
+
     useEffect(() => {
         if (portfolioState.success) {
             setSocialMedias(portfolioState.user ? portfolioState.user.socialMedias : []);

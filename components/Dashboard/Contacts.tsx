@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks'
-import { contactFaliure, saveContactRequest, updateContactRequest } from '@/redux/slices/contactSlice'
+import { contactFaliure, saveContactRequest, updateContactRequest, updateContactState } from '@/redux/slices/contactSlice'
 import { clearAllErrors } from '@/redux/slices/errorSlice'
 import { updateUserData } from '@/redux/slices/fetchUserSlice'
 import styles from '@/styles/Dashboard.module.css'
@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
 export default function Contact() {
+
     const userState = useAppSelector(state => state.user);
     const contactState = useAppSelector(state => state.contact);
     const error = useAppSelector(state => state.error);
@@ -24,9 +25,10 @@ export default function Contact() {
 
     useEffect(() => {
         dispatch(clearAllErrors());
-        if (userState.success && userState.user?.contact) {
+        if (userState.success && userState.user) {
             setFormData((userState.user as UserResponseType).contact)
-            setIsDataPresent(true);
+            dispatch(updateContactState(userState.user));
+            if (userState.user?.contact) setIsDataPresent(true);
         }
     }, [userState.success])
 
@@ -34,6 +36,8 @@ export default function Contact() {
         if (contactState.success) {
             toast.success('Data updated Successfully');
             updateUserData(contactState.user);
+            setFormData((previousFormData) => ((contactState.user && contactState.user.contact) ? contactState.user.contact : previousFormData));
+            setIsDataPresent(true);
         } else if (Object.keys(error).length) {
             dispatch(contactFaliure())
             toast.error(error.general);
