@@ -2,31 +2,36 @@ import styles from '@/styles/Home.module.css'
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react'
 import Link from 'next/link'
 import { ArrowDownIcon } from '../icons'
-import { FormEvent, useEffect, useState } from 'react';
-import { UserResponseType } from '@/types/UserResponseType';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { logoutUserRequest } from '@/redux/slices/authSlice';
 import { useRouter } from 'next/router';
 import { LoginResponseData } from '@/types/LoginResponseData';
-import { Url } from 'url';
+import { updateUserData } from '@/redux/slices/fetchUserSlice';
+import { updateSkillState } from '@/redux/slices/skillSlice';
+import { updateProjectState } from '@/redux/slices/projectSlice';
+import { updateSocialMediaState } from '@/redux/slices/socialMediaSlice';
+import { updateTestimonialState } from '@/redux/slices/testimonialSlice';
+import { useEffect, useState } from 'react';
 
 export default function Header() {
+
     const initialUserData: LoginResponseData = {
         id: null,
         token: null,
         firstName: null,
         portfolioUrl: null
     }
-    const [isDataPresent, setIsDataPresent] = useState(false);
     const userState = useAppSelector(state => state.user);
+    const dispatch = useAppDispatch();
+    const router = useRouter();
+    const [isDataPresent, setIsDataPresent] = useState(false);
     const [userData, setUserData] = useState<LoginResponseData>({
         id: null,
         token: null,
         firstName: null,
         portfolioUrl: null
     });
-    const dispatch = useAppDispatch();
-    const router = useRouter();
+
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const storedUserData = localStorage.getItem('data');
@@ -46,6 +51,11 @@ export default function Header() {
         dispatch(logoutUserRequest({ token: userData.token ? userData.token : '' }));
         localStorage.removeItem('data');
         setUserData({ id: null, token: null, firstName: null, portfolioUrl: null });
+        dispatch(updateUserData(null));
+        dispatch(updateSkillState([]));
+        dispatch(updateProjectState([]));
+        dispatch(updateTestimonialState([]));
+        dispatch(updateSocialMediaState([]));
         setIsDataPresent(false);
         router.push('/login');
     }
