@@ -1,6 +1,6 @@
 import { SkillsType } from "@/types/SkillsType";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { SkillState } from "@/states/SkillState";
+import { SkillState } from "@/types/states/SkillState";
 
 const initialState: SkillState = {
     success: false,
@@ -20,7 +20,7 @@ const skillSlice = createSlice({
         },
         addSkillSuccess(state, action: PayloadAction<SkillsType>) {
             state.success = true;
-            state.data?.push(action.payload);
+            state.data?.unshift(action.payload);
         },
         updateSkillRequest(state, action: PayloadAction<{ data: SkillsType, skillId: string, token: string | null }>) {
             state.success = false;

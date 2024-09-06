@@ -5,16 +5,18 @@ import { ProjectsType } from "@/types/ProjectsType";
 import { useAppSelector } from "@/hooks/hooks";
 import { useState, useEffect } from "react";
 import { ImageType } from "@/types/ImageType";
-import { useRouter } from "next/router";
+
 export default function PortfolioProjects() {
+
     const portfolioState = useAppSelector(state => state.user);
     const [projects, setProjects] = useState<ProjectsType[]>([]);
-    const router = useRouter();
+
     useEffect(() => {
         if (portfolioState.success) {
             setProjects(portfolioState.user ? portfolioState.user.projects : []);
         }
     }, [portfolioState.success])
+
     return (
         <section id="projects" className={styles['projects']}>
             <h1>My Projects</h1>
@@ -34,7 +36,7 @@ export default function PortfolioProjects() {
                                 </CardBody>
                             </Tooltip>
                             <CardFooter className="m-0 p-0 ps-2">
-                                <Link className="m-0 p-2 rounded-xl bg-secondary text-white" href={router.asPath + "/" + project.name}>Learn More</Link>
+                                <Link className="m-0 p-2 rounded-xl bg-secondary text-white" href={portfolioState.user?.username + "/" + project.name}>Learn More</Link>
                             </CardFooter>
                         </Card>
                     )

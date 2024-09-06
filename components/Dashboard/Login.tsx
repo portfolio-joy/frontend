@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import { clearAllErrors } from '@/redux/slices/errorSlice';
 
 export default function Login() {
+
     const loginState = useAppSelector(state => state.login);
     const error = useAppSelector(state => state.error);
     const loading = useAppSelector(state => state.loading)
@@ -53,6 +54,7 @@ export default function Login() {
         const { name, value } = event.target;
         setFormData((previousFormDataState) => ({ ...previousFormDataState, [name]: value }));
     }
+    
     return (
         <section className={`${styles['login-page']} ${loading && styles['overlay']}`}>
             {loading && (

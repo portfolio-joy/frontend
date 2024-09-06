@@ -6,13 +6,16 @@ import { useState, useEffect } from "react";
 import Carousel from "./Carousel";
 
 export default function PortfolioSoftSkills() {
+
     const portfolioState = useAppSelector(state => state.user);
     const [softSkills, setSoftSkills] = useState<SkillsType[]>([]);
+
     useEffect(() => {
         if (portfolioState.success) {
             setSoftSkills(portfolioState.user ? portfolioState.user.skills.filter((skill) => skill.skillType === 'Soft') : []);
         }
     }, [portfolioState.success])
+
     return (
         <section id="softSkills" className={styles['soft-skills']}>
             <h1>Soft Skills</h1>

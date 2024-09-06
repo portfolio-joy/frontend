@@ -9,10 +9,12 @@ import { ProjectsType } from '@/types/ProjectsType';
 import { TestimonialType } from '@/types/TestimonialType';
 
 export default function Resume() {
+
     const userState = useAppSelector(state => state.user);
     const [user, setUser] = useState<UserResponseType | null>(null)
     const [projects, setProjects] = useState<ProjectsType[]>([]);
     const [testimonials, setTestimonials] = useState<TestimonialType[]>([]);
+    
     useEffect(() => {
         if (userState.success) {
             setUser(userState.user);

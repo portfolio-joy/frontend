@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { LoginUserPayload } from "@/types/LoginUserPayload";
 import { LoginResponseData } from "@/types/LoginResponseData";
-import { LoginUserState } from "@/states/LoginUserState";
+import { LoginUserState } from "@/types/states/LoginUserState";
 
 const initialState: LoginUserState = {
     success: false,

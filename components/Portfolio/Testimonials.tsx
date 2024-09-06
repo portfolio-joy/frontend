@@ -24,7 +24,7 @@ export default function PortfolioTestimonials() {
                     return prevIndex >= testimonials.length - 1 ? 0 : prevIndex + 1
                 }
                 );
-            }, 5000);
+            }, 7000);
             return () => clearInterval(interval);
         }
     }, [currentIndex, testimonials]);

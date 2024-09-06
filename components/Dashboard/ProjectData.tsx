@@ -8,16 +8,18 @@ import { useEffect, useState } from "react";
 import { ProjectDataType } from '@/types/ProjectDataType';
 import { toast } from 'react-toastify';
 import { addProjectDataRequest, fetchProjectDataRequest, projectDataFaliure, removeProjectDataRequest, updateProjectDataRequest } from '@/redux/slices/projectDataSlice';
+import { clearAllErrors } from '@/redux/slices/errorSlice';
 
 export default function ProjectData() {
 
     const userState = useAppSelector(state => state.user);
+    const projectState = useAppSelector(state => state.project);
     const projectDataState = useAppSelector(state => state.projectData);
     const error = useAppSelector(state => state.error);
     const [selectedProject, setSelectedProject] = useState<string>("");
     const [removeProjectDataIndex, setRemoveProjectDataIndex] = useState<number>(-1);
     const [updateProjectDataIndex, setUpdateProjectDataIndex] = useState<number>(-1);
-    const [projects, _setProjects] = useState(userState.user?.projects);
+    const [projects, _setProjects] = useState(projectState.data ? projectState.data : userState.user?.projects);
     const [image, setImage] = useState<File | null>(null);
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const dispatch = useAppDispatch();
@@ -42,6 +44,7 @@ export default function ProjectData() {
             toast.error(error.general);
         }
         if (projectDataState.success) {
+            dispatch(clearAllErrors());
             toast.success("Data Updated Successfully");
         }
     }, [projectDataState.success, error])

@@ -25,6 +25,7 @@ export default function PortfolioContainer() {
     const [technicalSkills, setTechnicalSkills] = useState<SkillsType[] | undefined>([]);
     const [softSkills, setSoftSkills] = useState<SkillsType[] | undefined>([]);
     const [projectPage, setProjectPage] = useState(false);
+
     useEffect(() => {
         if (router.query.user && !portfolioState.success) {
             if (router.query.user.length === 1) {
@@ -45,6 +46,7 @@ export default function PortfolioContainer() {
             setSoftSkills(portfolioState.user?.skills.filter((skill) => skill.skillType === 'Soft'));
         }
     }, [router.isReady, router.query.user, error, portfolioState.success]);
+
     return (
         <main className={styles['portfolio-container']}>
             {

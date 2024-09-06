@@ -11,6 +11,7 @@ export default function PortfolioAboutMe() {
     const portfolioState = useAppSelector(state => state.user);
     const [aboutMe, setAboutMe] = useState<AboutMeType | null | undefined>(null);
     const [skillsArray, setSkillsArray] = useState<string[]>();
+
     useEffect(() => {
         if (portfolioState.success) {
             setAboutMe(portfolioState.user?.aboutMe);
@@ -19,6 +20,7 @@ export default function PortfolioAboutMe() {
             }
         }
     }, [portfolioState.success, aboutMe])
+
     return (
         <section id="aboutMe" className={styles['about-me']}>
             <div className={styles['user-detail']}>
