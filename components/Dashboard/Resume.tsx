@@ -53,7 +53,7 @@ export default function Resume() {
                     <Select id='testimonials' name='testimonials' aria-label='Testimonials' selectionMode='multiple' items={user?.testimonials} placeholder="Select your main 3 Testimonials" className={'p-5'} variant='bordered' onChange={handleTestimonialChange}>
                         {(testimonial) => <SelectItem key={testimonial?.id}>{testimonial?.name}</SelectItem>}
                     </Select>
-                    <PDFDownloadLink className={`text-center ${styles['submit-button']}`} document={<ResumeDocument {...{ ...user, projects: projects, testimonials: testimonials }} />} fileName="resume.pdf">
+                    <PDFDownloadLink className={`text-center ${styles['submit-button']}`} document={<ResumeDocument {...{ ...user, projects: projects, testimonials: testimonials }} />} fileName={`${user.username}_resume.pdf`}>
                         Download your Resume
                     </PDFDownloadLink>
                 </form>
