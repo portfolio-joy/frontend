@@ -9,6 +9,7 @@ Font.register({
 
 const styles = StyleSheet.create({
   page: {
+    paddingBottom: 20,
     fontFamily: 'Tinos'
   },
   header: {
@@ -52,6 +53,7 @@ const styles = StyleSheet.create({
     padding: '0 30',
     fontSize: 12,
     marginBottom: 10,
+    textAlign: 'justify'
   },
   listItem: {
     display: 'flex',
@@ -87,7 +89,7 @@ export default function ResumeDocument(user: UserResponseType) {
         <View>
           <Text style={styles.header}>Projects</Text>
           {
-            user?.projects?.slice(0, 3)?.map((project, index) =>
+            user?.projects?.slice(0, 2)?.map((project, index) =>
               <View key={index} style={styles.section}>
                 <Text style={styles.subheader}>{project?.name}</Text>
                 <Text style={styles.text}>
@@ -100,7 +102,7 @@ export default function ResumeDocument(user: UserResponseType) {
         <View>
           <Text style={styles.header}>Testimonials</Text>
           {
-            user?.testimonials?.slice(0, 3)?.map((testimonial, index) =>
+            user?.testimonials?.slice(0, 2)?.map((testimonial, index) =>
               <View key={index} style={styles.section}>
                 <Text style={styles.subheader}>{`${testimonial?.name}(${testimonial?.designation})`}</Text>
                 <Text style={styles.text}>

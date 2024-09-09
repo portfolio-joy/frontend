@@ -47,10 +47,10 @@ export default function Resume() {
             {
                 user &&
                 <form className={styles['dashboard-form']}>
-                    <Select id='projects' name='projects' aria-label='Projects' selectionMode='multiple' items={user?.projects} placeholder="Select your main 3 Projects" className={'p-5'} variant='bordered' onChange={handleProjectChange}>
+                    <Select id='projects' name='projects' aria-label='Projects' selectionMode='multiple' items={user?.projects} placeholder="Select your main 2 Projects" className={'p-5'} variant='bordered' onChange={handleProjectChange}>
                         {(project) => <SelectItem key={project?.id}>{project?.name}</SelectItem>}
                     </Select>
-                    <Select id='testimonials' name='testimonials' aria-label='Testimonials' selectionMode='multiple' items={user?.testimonials} placeholder="Select your main 3 Testimonials" className={'p-5'} variant='bordered' onChange={handleTestimonialChange}>
+                    <Select id='testimonials' name='testimonials' aria-label='Testimonials' selectionMode='multiple' items={user?.testimonials} placeholder="Select your main 2 Testimonials" className={'p-5'} variant='bordered' onChange={handleTestimonialChange}>
                         {(testimonial) => <SelectItem key={testimonial?.id}>{testimonial?.name}</SelectItem>}
                     </Select>
                     <PDFDownloadLink className={`text-center ${styles['submit-button']}`} document={<ResumeDocument {...{ ...user, projects: projects, testimonials: testimonials }} />} fileName={`${user.username}_resume.pdf`}>
