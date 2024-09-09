@@ -39,7 +39,6 @@ export default function Projects() {
             toast.success("Data Updated Successfully");
         } else if (Object.keys(error).length) {
             dispatch(projectFaliure());
-            console.log(error);
             toast.error(error.general);
         }
     }, [projectState.success, error, projectState.data])

@@ -84,7 +84,7 @@ export default function AboutMe() {
                 <textarea className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} defaultValue={formData?.description} onChange={handleChange} required></textarea>
             </Tooltip>
             <input id='image' type="file" name="image" accept="image/*" onChange={handleFileChange} hidden />
-            <Tooltip className={error.image && styles['error-tooltiip']}>
+            <Tooltip className={error.image && styles['error-tooltip']} content={error.image}>
                 <label htmlFor='image' className={`cursor-pointer ${error.image ? styles['input-error'] : styles['input-normal']}`}>Your Profile : <i>{image?.name}</i></label>
             </Tooltip>
             <button type="submit" className={styles['submit-button']}> {isDataPresent ? 'Update' : 'Save'} </button>
