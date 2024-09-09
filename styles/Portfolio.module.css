@@ -59,7 +59,10 @@
 .user-image img,
 .project-data div img {
     width: 80%;
-    border-radius: 48px;
+    border-radius: 25%;
+}
+
+.user-image img {
     margin: auto;
 }
 
@@ -86,7 +89,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24px 48px;
+}
+
+.project-data>div:nth-child(even) img {
+    margin-left: auto;
 }
 
 .project-data>div:nth-child(even) {
@@ -101,7 +107,7 @@
 
 .project-data>div,
 .project-data>h1 {
-    padding: 24px;
+    padding: 24px 48px;
 }
 
 @keyframes slideInFromLeft {
@@ -183,7 +189,13 @@
 }
 
 .footer svg {
-    margin: 24px;
+    margin: 12px 24px;
+}
+
+.footer a:hover svg g,
+.footer a:hover svg path{
+    fill: #4e437c;
+    transition: 0.1s ease-in-out;
 }
 
 @media screen and (max-width: 767px) {
