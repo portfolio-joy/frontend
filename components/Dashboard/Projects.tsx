@@ -103,7 +103,7 @@ export default function Projects() {
                 <Tooltip className={error.name && styles['error-tooltip']} content={error.name}>
                     <input autoComplete='true' className={error.name ? styles['input-error'] : styles['input-normal']} name="name" type="text" placeholder="Name" value={formData.name} onChange={handleChange} required></input>
                 </Tooltip>
-                <Tooltip className={error.briefDetail && styles['error-tooltiip']}>
+                <Tooltip className={error.briefDetail && styles['error-tooltip']}>
                     <textarea className={error.briefDetail ? styles['input-error'] : styles['input-normal']} name="briefDetail" rows={5} placeholder="Brief Detail" maxLength={300} value={formData.briefDetail} onChange={handleChange} required></textarea>
                 </Tooltip>
                 <input id='image' type="file" name="image" accept="image/*" onChange={handleFileChange} hidden />

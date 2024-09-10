@@ -31,16 +31,20 @@ export default function AboutMe() {
         if (userState.success && userState.user) {
             dispatch(clearAllErrors());
             setImage(base64ToFile((userState.user as UserResponseType)?.aboutMe?.image as ImageType))
-            setFormData((userState.user as UserResponseType).aboutMe)
             dispatch(updateAboutMeState(userState.user));
-            if (userState.user?.aboutMe) setIsDataPresent(true);
+            if (userState.user?.aboutMe) {
+                setFormData(userState.user.aboutMe)
+                setIsDataPresent(true)
+            } else {
+                setFormData((previousFormDataState)=>({...previousFormDataState,'name':userState.user?.firstName+" "+userState.user?.lastName}))
+            };
         }
     }, [userState.success])
 
     useEffect(() => {
         if (aboutMeState.success) {
             toast.success("Data updated Successfully");
-            updateUserData(aboutMeState.user);
+            dispatch(updateUserData(aboutMeState.user));
             setImage(base64ToFile((aboutMeState.user as UserResponseType)?.aboutMe?.image as ImageType))
             setFormData((previousFormData) => ((aboutMeState.user && aboutMeState.user.aboutMe) ? aboutMeState.user.aboutMe : previousFormData));
             setIsDataPresent(true);
@@ -80,7 +84,7 @@ export default function AboutMe() {
             <Tooltip className={error.skills ? styles['error-tooltip'] : styles['info-tooltip']} content={error.skills ? error.skills : `Seperate the skills using comma`}>
                 <input autoComplete='true' className={error.skills ? styles['input-error'] : styles['input-normal']} name="skills" type="text" placeholder="Skills" maxLength={255} value={formData?.skills} onChange={handleChange} required></input>
             </Tooltip>
-            <Tooltip className={error.description && styles['error-tooltiip']}>
+            <Tooltip className={error.description && styles['error-tooltip']}>
                 <textarea className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} defaultValue={formData?.description} onChange={handleChange} required></textarea>
             </Tooltip>
             <input id='image' type="file" name="image" accept="image/*" onChange={handleFileChange} hidden />
