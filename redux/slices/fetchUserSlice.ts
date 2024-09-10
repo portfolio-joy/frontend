@@ -6,6 +6,7 @@ const fetchUserSlice = createSlice({
     initialState: userInitialState,
     reducers: {
         updateUserData(state, action: PayloadAction<UserResponseType | null>) {
+            state.success = false;
             state.user = action.payload;
         },
         fetchUserData(state, action: PayloadAction<{ token: string | null, username: string | null }>) {

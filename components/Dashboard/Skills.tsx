@@ -100,10 +100,10 @@ export default function Skills() {
             <Divider />
             <form className={styles['dashboard-form']} onSubmit={handleSubmit}>
                 <h2>Skill Form</h2>
-                <Tooltip className={error.name && styles['error-tooltiip']} content={error.name}>
+                <Tooltip className={error.name && styles['error-tooltip']} content={error.name}>
                     <input autoComplete='true' className={error.name ? styles['input-error'] : styles['input-normal']} name='name' type='text' placeholder='Name' value={formData.name} onChange={handleChange} required></input>
                 </Tooltip>
-                <Tooltip className={error.type && styles['error-tooltiip']} content={error.type}>
+                <Tooltip className={error.type && styles['error-tooltip']} content={error.type}>
                     <RadioGroup name='skillType' aria-label='skill-type' color='secondary' orientation="horizontal" value={formData.skillType} onValueChange={setSkillType} isRequired onChange={handleChange}>
                         <Radio value="Technical">Technical</Radio>
                         <Radio value="Soft">Soft</Radio>

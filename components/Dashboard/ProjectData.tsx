@@ -120,7 +120,7 @@ export default function ProjectData() {
                 <Tooltip className={error.heading && styles['error-tooltip']} content={error.heading}>
                     <input className={error.heading ? styles['input-error'] : styles['input-normal']} name="heading" type="text" placeholder="Heading" defaultValue={formData.heading} onChange={handleChange} required></input>
                 </Tooltip>
-                <Tooltip className={error.description && styles['error-tooltiip']}>
+                <Tooltip className={error.description && styles['error-tooltip']}>
                     <textarea className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} value={formData.description} onChange={handleChange} required></textarea>
                 </Tooltip>
                 <input id='image' type="file" name="image" accept="image/*" onChange={handleFileChange} hidden />

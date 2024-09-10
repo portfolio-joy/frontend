@@ -26,9 +26,13 @@ export default function Contact() {
     useEffect(() => {
         dispatch(clearAllErrors());
         if (userState.success && userState.user) {
-            setFormData((userState.user as UserResponseType).contact)
             dispatch(updateContactState(userState.user));
-            if (userState.user?.contact) setIsDataPresent(true);
+            if (userState.user.contact) {
+                setIsDataPresent(true)
+                setFormData(userState.user.contact)
+            } else {
+                setFormData((previousFormDataState)=>({...previousFormDataState,'emailId':userState.user?.emailId ?? ''}))
+            }
         }
     }, [userState.success])
 
