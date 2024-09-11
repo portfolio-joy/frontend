@@ -25,7 +25,9 @@ export default function PortfolioProjectData() {
             {
                 projectDataState.data.map((projectData, index) =>
                     <div key={index} className={index % 2 === 0 ? styles['slide-left'] : styles['slide-right']}>
-                        <Image alt="Project Data Image" src={`data:${(projectData.image as ImageType)?.type};base64,${(projectData?.image as ImageType)?.imageData}`} className="rounded-none"></Image>
+                        <div className={styles['project-data-image']}>
+                            <img alt="Project Data Image" src={`data:${(projectData.image as ImageType)?.type};base64,${(projectData?.image as ImageType)?.imageData}`}></img>
+                        </div>
                         <div className={styles['project-details']}>
                             <h3>{projectData.heading}</h3>
                             <p>{projectData.description}</p>
