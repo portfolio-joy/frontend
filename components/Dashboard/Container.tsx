@@ -5,7 +5,7 @@ import Skills from "./Skills";
 import Projects from "./Projects";
 import ProjectData from "./ProjectData";
 import Testimonials from "./Testimonials";
-import Contact from "./Contacts";
+import Contact from "./Contact";
 import SocialMedia from "./SocialMedia";
 import { fetchUserData, fetchUserFailure } from "@/redux/slices/fetchUserSlice";
 import { useRouter } from "next/router";

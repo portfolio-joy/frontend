@@ -24,7 +24,7 @@ export default function PortfolioAboutMe() {
         <section id="aboutMe" className={styles['about-me']}>
             <div className={styles['user-detail']}>
                 <h1>I'm {aboutMe?.name}</h1>
-                <p>{aboutMe?.description}</p>
+                <p className="break-words">{aboutMe?.description}</p>
                 <div className={styles['skill-chips']}>
                     {skillsArray &&
                         skillsArray?.map((skill, index) =>

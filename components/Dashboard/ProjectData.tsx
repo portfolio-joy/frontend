@@ -7,7 +7,7 @@ import { base64ToFile } from "@/util/base64ToFile";
 import { useEffect, useState } from "react";
 import { ProjectDataType } from '@/types/ProjectDataType';
 import { toast } from 'react-toastify';
-import { addProjectDataRequest, fetchProjectDataRequest, projectDataFaliure, removeProjectDataRequest, updateProjectDataRequest } from '@/redux/slices/projectDataSlice';
+import { addProjectDataRequest, fetchProjectDataRequest, projectDataFaliure, removeProjectDataRequest, updateProjectDataRequest, updateProjectDataState } from '@/redux/slices/projectDataSlice';
 import { clearAllErrors } from '@/redux/slices/errorSlice';
 
 export default function ProjectData() {
@@ -32,20 +32,17 @@ export default function ProjectData() {
     };
     const [formData, setFormData] = useState(initialFormData);
 
-    useEffect(() => {
-        if (selectedProject.length) {
-            dispatch(fetchProjectDataRequest({ projectName: selectedProject, token: userState.token }));
-        }
-    }, [selectedProject])
+    useEffect(()=>{
+        dispatch(updateProjectDataState([]));
+    },[])
 
     useEffect(() => {
-        if (Object.keys(error).length) {
-            dispatch(projectDataFaliure());
-            toast.error(error.general);
-        }
         if (projectDataState.success) {
             dispatch(clearAllErrors());
             toast.success("Data Updated Successfully");
+        } else if (Object.keys(error).length) {
+            dispatch(projectDataFaliure());
+            toast.error(error.general);
         }
     }, [projectDataState.success, error])
 
@@ -53,6 +50,7 @@ export default function ProjectData() {
         const { name, value } = event.target;
         if (name === 'project') {
             setSelectedProject(value);
+            dispatch(fetchProjectDataRequest({ projectName: value, token: userState.token }));
             const project = projects && projects.find(project => project.name === value);
             setFormData((previousFromDataState) => ({ ...previousFromDataState, 'project': { 'id': project ? project.id : '' } }));
         } else {
@@ -117,14 +115,14 @@ export default function ProjectData() {
                 <Select id='project' name='project' aria-label='Your Projects' items={projects ? projects : []} placeholder="Select your project" className={'p-5'} variant='bordered' onChange={handleChange}>
                     {(project) => <SelectItem key={project.name}>{project.name}</SelectItem>}
                 </Select>
-                <Tooltip className={error.heading && styles['error-tooltip']} content={error.heading}>
-                    <input className={error.heading ? styles['input-error'] : styles['input-normal']} name="heading" type="text" placeholder="Heading" defaultValue={formData.heading} onChange={handleChange} required></input>
+                <Tooltip isDisabled={!error.heading} className={error.heading && styles['error-tooltip']} content={error.heading}>
+                    <input autoComplete='true' className={error.heading ? styles['input-error'] : styles['input-normal']} name="heading" type="text" placeholder="Heading" maxLength={35} value={formData.heading} onChange={handleChange} required></input>
                 </Tooltip>
-                <Tooltip className={error.description && styles['error-tooltip']}>
-                    <textarea className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} value={formData.description} onChange={handleChange} required></textarea>
+                <Tooltip isDisabled={!error.description} className={error.description && styles['error-tooltip']} content={error.description}>
+                    <textarea autoComplete='true' className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} value={formData.description} onChange={handleChange} required></textarea>
                 </Tooltip>
                 <input id='image' type="file" name="image" accept="image/*" onChange={handleFileChange} hidden />
-                <Tooltip className={error.image && styles['error-tooltip']} content={error.image}>
+                <Tooltip isDisabled={!error.image} className={error.image && styles['error-tooltip']} content={error.image}>
                     <label htmlFor='image' className={`cursor-pointer ${error.image ? styles['input-error'] : styles['input-normal']}`}>Project Data Image : <i>{image?.name}</i></label>
                 </Tooltip>
                 <fieldset className='flex'>

@@ -100,10 +100,10 @@ export default function Skills() {
             <Divider />
             <form className={styles['dashboard-form']} onSubmit={handleSubmit}>
                 <h2>Skill Form</h2>
-                <Tooltip className={error.name && styles['error-tooltip']} content={error.name}>
-                    <input autoComplete='true' className={error.name ? styles['input-error'] : styles['input-normal']} name='name' type='text' placeholder='Name' value={formData.name} onChange={handleChange} required></input>
+                <Tooltip isDisabled={!error.name} className={error.name && styles['error-tooltip']} content={error.name}>
+                    <input autoComplete='true' className={error.name ? styles['input-error'] : styles['input-normal']} name='name' type='text' placeholder='Name' maxLength={35} value={formData.name} onChange={handleChange} required></input>
                 </Tooltip>
-                <Tooltip className={error.type && styles['error-tooltip']} content={error.type}>
+                <Tooltip isDisabled={!error.type} className={error.type && styles['error-tooltip']} content={error.type}>
                     <RadioGroup name='skillType' aria-label='skill-type' color='secondary' orientation="horizontal" value={formData.skillType} onValueChange={setSkillType} isRequired onChange={handleChange}>
                         <Radio value="Technical">Technical</Radio>
                         <Radio value="Soft">Soft</Radio>
@@ -113,8 +113,8 @@ export default function Skills() {
                     skillType === 'Technical' &&
                     <Slider name='proficiency' aria-label='proficiency-slider' color='secondary' showTooltip={true} step={1} maxValue={100} minValue={1} defaultValue={formData.proficiency} className={`max-w-md p-5 ${styles['proficiency-slider']}`} value={Number(proficiencyValue)} onChange={setProficiencyValue} />
                 }
-                <Tooltip className={error.description && styles['error-tooltip']} content={error.description}>
-                    <textarea className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} value={formData.description} onChange={handleChange} required></textarea>
+                <Tooltip isDisabled={!error.description} className={error.description && styles['error-tooltip']} content={error.description}>
+                    <textarea autoComplete='true' className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} value={formData.description} onChange={handleChange} required></textarea>
                 </Tooltip>
                 <fieldset className='flex'>
                     {

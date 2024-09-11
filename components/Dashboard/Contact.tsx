@@ -1,10 +1,8 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks'
 import { contactFaliure, saveContactRequest, updateContactRequest, updateContactState } from '@/redux/slices/contactSlice'
 import { clearAllErrors } from '@/redux/slices/errorSlice'
-import { updateUserData } from '@/redux/slices/fetchUserSlice'
 import styles from '@/styles/Dashboard.module.css'
 import { ContactType } from '@/types/ContactType'
-import { UserResponseType } from '@/types/UserResponseType'
 import { Tooltip } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
@@ -25,13 +23,18 @@ export default function Contact() {
 
     useEffect(() => {
         dispatch(clearAllErrors());
-        if (userState.success && userState.user) {
-            dispatch(updateContactState(userState.user));
-            if (userState.user.contact) {
-                setIsDataPresent(true)
-                setFormData(userState.user.contact)
+        if (userState.success) {
+            if (!contactState.data) {
+                if (userState.user?.contact) {
+                    dispatch(updateContactState(userState.user.contact));
+                    setIsDataPresent(true)
+                    setFormData(userState.user.contact)
+                } else {
+                    setFormData((previousFormDataState) => ({ ...previousFormDataState, 'emailId': userState.user?.emailId ?? '' }))
+                }
             } else {
-                setFormData((previousFormDataState)=>({...previousFormDataState,'emailId':userState.user?.emailId ?? ''}))
+                setFormData(contactState.data);
+                setIsDataPresent(true);
             }
         }
     }, [userState.success])
@@ -39,14 +42,14 @@ export default function Contact() {
     useEffect(() => {
         if (contactState.success) {
             toast.success('Data updated Successfully');
-            updateUserData(contactState.user);
-            setFormData((previousFormData) => ((contactState.user && contactState.user.contact) ? contactState.user.contact : previousFormData));
+            dispatch(clearAllErrors());
+            setFormData((previousFormData) => contactState.data ?? previousFormData);
             setIsDataPresent(true);
         } else if (Object.keys(error).length) {
             dispatch(contactFaliure())
             toast.error(error.general);
         }
-    }, [contactState.success, error]);
+    }, [contactState.success, error, contactState.data]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
@@ -62,17 +65,18 @@ export default function Contact() {
             dispatch(saveContactRequest({ data: formData, token: userState.token! }));
         }
     }
+
     return (
         <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
-            <h2>Contacts Form</h2>
-            <Tooltip className={error.emailId && styles['error-tooltip']} content={error.emailId}>
-                <input autoComplete='true' className={error.emailId ? styles['input-error'] : styles['input-normal']} name="emailId" type="email" placeholder="Email Id" defaultValue={formData?.emailId} onChange={handleChange} required></input>
+            <h2>Contact Form</h2>
+            <Tooltip isDisabled={!error.emailId} className={error.emailId && styles['error-tooltip']} content={error.emailId}>
+                <input autoComplete='true' className={error.emailId ? styles['input-error'] : styles['input-normal']} name="emailId" type="email" placeholder="Email Id" maxLength={35} value={formData?.emailId} onChange={handleChange} required></input>
             </Tooltip>
-            <Tooltip className={error.address && styles['error-tooltip']} content={error.address}>
-                <textarea className={error.address ? styles['input-error'] : styles['input-normal']} name="address" rows={5} placeholder="Address" maxLength={255} defaultValue={formData?.address} onChange={handleChange} required></textarea>
+            <Tooltip isDisabled={!error.address} className={error.address && styles['error-tooltip']} content={error.address}>
+                <textarea autoComplete='true' className={error.address ? styles['input-error'] : styles['input-normal']} name="address" rows={5} placeholder="Address" maxLength={35} value={formData?.address} onChange={handleChange} required></textarea>
             </Tooltip>
-            <Tooltip className={error.phoneNo && styles['error-tooltip']} content={error.phoneNo}>
-                <input className={error.phoneNo ? styles['input-error'] : styles['input-normal']} name="phoneNo" type="tel" pattern='^[6-9]\d{9}$' placeholder="Mobile No" maxLength={10} defaultValue={formData?.phoneNo} onChange={handleChange} title={!error.phoneNo ? 'Invalid Mobile Number' : undefined} required></input>
+            <Tooltip isDisabled={!error.phoneNo} className={error.phoneNo && styles['error-tooltip']} content={error.phoneNo}>
+                <input autoComplete='true' className={error.phoneNo ? styles['input-error'] : styles['input-normal']} name="phoneNo" type="tel" pattern='^[6-9]\d{9}$' placeholder="Mobile No" maxLength={10} value={formData?.phoneNo} onChange={handleChange} title={!error.phoneNo ? 'Invalid Mobile Number' : undefined} required></input>
             </Tooltip>
             <button type="submit" className={styles['submit-button']}> {isDataPresent ? 'Update' : 'Save'} </button>
         </form>

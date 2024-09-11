@@ -92,10 +92,10 @@ export default function Testimonials() {
             <form className={styles['dashboard-form']} onSubmit={handleSubmit}>
                 <h2>Testimonial Form</h2>
                 <Tooltip isDisabled={!error.name} isOpen={tooltipOpen} className={error.name && styles['error-tooltip']} content={error.name}>
-                    <input autoComplete='true' className={error.name ? styles['input-error'] : styles['input-normal']} name='name' type='text' placeholder='Name' value={formData.name} onChange={handleChange} onTouchStart={()=>isTooltipOpen(true)} onTouchEnd={()=>setTimeout(()=>isTooltipOpen(false),1000)} onMouseEnter={()=>isTooltipOpen(true)} onMouseLeave={()=>isTooltipOpen(false)} required></input>
+                    <input autoComplete='true' className={error.name ? styles['input-error'] : styles['input-normal']} name='name' type='text' placeholder='Name' maxLength={35} value={formData.name} onChange={handleChange} required></input>
                 </Tooltip>
                 <Tooltip className={error.designation && styles['error-tooltip']} content={error.designation}>
-                    <input autoComplete='true' className={error.designation ? styles['input-error'] : styles['input-normal']} name='designation' type='text' placeholder='Designation' value={formData.designation} onChange={handleChange} required></input>
+                    <input autoComplete='true' className={error.designation ? styles['input-error'] : styles['input-normal']} name='designation' type='text' placeholder='Designation' maxLength={35} value={formData.designation} onChange={handleChange} required></input>
                 </Tooltip>
                 <Tooltip className={error.description && styles['error-tooltip']} content={error.description}>
                     <textarea className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={400} value={formData.description} onChange={handleChange} required></textarea>
