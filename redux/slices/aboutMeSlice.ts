@@ -2,13 +2,20 @@ import { AboutMeType } from "@/types/AboutMeType";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { userInitialState } from "../rootInitialState";
 import { UserResponseType } from "@/types/UserResponseType";
+import { AboutMeState } from "@/types/states/AboutMeState";
+
+const initialState : AboutMeState = {
+    data : null,
+    success: false
+}
 
 const aboutMeSlice = createSlice({
     name: 'aboutMe',
-    initialState: userInitialState,
+    initialState,
     reducers: {
-        updateAboutMeState(state, action: PayloadAction<UserResponseType>) {
-            state.user = action.payload;
+        updateAboutMeState(state, action: PayloadAction<AboutMeType | null>) {
+            state.success = false;
+            state.data = action.payload;
         },
         saveAboutMeRequest(state, action: PayloadAction<{ data: AboutMeType, token: string, image: File }>) {
             state.success = false;
@@ -18,7 +25,7 @@ const aboutMeSlice = createSlice({
         },
         aboutMeSuccess(state, action: PayloadAction<AboutMeType>) {
             state.success = true;
-            if (state.user) state.user.aboutMe = action.payload;
+            state.data = action.payload;
         },
         aboutMeFaliure(state) {
             state.success = false;

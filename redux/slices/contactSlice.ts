@@ -2,14 +2,20 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { userInitialState } from "../rootInitialState";
 import { ContactType } from "@/types/ContactType";
 import { UserResponseType } from "@/types/UserResponseType";
+import { ContactState } from "@/types/states/ContactState";
+
+const initialState : ContactState = {
+    data: null,
+    success: false
+}
 
 const contactSlice = createSlice({
     name: 'contact',
-    initialState: userInitialState,
+    initialState,
     reducers: {
-        updateContactState(state, action: PayloadAction<UserResponseType>) {
+        updateContactState(state, action: PayloadAction<ContactType | null>) {
             state.success = false;
-            state.user = action.payload;
+            state.data = action.payload;
         },
         saveContactRequest(state, action: PayloadAction<{ data: ContactType, token: string }>) {
             state.success = false;
@@ -19,7 +25,7 @@ const contactSlice = createSlice({
         },
         contactSuccess(state, action: PayloadAction<ContactType>) {
             state.success = true;
-            if (state.user) state.user.contact = action.payload;
+            state.data = action.payload;
         },
         contactFaliure(state) {
             state.success = false;

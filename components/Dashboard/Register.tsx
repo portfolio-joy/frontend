@@ -65,23 +65,23 @@ export default function Register() {
         <>
             <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
                 <h2>Welcome Aboard! Let’s Get You Registered</h2>
-                <Tooltip className={error.firstName && styles['error-tooltip']} content={error.firstName}>
-                    <input name="firstName" type="text" placeholder="First Name *" value={formData.firstName} onChange={handleChange} className={error.firstName ? styles["input-error"] : styles["input-normal"]} required title='' />
+                <Tooltip isDisabled={!error.firstName} className={error.firstName && styles['error-tooltip']} content={error.firstName}>
+                    <input name="firstName" type="text" placeholder="First Name *" maxLength={17} value={formData.firstName} onChange={handleChange} className={error.firstName ? styles["input-error"] : styles["input-normal"]} required/>
                 </Tooltip>
-                <Tooltip className={error.lastName && styles['error-tooltip']} content={error.lastName}>
-                    <input name="lastName" type="text" placeholder="Last Name" value={formData.lastName} onChange={handleChange} className={error.lastName ? styles["input-error"] : styles["input-normal"]} />
+                <Tooltip isDisabled={!error.lastName} className={error.lastName && styles['error-tooltip']} content={error.lastName}>
+                    <input name="lastName" type="text" placeholder="Last Name" maxLength={17} value={formData.lastName} onChange={handleChange} className={error.lastName ? styles["input-error"] : styles["input-normal"]} />
                 </Tooltip>
-                <Tooltip className={error.emailId && styles['error-tooltip']} content={error.emailId}>
-                    <input name="emailId" type="email" placeholder="Email Id *" value={formData.emailId} onChange={handleChange} className={error.emailId ? styles["input-error"] : styles["input-normal"]} required title='' />
+                <Tooltip isDisabled={!error.emailId} className={error.emailId && styles['error-tooltip']} content={error.emailId}>
+                    <input name="emailId" type="email" placeholder="Email Id *" maxLength={35} value={formData.emailId} onChange={handleChange} className={error.emailId ? styles["input-error"] : styles["input-normal"]} required/>
                 </Tooltip>
-                <Tooltip className={error.username && styles['error-tooltip']} content={error.username}>
-                    <input name="username" type="text" placeholder="Username *" minLength={6} maxLength={16} value={formData.username} onChange={handleChange} className={error.username ? styles["input-error"] : styles["input-normal"]} required title='' />
+                <Tooltip isDisabled={!error.username} className={error.username && styles['error-tooltip']} content={error.username}>
+                    <input name="username" type="text" placeholder="Username *" minLength={6} maxLength={16} value={formData.username} onChange={handleChange} className={error.username ? styles["input-error"] : styles["input-normal"]} required/>
                 </Tooltip>
-                <Tooltip className={error.password && styles['error-tooltip']} content={error.password}>
-                    <input name="password" type="password" placeholder="Password *" minLength={8} maxLength={20} value={formData.password} onChange={handleChange} className={error.password ? styles["input-error"] : styles["input-normal"]} required title='' />
+                <Tooltip isDisabled={!error.password} className={error.password && styles['error-tooltip']} content={error.password}>
+                    <input name="password" type="password" placeholder="Password *" minLength={8} maxLength={20} value={formData.password} onChange={handleChange} className={error.password ? styles["input-error"] : styles["input-normal"]} required/>
                 </Tooltip>
-                <Tooltip className={passwordMismatch && styles['error-tooltip']} showArrow={true} content={passwordMismatch}>
-                    <input name="confirmPassword" type="password" placeholder="Confirm Password *" minLength={8} maxLength={20} value={formData.confirmPassword} onChange={handleChange} className={passwordMismatch ? styles["input-error"] : styles["input-normal"]} required title='' />
+                <Tooltip isDisabled={!passwordMismatch} className={passwordMismatch && styles['error-tooltip']} content={passwordMismatch}>
+                    <input name="confirmPassword" type="password" placeholder="Confirm Password *" minLength={8} maxLength={20} value={formData.confirmPassword} onChange={handleChange} className={passwordMismatch ? styles["input-error"] : styles["input-normal"]} required/>
                 </Tooltip>
                 <button type="submit" disabled={registerState.success && !isOpen} className={styles['submit-button']}>Register</button>
             </form>
