@@ -46,24 +46,26 @@
     justify-content: space-between;
 }
 
-.user-detail,
+.user-detail {
+    width: 60%;
+}
+
 .user-image {
-    width: 50%;
+    width: 40%;
+    height: 300px;
+    padding-left: 24px;
+}
+
+.user-image img,
+.project-data-image img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50px;
 }
 
 .user-detail h1 {
     padding-bottom: 12px;
     letter-spacing: 1.5px;
-}
-
-.user-image img,
-.project-data div img {
-    width: 80%;
-    border-radius: 25%;
-}
-
-.user-image img {
-    margin: auto;
 }
 
 .common-card {
@@ -91,23 +93,39 @@
     align-items: center;
 }
 
-.project-data>div:nth-child(even) img {
-    margin-left: auto;
-}
-
 .project-data>div:nth-child(even) {
     flex-direction: row-reverse;
 }
 
-.project-data .project-details {
+.project-data-image {
+    width: 20%;
+    height: 200px;
+}
+.project-details {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 80%;
 }
 
 .project-data>div,
 .project-data>h1 {
     padding: 24px 48px;
+}
+
+.slide-left .project-data-image {
+    margin-left: 24px;
+}
+
+.slide-right .project-data-image {
+    margin-right: 24px;
+}
+
+.slide-left {
+    animation: slideInFromLeft 1s forwards;
+}
+
+.slide-right {
+    animation: slideInFromRight 1s forwards;
 }
 
 @keyframes slideInFromLeft {
@@ -134,13 +152,6 @@
     }
 }
 
-.slide-left {
-    animation: slideInFromLeft 1s forwards;
-}
-
-.slide-right {
-    animation: slideInFromRight 1s forwards;
-}
 
 .quotes {
     margin: 48px 12px;
@@ -193,7 +204,7 @@
 }
 
 .footer a:hover svg g,
-.footer a:hover svg path{
+.footer a:hover svg path {
     fill: rgb(120, 40, 200);
     transition: 0.1s ease-in-out;
 }
@@ -218,16 +229,21 @@
         align-items: center;
     }
 
-    .user-detail,
     .user-image {
+        width: 100%;
+        height: 300px;
+    }
+
+    .user-detail {
         width: 100%;
     }
 
+    .user-image,
     .user-detail h1,
     .user-detail p,
     .skill-chips {
         text-align: center;
-        padding: 24px;
+        padding: 18px;
     }
 
     .card-body {
@@ -241,20 +257,24 @@
         align-items: center;
     }
 
-    .project-data,
-    .project-data>div>div {
-        margin-top: 12px;
+    .project-data>h1,
+    .project-details,
+    .project-data-image {
+        margin-top: 18px;
+        margin-left: 0px;
         text-align: center;
-    }
-
-    .project-data>h1 {
         width: 100%;
     }
 
-    .project-data>div>div {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    .project-details p {
+        margin-top: 18px;
+    }
+
+    .project-data-image img {
+        width: auto;
+        margin: auto;
+        object-fit: contain;
+        border-radius: 24px;
     }
 
     .quotes {
