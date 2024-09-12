@@ -56,6 +56,23 @@ main {
   height: 100%;
 }
 
+/* width */
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(78, 67, 124);
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(78, 67, 124);
+}
+
 @media screen and (max-width: 767px) {
   .rec-arrow {
     display: none;
