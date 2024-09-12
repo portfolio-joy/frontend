@@ -78,7 +78,7 @@ export default function Resume() {
                     <iframe
                         src={`${pdfUrl}#toolbar=0`}
                         className='w-full md:w-1/2 shadow-lg'
-                        height="100%"
+                        height="95%"
                         title="PDF Preview"
                     />
                 )}

@@ -36,13 +36,16 @@
 }
 
 .right-panel {
+    width: 80%;
     flex-grow: 1;
     padding: 48px;
+    overflow: auto;
 }
 
 .dashboard-form {
     display: flex;
     flex-direction: column;
+    /* overflow: auto; */
 }
 
 .dashboard-form input,
