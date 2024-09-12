@@ -2,7 +2,6 @@ import styles from '@/styles/Dashboard.module.css'
 import { pdf, PDFDownloadLink } from "@react-pdf/renderer";
 import ResumeDocument from "../Resume/ResumeDocument";
 import { useAppSelector } from "@/hooks/hooks";
-import { UserResponseType } from "@/types/UserResponseType";
 import React, { useEffect, useState } from "react";
 import { Select, SelectItem } from '@nextui-org/react';
 import { ProjectsType } from '@/types/ProjectsType';
@@ -78,7 +77,7 @@ export default function Resume() {
                     <iframe
                         src={`${pdfUrl}#toolbar=0`}
                         className='w-full md:w-1/2 shadow-lg'
-                        height="100%"
+                        height="95%"
                         title="PDF Preview"
                     />
                 )}

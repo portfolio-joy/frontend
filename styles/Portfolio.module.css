@@ -249,7 +249,6 @@
     }
 
     .card-body {
-        scrollbar-width: thin;
         -webkit-box-orient: initial;
         overflow: auto;
     }
