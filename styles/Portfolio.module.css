@@ -53,14 +53,15 @@
 .user-image {
     width: 40%;
     height: 300px;
-    padding-left: 24px;
 }
 
 .user-image img,
 .project-data-image img {
-    width: 100%;
+    width: auto;
+    margin: auto;
+    object-fit: contain;
     height: 100%;
-    border-radius: 50px;
+    border-radius: 24px;
 }
 
 .user-detail h1 {
@@ -101,6 +102,7 @@
     width: 20%;
     height: 200px;
 }
+
 .project-details {
     display: flex;
     flex-direction: column;
@@ -270,11 +272,9 @@
         margin-top: 18px;
     }
 
-    .project-data-image img {
-        width: auto;
-        margin: auto;
-        object-fit: contain;
-        border-radius: 24px;
+    .slide-left .project-data-image,
+    .slide-right .project-data-image {
+        margin: 0;
     }
 
     .quotes {

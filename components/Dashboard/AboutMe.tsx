@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { aboutMeFaliure, saveAboutMeRequest, updateAboutMeState } from '@/redux/slices/aboutMeSlice';
 import { updateAboutMeRequest } from '@/redux/slices/aboutMeSlice';
 import { clearAllErrors } from '@/redux/slices/errorSlice';
+import { updateResumeData, updateResumeState } from '@/redux/slices/resumeSlice';
 import styles from '@/styles/Dashboard.module.css'
 import { AboutMeType } from '@/types/AboutMeType'
 import { ImageType } from '@/types/ImageType';
@@ -28,6 +29,13 @@ export default function AboutMe() {
     useEffect(() => {
         dispatch(clearAllErrors());
         if (userState.success) {
+            dispatch(updateResumeState({
+                aboutMe: userState.user?.aboutMe ?? null,
+                contact: userState.user?.contact ?? null,
+                projects: userState.user?.projects ?? [],
+                testimonials: userState.user?.testimonials ?? [],
+                skills: userState.user?.skills ?? []
+            }));
             if (!aboutMeState.data) {
                 if (userState.user?.aboutMe) {
                     setImage(base64ToFile(userState.user.aboutMe?.image as ImageType));
@@ -52,6 +60,7 @@ export default function AboutMe() {
             setImage(base64ToFile(aboutMeState.data?.image as ImageType))
             setFormData((previousFormData) => aboutMeState.data ?? previousFormData);
             setIsDataPresent(true);
+            dispatch(updateResumeData({ key: 'aboutMe', value: aboutMeState.data }));
         } else if (Object.keys(error).length) {
             dispatch(aboutMeFaliure())
             toast.error(error.general);

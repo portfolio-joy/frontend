@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks'
 import { contactFaliure, saveContactRequest, updateContactRequest, updateContactState } from '@/redux/slices/contactSlice'
 import { clearAllErrors } from '@/redux/slices/errorSlice'
+import { updateResumeData } from '@/redux/slices/resumeSlice'
 import styles from '@/styles/Dashboard.module.css'
 import { ContactType } from '@/types/ContactType'
 import { Tooltip } from '@nextui-org/react'
@@ -45,6 +46,7 @@ export default function Contact() {
             dispatch(clearAllErrors());
             setFormData((previousFormData) => contactState.data ?? previousFormData);
             setIsDataPresent(true);
+            dispatch(updateResumeData({key : 'contact', value : contactState.data}));
         } else if (Object.keys(error).length) {
             dispatch(contactFaliure())
             toast.error(error.general);
