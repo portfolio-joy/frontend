@@ -7,6 +7,7 @@ import { removeSkillRequest, addSkillRequest, updateSkillRequest, updateSkillSta
 import { SkillsType } from '@/types/SkillsType';
 import { toast } from 'react-toastify';
 import { clearAllErrors } from '@/redux/slices/errorSlice';
+import { updateResumeData } from '@/redux/slices/resumeSlice';
 
 export default function Skills() {
 
@@ -42,6 +43,7 @@ export default function Skills() {
         if (skillState.success) {
             dispatch(clearAllErrors());
             toast.success("Data Updated Successfully");
+            dispatch(updateResumeData({key : 'skills', value : skillState.data}));
         } else if (Object.keys(error).length) {
             dispatch(skillFaliure());
             toast.error(error.general);

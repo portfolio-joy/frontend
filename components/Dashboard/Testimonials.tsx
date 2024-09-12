@@ -7,6 +7,7 @@ import { addTestimonialRequest, removeTestimonialRequest, testimonialFaliure, up
 import { clearAllErrors } from '@/redux/slices/errorSlice';
 import { toast } from 'react-toastify';
 import { TestimonialType } from '@/types/TestimonialType';
+import { updateResumeData } from '@/redux/slices/resumeSlice';
 
 export default function Testimonials() {
 
@@ -36,6 +37,7 @@ export default function Testimonials() {
     useEffect(() => {
         if (testimonialState.success) {
             toast.success("Data Updated Successfully");
+            dispatch(updateResumeData({ key: 'testimonials', value: testimonialState.data }))
         } else if (Object.keys(error).length) {
             dispatch(testimonialFaliure());
             toast.error(error.general);

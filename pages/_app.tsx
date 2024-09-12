@@ -1,12 +1,12 @@
 import "@/styles/globals.css";
 import { NextUIProvider } from "@nextui-org/react";
 import type { AppProps } from "next/app";
-import { Kalnia } from "next/font/google"
+import { Lora } from "next/font/google"
 import { Provider } from "react-redux";
 import store from "@/redux/store";
 import 'react-toastify/dist/ReactToastify.css';
 
-const kalnia = Kalnia({
+const playfairDisplay = Lora({
   weight: '400',
   subsets: ['latin'],
 })
@@ -14,7 +14,7 @@ const kalnia = Kalnia({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
-      <main className={kalnia.className}>
+      <main className={playfairDisplay.className}>
         <NextUIProvider style={{ height: "100%" }}>
           <Component {...pageProps} />
         </NextUIProvider>

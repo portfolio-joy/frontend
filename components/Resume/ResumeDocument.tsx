@@ -1,6 +1,7 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
 import { UserResponseType } from '@/types/UserResponseType';
+import { ResumeType } from '@/types/ResumeType';
 
 Font.register({
   family: 'Tinos',
@@ -73,23 +74,23 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function ResumeDocument(user: UserResponseType) {
+export default function ResumeDocument(resume: ResumeType) {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <Text style={styles.username}>{user?.aboutMe?.name}</Text>
+        <Text style={styles.username}>{resume.aboutMe?.name}</Text>
         <View style={styles.contact}>
-          <Text style={styles.contactInfo}>{user?.contact?.phoneNo}</Text>
-          <Text style={styles.contactInfo}>{user?.contact?.emailId} </Text>
-          <Text style={styles.contactInfo}>{user?.contact?.address}</Text>
+          <Text style={styles.contactInfo}>{resume.contact?.phoneNo}</Text>
+          <Text style={styles.contactInfo}>{resume.contact?.emailId} </Text>
+          <Text style={styles.contactInfo}>{resume.contact?.address}</Text>
         </View>
         <Text style={styles.text}>
-          {user?.aboutMe?.description}
+          {resume.aboutMe?.description}
         </Text>
         <View>
           <Text style={styles.header}>Projects</Text>
           {
-            user?.projects?.slice(0, 2)?.map((project, index) =>
+            resume.projects?.slice(0, 2)?.map((project, index) =>
               <View key={index} style={styles.section}>
                 <Text style={styles.subheader}>{project?.name}</Text>
                 <Text style={styles.text}>
@@ -102,7 +103,7 @@ export default function ResumeDocument(user: UserResponseType) {
         <View>
           <Text style={styles.header}>Testimonials</Text>
           {
-            user?.testimonials?.slice(0, 2)?.map((testimonial, index) =>
+            resume.testimonials?.slice(0, 2)?.map((testimonial, index) =>
               <View key={index} style={styles.section}>
                 <Text style={styles.subheader}>{`${testimonial?.name}(${testimonial?.designation})`}</Text>
                 <Text style={styles.text}>
@@ -116,7 +117,7 @@ export default function ResumeDocument(user: UserResponseType) {
           <Text style={styles.header}>Skills</Text>
           <View style={{display:'flex', flexDirection:'row', flexWrap: 'wrap'}}>
             {
-              user?.skills?.map((skills, index) =>
+              resume.skills?.map((skills, index) =>
                 <Text key={index} style={styles.listItem}>&#8224;  {skills.name}</Text>
               )
             }

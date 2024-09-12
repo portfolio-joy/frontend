@@ -6,7 +6,8 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: '__Kalnia_fc9ebf';
+  font-family: '__Lora_242605';
+  scroll-behavior: smooth;
 }
 
 @layer base {
