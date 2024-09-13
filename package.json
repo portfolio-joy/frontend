@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^16.6.0",
     "@itseasy21/react-elastic-carousel": "^0.12.3",
     "@nextui-org/react": "^2.4.6",
     "@react-pdf/renderer": "^3.4.4",

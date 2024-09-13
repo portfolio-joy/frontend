@@ -1,6 +1,7 @@
 import { ProjectDataState } from "@/types/states/ProjectDataState"
 import { ProjectDataType } from "@/types/ProjectDataType";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { EntityReorderType } from "@/types/EntityReorderType";
 
 const initialState: ProjectDataState = {
     success: false,
@@ -27,7 +28,7 @@ const projectDataSlice = createSlice({
         },
         addProjectDataSuccess(state, action: PayloadAction<ProjectDataType>) {
             state.success = true;
-            state.data.unshift(action.payload);
+            state.data.push(action.payload);
         },
         updateProjectDataRequest(state, action: PayloadAction<{ data: ProjectDataType, projectDataId: string, token: string | null, image: File }>) {
             state.success = false;
@@ -40,6 +41,12 @@ const projectDataSlice = createSlice({
         removeProjectDataRequest(state, action: PayloadAction<{ projectDataId: string, token: string | null }>) {
             state.success = false;
         },
+        reorderProjectDataRequest(state, action: PayloadAction<{data : EntityReorderType, token : string}>) {
+            state.success = false;
+        },
+        reorderProjectDataSuccess(state) {
+            state.success = true;
+        },
         removeProjectDataSuccess(state, action: PayloadAction<{ id: string }>) {
             state.success = true;
             const projectDataIndex = state.data.findIndex((projectData) => projectData.id === action.payload.id);
@@ -47,10 +54,9 @@ const projectDataSlice = createSlice({
         },
         projectDataFaliure(state) {
             state.success = false;
-            state.data = [];
         }
     }
 })
 
-export const { updateProjectDataState, fetchProjectDataRequest, fetchProjectDataSuccess, addProjectDataRequest, addProjectDataSuccess, updateProjectDataRequest, updateProjectDataSuccess, removeProjectDataRequest, removeProjectDataSuccess, projectDataFaliure } = projectDataSlice.actions;
+export const { updateProjectDataState, fetchProjectDataRequest, fetchProjectDataSuccess, addProjectDataRequest, addProjectDataSuccess, updateProjectDataRequest, updateProjectDataSuccess, reorderProjectDataRequest, reorderProjectDataSuccess, removeProjectDataRequest, removeProjectDataSuccess, projectDataFaliure } = projectDataSlice.actions;
 export default projectDataSlice.reducer;
