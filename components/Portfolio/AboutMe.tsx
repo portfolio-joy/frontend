@@ -25,7 +25,7 @@ export default function PortfolioAboutMe() {
             <div className={styles['user-detail']}>
                 <h1>I'm {aboutMe?.name}</h1>
                 <p className="break-words">{aboutMe?.description}</p>
-                <div className={styles['skill-chips']}>
+                <div className={styles['data-chips']}>
                     {skillsArray &&
                         skillsArray?.map((skill, index) =>
                             skill.trim() && <Chip key={index} className="mr-5 mt-5">{skill.trim()}</Chip>
