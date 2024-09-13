@@ -7,8 +7,11 @@ import { base64ToFile } from "@/util/base64ToFile";
 import { useEffect, useState } from "react";
 import { ProjectDataType } from '@/types/ProjectDataType';
 import { toast } from 'react-toastify';
-import { addProjectDataRequest, fetchProjectDataRequest, projectDataFaliure, removeProjectDataRequest, updateProjectDataRequest, updateProjectDataState } from '@/redux/slices/projectDataSlice';
+import { addProjectDataRequest, fetchProjectDataRequest, projectDataFaliure, removeProjectDataRequest, reorderProjectDataRequest, updateProjectDataRequest, updateProjectDataState } from '@/redux/slices/projectDataSlice';
 import { clearAllErrors } from '@/redux/slices/errorSlice';
+import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
+
+
 
 export default function ProjectData() {
 
@@ -20,6 +23,7 @@ export default function ProjectData() {
     const [removeProjectDataIndex, setRemoveProjectDataIndex] = useState<number>(-1);
     const [updateProjectDataIndex, setUpdateProjectDataIndex] = useState<number>(-1);
     const [projects, _setProjects] = useState(projectState.data ? projectState.data : userState.user?.projects);
+    const [projectData, setProjectData] = useState<ProjectDataType[]>([]);
     const [image, setImage] = useState<File | null>(null);
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const dispatch = useAppDispatch();
@@ -32,17 +36,19 @@ export default function ProjectData() {
     };
     const [formData, setFormData] = useState(initialFormData);
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(updateProjectDataState([]));
-    },[])
+    }, [])
 
     useEffect(() => {
         if (projectDataState.success) {
             dispatch(clearAllErrors());
             toast.success("Data Updated Successfully");
+            setProjectData(projectDataState.data);
         } else if (Object.keys(error).length) {
             dispatch(projectDataFaliure());
             toast.error(error.general);
+            dispatch(updateProjectDataState(projectData));
         }
     }, [projectDataState.success, error])
 
@@ -50,6 +56,10 @@ export default function ProjectData() {
         const { name, value } = event.target;
         if (name === 'project') {
             setSelectedProject(value);
+            setUpdateProjectDataIndex(-1);
+            setRemoveProjectDataIndex(-1);
+            setFormData(initialFormData);
+            setImage(null);
             dispatch(fetchProjectDataRequest({ projectName: value, token: userState.token }));
             const project = projects && projects.find(project => project.name === value);
             setFormData((previousFromDataState) => ({ ...previousFromDataState, 'project': { 'id': project ? project.id : '' } }));
@@ -97,18 +107,42 @@ export default function ProjectData() {
         setUpdateProjectDataIndex(-1);
     }
 
+    const dragEnd = (result: DropResult) => {
+        if (!result.destination) return;
+        const reorderedItems = Array.from(projectDataState.data);
+        const [reorderedItem] = reorderedItems.splice(result.source.index, 1);
+        reorderedItems.splice(result.destination.index, 0, reorderedItem);
+        dispatch(updateProjectDataState(reorderedItems));
+        dispatch(reorderProjectDataRequest({data : {entityId : result.draggableId, superEntityId: formData.project.id, oldOrderNumber: result.source.index, newOrderNumber: result.destination.index},token : userState.token ?? ''}))
+    }
+
     return (
         <>
-            <div className={styles['data-chips']}>
-                {
-                    projectDataState.data.map((projectData, index) =>
-                        <Chip key={index} className={`mb-2 ${styles['data-chip']}`}>
-                            <span className='select-none' onDoubleClick={() => updateForm(index)}>{projectData.heading}</span>
-                            <button onClick={() => handleRemove(index)}><CrossIcon /></button>
-                        </Chip>
-                    )
-                }
-            </div>
+            <DragDropContext onDragEnd={dragEnd}>
+                <Droppable droppableId="projectDataChips" direction="horizontal">
+                    {(provided) => (
+                        <div ref={provided.innerRef} {...provided.droppableProps} className={styles['data-chips']}>
+                            {
+                                projectDataState.data.map((projectData, index) =>
+                                    <Draggable key={projectData.id} draggableId={projectData.id.toString()} index={index}>
+                                        {(provided) => (
+                                            <Chip
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                                className={`${styles['data-chip']}`}>
+                                                <span className='select-none' onDoubleClick={() => updateForm(index)}>{projectData.heading}</span>
+                                                <button onClick={() => handleRemove(index)}><CrossIcon /></button>
+                                            </Chip>
+                                        )}
+                                    </Draggable>
+                                )
+                            }
+                            {provided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
+            </DragDropContext>
             <Divider />
             <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
                 <h2>Project Data Form</h2>
