@@ -105,7 +105,7 @@ export default function DashboardContainer() {
                   setActiveModule(module.key);
                 }}
                 >
-                  <li className="flex justify-between min-w-full">{module.value}
+                  <li className="flex justify-between items-center">{module.value}
                     {
                       module.dataNumber
                         ?

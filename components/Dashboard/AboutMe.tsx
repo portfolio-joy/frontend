@@ -7,7 +7,7 @@ import styles from '@/styles/Dashboard.module.css'
 import { AboutMeType } from '@/types/AboutMeType'
 import { ImageType } from '@/types/ImageType';
 import { base64ToFile } from '@/util/base64ToFile';
-import { Tooltip } from '@nextui-org/react'
+import { Divider, Tooltip } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 
@@ -93,22 +93,27 @@ export default function AboutMe() {
     }
 
     return (
-        <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
-            <h2>About Me Form</h2>
-            <Tooltip isDisabled={!error.name} className={error.name && styles['error-tooltip']} content={error.name}>
-                <input autoComplete='true' className={error.name ? styles['input-error'] : styles['input-normal']} name="name" type="text" placeholder="Name" maxLength={35} value={formData?.name} onChange={handleChange} required></input>
-            </Tooltip>
-            <Tooltip isDisabled={!error.skills} className={error.skills ? styles['error-tooltip'] : styles['info-tooltip']} content={error.skills}>
-                <input autoComplete='true' className={error.skills ? styles['input-error'] : styles['input-normal']} name="skills" type="text" placeholder="Skills(Seperate the skills using comma)" maxLength={255} value={formData?.skills} onChange={handleChange} required></input>
-            </Tooltip>
-            <Tooltip isDisabled={!error.description} className={error.description && styles['error-tooltip']}>
-                <textarea autoComplete='true' className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} value={formData?.description} onChange={handleChange} required></textarea>
-            </Tooltip>
-            <input id='image' type="file" name="image" accept="image/*" onChange={handleFileChange} hidden />
-            <Tooltip isDisabled={!error.image} className={error.image && styles['error-tooltip']} content={error.image}>
-                <label htmlFor='image' className={`cursor-pointer ${error.image ? styles['input-error'] : styles['input-normal']}`}>Your Profile : <i>{image?.name}</i></label>
-            </Tooltip>
-            <button type="submit" className={styles['submit-button']}> {isDataPresent ? 'Update' : 'Save'} </button>
-        </form>
+        <>
+            <div className={styles['data-chips']}>
+            </div>
+            <Divider/>
+            <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
+                <h2>About Me Form</h2>
+                <Tooltip isDisabled={!error.name} className={error.name && styles['error-tooltip']} content={error.name}>
+                    <input autoComplete='true' className={error.name ? styles['input-error'] : styles['input-normal']} name="name" type="text" placeholder="Name" maxLength={35} value={formData?.name} onChange={handleChange} required></input>
+                </Tooltip>
+                <Tooltip isDisabled={!error.skills} className={error.skills ? styles['error-tooltip'] : styles['info-tooltip']} content={error.skills}>
+                    <input autoComplete='true' className={error.skills ? styles['input-error'] : styles['input-normal']} name="skills" type="text" placeholder="Skills(Seperate the skills using comma)" maxLength={255} value={formData?.skills} onChange={handleChange} required></input>
+                </Tooltip>
+                <Tooltip isDisabled={!error.description} className={error.description && styles['error-tooltip']}>
+                    <textarea autoComplete='true' className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} value={formData?.description} onChange={handleChange} required></textarea>
+                </Tooltip>
+                <input id='image' type="file" name="image" accept="image/*" onChange={handleFileChange} hidden />
+                <Tooltip isDisabled={!error.image} className={error.image && styles['error-tooltip']} content={error.image}>
+                    <label htmlFor='image' className={`cursor-pointer ${error.image ? styles['input-error'] : styles['input-normal']}`}>Your Profile : <i>{image?.name}</i></label>
+                </Tooltip>
+                <button type="submit" className={styles['submit-button']}> {isDataPresent ? 'Update' : 'Save'} </button>
+            </form>
+        </>
     )
 }

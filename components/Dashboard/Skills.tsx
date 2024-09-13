@@ -43,7 +43,7 @@ export default function Skills() {
         if (skillState.success) {
             dispatch(clearAllErrors());
             toast.success("Data Updated Successfully");
-            dispatch(updateResumeData({key : 'skills', value : skillState.data}));
+            dispatch(updateResumeData({ key: 'skills', value: skillState.data }));
         } else if (Object.keys(error).length) {
             dispatch(skillFaliure());
             toast.error(error.general);
@@ -92,7 +92,7 @@ export default function Skills() {
             <div className={styles['data-chips']}>
                 {
                     skillState.data?.map((skill, index) =>
-                        <Chip key={index} className={`mb-2 ${styles['skill-chip']}`}>
+                        <Chip key={index} className={styles['data-chip']}>
                             <span className='select-none' onDoubleClick={() => updateForm(index)}>{skill.name}</span>
                             <button onClick={() => handleRemove(index)}><CrossIcon /></button>
                         </Chip>

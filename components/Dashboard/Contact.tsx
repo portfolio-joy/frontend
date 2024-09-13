@@ -4,7 +4,7 @@ import { clearAllErrors } from '@/redux/slices/errorSlice'
 import { updateResumeData } from '@/redux/slices/resumeSlice'
 import styles from '@/styles/Dashboard.module.css'
 import { ContactType } from '@/types/ContactType'
-import { Tooltip } from '@nextui-org/react'
+import { Divider, Tooltip } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
@@ -46,7 +46,7 @@ export default function Contact() {
             dispatch(clearAllErrors());
             setFormData((previousFormData) => contactState.data ?? previousFormData);
             setIsDataPresent(true);
-            dispatch(updateResumeData({key : 'contact', value : contactState.data}));
+            dispatch(updateResumeData({ key: 'contact', value: contactState.data }));
         } else if (Object.keys(error).length) {
             dispatch(contactFaliure())
             toast.error(error.general);
@@ -69,18 +69,23 @@ export default function Contact() {
     }
 
     return (
-        <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
-            <h2>Contact Form</h2>
-            <Tooltip isDisabled={!error.emailId} className={error.emailId && styles['error-tooltip']} content={error.emailId}>
-                <input autoComplete='true' className={error.emailId ? styles['input-error'] : styles['input-normal']} name="emailId" type="email" placeholder="Email Id" maxLength={35} value={formData?.emailId} onChange={handleChange} required></input>
-            </Tooltip>
-            <Tooltip isDisabled={!error.address} className={error.address && styles['error-tooltip']} content={error.address}>
-                <textarea autoComplete='true' className={error.address ? styles['input-error'] : styles['input-normal']} name="address" rows={5} placeholder="Address" maxLength={35} value={formData?.address} onChange={handleChange} required></textarea>
-            </Tooltip>
-            <Tooltip isDisabled={!error.phoneNo} className={error.phoneNo && styles['error-tooltip']} content={error.phoneNo}>
-                <input autoComplete='true' className={error.phoneNo ? styles['input-error'] : styles['input-normal']} name="phoneNo" type="tel" pattern='^[6-9]\d{9}$' placeholder="Mobile No" maxLength={10} value={formData?.phoneNo} onChange={handleChange} title={!error.phoneNo ? 'Invalid Mobile Number' : undefined} required></input>
-            </Tooltip>
-            <button type="submit" className={styles['submit-button']}> {isDataPresent ? 'Update' : 'Save'} </button>
-        </form>
+        <>
+            <div className={styles['data-chips']}>
+            </div>
+            <Divider />
+            <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
+                <h2>Contact Form</h2>
+                <Tooltip isDisabled={!error.emailId} className={error.emailId && styles['error-tooltip']} content={error.emailId}>
+                    <input autoComplete='true' className={error.emailId ? styles['input-error'] : styles['input-normal']} name="emailId" type="email" placeholder="Email Id" maxLength={35} value={formData?.emailId} onChange={handleChange} required></input>
+                </Tooltip>
+                <Tooltip isDisabled={!error.address} className={error.address && styles['error-tooltip']} content={error.address}>
+                    <textarea autoComplete='true' className={error.address ? styles['input-error'] : styles['input-normal']} name="address" rows={5} placeholder="Address" maxLength={35} value={formData?.address} onChange={handleChange} required></textarea>
+                </Tooltip>
+                <Tooltip isDisabled={!error.phoneNo} className={error.phoneNo && styles['error-tooltip']} content={error.phoneNo}>
+                    <input autoComplete='true' className={error.phoneNo ? styles['input-error'] : styles['input-normal']} name="phoneNo" type="tel" pattern='^[6-9]\d{9}$' placeholder="Mobile No" maxLength={10} value={formData?.phoneNo} onChange={handleChange} title={!error.phoneNo ? 'Invalid Mobile Number' : undefined} required></input>
+                </Tooltip>
+                <button type="submit" className={styles['submit-button']}> {isDataPresent ? 'Update' : 'Save'} </button>
+            </form>
+        </>
     )
 }

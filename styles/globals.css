@@ -56,21 +56,18 @@ main {
   height: 100%;
 }
 
-/* width */
 ::-webkit-scrollbar {
   width: 2px;
+  height: 2px;
 }
 
-
-/* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgb(78, 67, 124);
+  background: rgb(120, 40, 200);
   border-radius: 5px;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(78, 67, 124);
+  background: rgb(120, 40, 200);
 }
 
 @media screen and (max-width: 767px) {

@@ -92,7 +92,7 @@ export default function Projects() {
             <div className={styles['data-chips']}>
                 {
                     projectState.data?.map((project, index) =>
-                        <Chip key={index} className={`mb-2 ${styles['skill-chip']}`}>
+                        <Chip key={index} className={`mb-2 ${styles['data-chip']}`}>
                             <span className='select-none' onDoubleClick={() => updateForm(index)}>{project.name}</span>
                             <button onClick={() => handleRemove(index)}><CrossIcon /></button>
                         </Chip>

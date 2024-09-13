@@ -3,7 +3,7 @@ import { pdf, PDFDownloadLink } from "@react-pdf/renderer";
 import ResumeDocument from "../Resume/ResumeDocument";
 import { useAppSelector } from "@/hooks/hooks";
 import React, { useEffect, useState } from "react";
-import { Select, SelectItem } from '@nextui-org/react';
+import { Divider, Select, SelectItem } from '@nextui-org/react';
 import { ProjectsType } from '@/types/ProjectsType';
 import { TestimonialType } from '@/types/TestimonialType';
 
@@ -55,7 +55,9 @@ export default function Resume() {
 
     return (
         <div className='h-full'>
-            <div className='flex flex-col w-full h-full md:flex-row'>
+            <div className={styles['data-chips']} />
+            <Divider />
+            <div className='flex flex-col h-full md:flex-row'>
                 <form className={`md:w-1/2 ${styles['dashboard-form']}`}>
                     <h2>Your Resume</h2>
                     <Select id='projects' name='projects' aria-label='Projects' selectionMode='multiple' items={resumeState.projects} placeholder="Select your main 2 Projects" className={'p-5'} variant='bordered' onChange={handleProjectChange}>
@@ -76,8 +78,8 @@ export default function Resume() {
                 {pdfUrl && (
                     <iframe
                         src={`${pdfUrl}#toolbar=0`}
-                        className='w-full md:w-1/2 shadow-lg'
-                        height="95%"
+                        className='w-full md:w-1/2 shadow-lg pt-2.5 mt-3'
+                        height="100%"
                         title="PDF Preview"
                     />
                 )}
