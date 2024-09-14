@@ -15,7 +15,7 @@
     left: 50%;
     top: 50%;
     z-index: 100;
-    color: rgb(78, 67, 124);
+    color: rgb(120, 40, 200);
 }
 
 .left-panel {
@@ -31,13 +31,15 @@
 }
 
 .activeModule {
-    background-color: rgb(78, 67, 124);
+    background-color: rgb(120, 40, 200);
     color: rgb(228 227 213);
 }
 
 .right-panel {
+    width: 80%;
     flex-grow: 1;
-    padding: 48px;
+    padding: 24px 48px 0 48px;
+    overflow: auto;
 }
 
 .dashboard-form {
@@ -64,7 +66,8 @@
     border-radius: 24px;
 }
 
-.input-normal:focus {
+.input-normal:focus,
+.input-error:focus {
     outline: none;
 }
 
@@ -73,33 +76,22 @@
     border-radius: 24px;
 }
 
-.input-error:focus {
-    outline: none;
-}
-
 .submit-button,
 .modal-button {
-    background-color: rgb(78, 67, 124);
+    background-color: rgb(120, 40, 200);
     border-radius: 24px;
     color: rgb(228 227 213);
 }
 
-.success-message {
-    background-color: green;
-}
-
 .info-tooltip {
-    background-color: rgb(78, 67, 124);
+    background-color: rgb(120, 40, 200);
 }
 
-.error-message,
 .error-tooltip {
     background-color: red;
 }
 
-.error-message,
 .error-tooltip,
-.success-message,
 .info-tooltip {
     padding: 8px;
     border-radius: 24px;
@@ -145,27 +137,30 @@
 }
 
 .data-chips {
-    padding: 24px;
+    height: 60px;
+    padding: 12px;
+    white-space: nowrap;
+    overflow: auto;
 }
 
-.skill-chip {
+.data-chip {
     margin-right: 8px;
 }
 
-.skill-chip span {
+.data-chip span {
     padding-right: 8px;
     cursor: pointer;
 }
 
 .proficiency-slider div div {
-    border-left-color: rgb(78, 67, 124);
+    border-left-color: rgb(120, 40, 200);
 }
 
 .proficiency-slider div div div {
-    background-color: rgb(78, 67, 124);
+    background-color: rgb(120, 40, 200);
 }
 
-@media screen and (max-width: 735px) {
+@media screen and (max-width: 767px) {
 
     .dashboard-main {
         flex-direction: column;
@@ -179,6 +174,7 @@
     .left-panel ul {
         display: flex;
         flex-wrap: wrap;
+        justify-content: space-evenly;
     }
 
     .module,
@@ -192,7 +188,7 @@
     }
 
     .activeModule {
-        background-color: rgb(78, 67, 124);
+        background-color: rgb(120, 40, 200);
         color: rgb(228 227 213);
     }
 

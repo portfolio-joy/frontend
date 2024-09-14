@@ -23,7 +23,7 @@
 
 .header-link:hover,
 .header-dropdown:hover {
-  background-color: rgb(78, 67, 124);
+  background-color: rgb(120, 40, 200);
   border-radius: 24px;
   color: rgb(228 227 213);
   transition: .5s ease-in-out;
@@ -52,7 +52,7 @@
 }
 
 .heading h1 span {
-  background: linear-gradient(143deg, rgb(78, 67, 124) 26%, rgb(133, 133, 117) 99%);
+  background: linear-gradient(143deg, rgb(120, 40, 200) 26%, rgb(133, 133, 117) 99%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;

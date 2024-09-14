@@ -7,6 +7,7 @@ import { addTestimonialRequest, removeTestimonialRequest, testimonialFaliure, up
 import { clearAllErrors } from '@/redux/slices/errorSlice';
 import { toast } from 'react-toastify';
 import { TestimonialType } from '@/types/TestimonialType';
+import { updateResumeData } from '@/redux/slices/resumeSlice';
 
 export default function Testimonials() {
 
@@ -16,6 +17,7 @@ export default function Testimonials() {
     const dispatch = useAppDispatch();
     const [removeTestimonialIndex, setRemoveTestimonialIndex] = useState<number>(-1);
     const [updateTestimonialIndex, setUpdateTestimonialIndex] = useState<number>(-1);
+    const [tooltipOpen, isTooltipOpen] = useState<boolean>(false);
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const initialFormData = {
         name: "",
@@ -35,6 +37,7 @@ export default function Testimonials() {
     useEffect(() => {
         if (testimonialState.success) {
             toast.success("Data Updated Successfully");
+            dispatch(updateResumeData({ key: 'testimonials', value: testimonialState.data }))
         } else if (Object.keys(error).length) {
             dispatch(testimonialFaliure());
             toast.error(error.general);
@@ -80,7 +83,7 @@ export default function Testimonials() {
             <div className={styles['data-chips']}>
                 {
                     testimonialState.data?.map((testimonial, index) =>
-                        <Chip key={index} className={`mb-2 ${styles['skill-chip']}`}>
+                        <Chip key={index} className={`mb-2 ${styles['data-chip']}`}>
                             <span className='select-none' onDoubleClick={() => updateForm(index)}>{testimonial.name}</span>
                             <button onClick={() => handleRemove(index)}><CrossIcon /></button>
                         </Chip>
@@ -90,16 +93,16 @@ export default function Testimonials() {
             <Divider />
             <form className={styles['dashboard-form']} onSubmit={handleSubmit}>
                 <h2>Testimonial Form</h2>
-                <Tooltip className={error.name && styles['error-tooltiip']} content={error.name}>
-                    <input autoComplete='true' className={error.name ? styles['input-error'] : styles['input-normal']} name='name' type='text' placeholder='Name' value={formData.name} onChange={handleChange} required></input>
+                <Tooltip isDisabled={!error.name} isOpen={tooltipOpen} className={error.name && styles['error-tooltip']} content={error.name}>
+                    <input autoComplete='true' className={error.name ? styles['input-error'] : styles['input-normal']} name='name' type='text' placeholder='Name' maxLength={35} value={formData.name} onChange={handleChange} required></input>
                 </Tooltip>
-                <Tooltip className={error.designation && styles['error-tooltiip']} content={error.designation}>
-                    <input autoComplete='true' className={error.designation ? styles['input-error'] : styles['input-normal']} name='designation' type='text' placeholder='Designation' value={formData.designation} onChange={handleChange} required></input>
+                <Tooltip className={error.designation && styles['error-tooltip']} content={error.designation}>
+                    <input autoComplete='true' className={error.designation ? styles['input-error'] : styles['input-normal']} name='designation' type='text' placeholder='Designation' maxLength={35} value={formData.designation} onChange={handleChange} required></input>
                 </Tooltip>
                 <Tooltip className={error.description && styles['error-tooltip']} content={error.description}>
                     <textarea className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={400} value={formData.description} onChange={handleChange} required></textarea>
                 </Tooltip>
-                <Tooltip className={error.rating && styles['error-tooltiip']} content={error.rating}>
+                <Tooltip className={error.rating && styles['error-tooltip']} content={error.rating}>
                     <input className={error.rating ? styles['input-error'] : styles['input-normal']} name='rating' type='number' placeholder='Rating(Optional)' min={0} max={5} value={formData.rating ? formData.rating : undefined} onChange={handleChange}></input>
                 </Tooltip>
                 <fieldset className='flex'>

@@ -89,7 +89,7 @@ export default function SocialMedia() {
             <div className={styles['data-chips']}>
                 {
                     socialMediaState.data?.map((socialMedia, index) =>
-                        <Chip key={index} className={`mb-2 ${styles['skill-chip']}`}>
+                        <Chip key={index} className={`mb-2 ${styles['data-chip']}`}>
                             <span className='select-none' onDoubleClick={() => updateForm(index)}>{socialMedia.name}</span>
                             <button onClick={() => handleRemove(index)}><CrossIcon /></button>
                         </Chip>
@@ -102,8 +102,8 @@ export default function SocialMedia() {
                 <Select id='name' name='name' aria-label='Social Media' items={socialMediaNames} placeholder="Select the social media" className={'p-5'} variant='bordered' onChange={handleChange}>
                     {(socialMediaName) => <SelectItem key={socialMediaName.key}>{socialMediaName.label}</SelectItem>}
                 </Select>
-                <Tooltip className={error.url && styles['error-tooltip']} content={error.url}>
-                    <input autoComplete='true' className={error.url ? styles['input-error'] : styles['input-normal']} name='url' type='url' placeholder='Social Media URL' defaultValue={formData.url} onChange={handleChange} required></input>
+                <Tooltip isDisabled={!error.url} className={error.url && styles['error-tooltip']} content={error.url}>
+                    <input autoComplete='true' className={error.url ? styles['input-error'] : styles['input-normal']} name='url' type='url' placeholder='Social Media URL' maxLength={255} value={formData.url} onChange={handleChange} required></input>
                 </Tooltip>
                 <fieldset className='flex'>
                     {

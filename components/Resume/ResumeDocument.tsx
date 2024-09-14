@@ -1,16 +1,22 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
 import { UserResponseType } from '@/types/UserResponseType';
+import { ResumeType } from '@/types/ResumeType';
 
+Font.register({
+  family: 'Tinos',
+  src: 'http://fonts.gstatic.com/s/tinos/v9/EqpUbkVmutfwZ0PjpoGwCg.ttf'
+});
 
 const styles = StyleSheet.create({
   page: {
-    padding: 30,
+    paddingBottom: 20,
+    fontFamily: 'Tinos'
   },
   header: {
+    padding:'0 30',
     fontSize: 20,
     borderBottom: '1px solid grey',
-    paddingBottom: 5,
     marginBottom: 10
   },
   section: {
@@ -19,33 +25,42 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: 24,
-    marginBottom: 10,
+    padding: 10,
     fontWeight: 700,
     textAlign: 'center',
+    backgroundColor: '#345',
+    color: 'white'
   },
   contact: {
     flexDirection: 'row',
     borderBottom: '1px',
-    paddingBottom: 10,
+    padding: 10,
     justifyContent: 'center',
     flexWrap: 'wrap',
-    marginBottom: 20
+    marginBottom: 20,
+    backgroundColor: '#345',
+    color: 'white'
   },
   contactInfo: {
     fontSize: 12,
     paddingRight: 10,
   },
   subheader: {
+    padding: '0 30',
     fontSize: 16,
     marginBottom: 5,
   },
   text: {
+    padding: '0 30',
     fontSize: 12,
     marginBottom: 10,
+    textAlign: 'justify'
   },
   listItem: {
+    display: 'flex',
+    padding: '10 20',
     fontSize: 12,
-    marginLeft: 10,
+    marginLeft: 5,
     marginBottom: 2,
   },
   contactDetail: {
@@ -59,23 +74,23 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function ResumeDocument(user: UserResponseType) {
+export default function ResumeDocument(resume: ResumeType) {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <Text style={styles.username}>{user?.aboutMe?.name}</Text>
+        <Text style={styles.username}>{resume.aboutMe?.name}</Text>
         <View style={styles.contact}>
-          <Text style={styles.contactInfo}>{user?.contact?.phoneNo}</Text>
-          <Text style={styles.contactInfo}>{user?.contact?.emailId} </Text>
-          <Text style={styles.contactInfo}>{user?.contact?.address}</Text>
+          <Text style={styles.contactInfo}>{resume.contact?.phoneNo}</Text>
+          <Text style={styles.contactInfo}>{resume.contact?.emailId} </Text>
+          <Text style={styles.contactInfo}>{resume.contact?.address}</Text>
         </View>
         <Text style={styles.text}>
-          {user?.aboutMe?.description}
+          {resume.aboutMe?.description}
         </Text>
         <View>
           <Text style={styles.header}>Projects</Text>
           {
-            user?.projects?.slice(0, 3)?.map((project, index) =>
+            resume.projects?.slice(0, 2)?.map((project, index) =>
               <View key={index} style={styles.section}>
                 <Text style={styles.subheader}>{project?.name}</Text>
                 <Text style={styles.text}>
@@ -88,7 +103,7 @@ export default function ResumeDocument(user: UserResponseType) {
         <View>
           <Text style={styles.header}>Testimonials</Text>
           {
-            user?.testimonials?.slice(0, 3)?.map((testimonial, index) =>
+            resume.testimonials?.slice(0, 2)?.map((testimonial, index) =>
               <View key={index} style={styles.section}>
                 <Text style={styles.subheader}>{`${testimonial?.name}(${testimonial?.designation})`}</Text>
                 <Text style={styles.text}>
@@ -100,10 +115,10 @@ export default function ResumeDocument(user: UserResponseType) {
         </View>
         <View style={styles.section}>
           <Text style={styles.header}>Skills</Text>
-          <View>
+          <View style={{display:'flex', flexDirection:'row', flexWrap: 'wrap'}}>
             {
-              user?.skills?.map((skills, index) =>
-                <Text key={index} style={styles.listItem}>{skills.name}</Text>
+              resume.skills?.map((skills, index) =>
+                <Text key={index} style={styles.listItem}>&#8224;  {skills.name}</Text>
               )
             }
           </View>

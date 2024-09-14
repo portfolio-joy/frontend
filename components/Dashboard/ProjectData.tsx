@@ -7,8 +7,11 @@ import { base64ToFile } from "@/util/base64ToFile";
 import { useEffect, useState } from "react";
 import { ProjectDataType } from '@/types/ProjectDataType';
 import { toast } from 'react-toastify';
-import { addProjectDataRequest, fetchProjectDataRequest, projectDataFaliure, removeProjectDataRequest, updateProjectDataRequest } from '@/redux/slices/projectDataSlice';
+import { addProjectDataRequest, fetchProjectDataRequest, projectDataFaliure, removeProjectDataRequest, reorderProjectDataRequest, updateProjectDataRequest, updateProjectDataState } from '@/redux/slices/projectDataSlice';
 import { clearAllErrors } from '@/redux/slices/errorSlice';
+import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
+
+
 
 export default function ProjectData() {
 
@@ -20,6 +23,7 @@ export default function ProjectData() {
     const [removeProjectDataIndex, setRemoveProjectDataIndex] = useState<number>(-1);
     const [updateProjectDataIndex, setUpdateProjectDataIndex] = useState<number>(-1);
     const [projects, _setProjects] = useState(projectState.data ? projectState.data : userState.user?.projects);
+    const [projectData, setProjectData] = useState<ProjectDataType[]>([]);
     const [image, setImage] = useState<File | null>(null);
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const dispatch = useAppDispatch();
@@ -33,19 +37,18 @@ export default function ProjectData() {
     const [formData, setFormData] = useState(initialFormData);
 
     useEffect(() => {
-        if (selectedProject.length) {
-            dispatch(fetchProjectDataRequest({ projectName: selectedProject, token: userState.token }));
-        }
-    }, [selectedProject])
+        dispatch(updateProjectDataState([]));
+    }, [])
 
     useEffect(() => {
-        if (Object.keys(error).length) {
-            dispatch(projectDataFaliure());
-            toast.error(error.general);
-        }
         if (projectDataState.success) {
             dispatch(clearAllErrors());
             toast.success("Data Updated Successfully");
+            setProjectData(projectDataState.data);
+        } else if (Object.keys(error).length) {
+            dispatch(projectDataFaliure());
+            toast.error(error.general);
+            dispatch(updateProjectDataState(projectData));
         }
     }, [projectDataState.success, error])
 
@@ -53,6 +56,11 @@ export default function ProjectData() {
         const { name, value } = event.target;
         if (name === 'project') {
             setSelectedProject(value);
+            setUpdateProjectDataIndex(-1);
+            setRemoveProjectDataIndex(-1);
+            setFormData(initialFormData);
+            setImage(null);
+            dispatch(fetchProjectDataRequest({ projectName: value, token: userState.token }));
             const project = projects && projects.find(project => project.name === value);
             setFormData((previousFromDataState) => ({ ...previousFromDataState, 'project': { 'id': project ? project.id : '' } }));
         } else {
@@ -99,32 +107,56 @@ export default function ProjectData() {
         setUpdateProjectDataIndex(-1);
     }
 
+    const dragEnd = (result: DropResult) => {
+        if (!result.destination) return;
+        const reorderedItems = Array.from(projectDataState.data);
+        const [reorderedItem] = reorderedItems.splice(result.source.index, 1);
+        reorderedItems.splice(result.destination.index, 0, reorderedItem);
+        dispatch(updateProjectDataState(reorderedItems));
+        dispatch(reorderProjectDataRequest({data : {entityId : result.draggableId, superEntityId: formData.project.id, oldOrderNumber: result.source.index, newOrderNumber: result.destination.index},token : userState.token ?? ''}))
+    }
+
     return (
         <>
-            <div className={styles['data-chips']}>
-                {
-                    projectDataState.data.map((projectData, index) =>
-                        <Chip key={index} className={`mb-2 ${styles['skill-chip']}`}>
-                            <span className='select-none' onDoubleClick={() => updateForm(index)}>{projectData.heading}</span>
-                            <button onClick={() => handleRemove(index)}><CrossIcon /></button>
-                        </Chip>
-                    )
-                }
-            </div>
+            <DragDropContext onDragEnd={dragEnd}>
+                <Droppable droppableId="projectDataChips" direction="horizontal">
+                    {(provided) => (
+                        <div ref={provided.innerRef} {...provided.droppableProps} className={styles['data-chips']}>
+                            {
+                                projectDataState.data.map((projectData, index) =>
+                                    <Draggable key={projectData.id} draggableId={projectData.id.toString()} index={index}>
+                                        {(provided) => (
+                                            <Chip
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                                className={`${styles['data-chip']}`}>
+                                                <span className='select-none' onDoubleClick={() => updateForm(index)}>{projectData.heading}</span>
+                                                <button onClick={() => handleRemove(index)}><CrossIcon /></button>
+                                            </Chip>
+                                        )}
+                                    </Draggable>
+                                )
+                            }
+                            {provided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
+            </DragDropContext>
             <Divider />
             <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
                 <h2>Project Data Form</h2>
                 <Select id='project' name='project' aria-label='Your Projects' items={projects ? projects : []} placeholder="Select your project" className={'p-5'} variant='bordered' onChange={handleChange}>
                     {(project) => <SelectItem key={project.name}>{project.name}</SelectItem>}
                 </Select>
-                <Tooltip className={error.heading && styles['error-tooltip']} content={error.heading}>
-                    <input className={error.heading ? styles['input-error'] : styles['input-normal']} name="heading" type="text" placeholder="Heading" defaultValue={formData.heading} onChange={handleChange} required></input>
+                <Tooltip isDisabled={!error.heading} className={error.heading && styles['error-tooltip']} content={error.heading}>
+                    <input autoComplete='true' className={error.heading ? styles['input-error'] : styles['input-normal']} name="heading" type="text" placeholder="Heading" maxLength={35} value={formData.heading} onChange={handleChange} required></input>
                 </Tooltip>
-                <Tooltip className={error.description && styles['error-tooltiip']}>
-                    <textarea className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} value={formData.description} onChange={handleChange} required></textarea>
+                <Tooltip isDisabled={!error.description} className={error.description && styles['error-tooltip']} content={error.description}>
+                    <textarea autoComplete='true' className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} value={formData.description} onChange={handleChange} required></textarea>
                 </Tooltip>
                 <input id='image' type="file" name="image" accept="image/*" onChange={handleFileChange} hidden />
-                <Tooltip className={error.image && styles['error-tooltiip']}>
+                <Tooltip isDisabled={!error.image} className={error.image && styles['error-tooltip']} content={error.image}>
                     <label htmlFor='image' className={`cursor-pointer ${error.image ? styles['input-error'] : styles['input-normal']}`}>Project Data Image : <i>{image?.name}</i></label>
                 </Tooltip>
                 <fieldset className='flex'>

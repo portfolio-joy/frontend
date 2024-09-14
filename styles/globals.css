@@ -6,7 +6,8 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: '__Kalnia_fc9ebf';
+  font-family: '__Lora_242605';
+  scroll-behavior: smooth;
 }
 
 @layer base {
@@ -53,6 +54,20 @@ main {
 
 #__next {
   height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(120, 40, 200);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(120, 40, 200);
 }
 
 @media screen and (max-width: 767px) {

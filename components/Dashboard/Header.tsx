@@ -13,6 +13,8 @@ import { updateSocialMediaState } from '@/redux/slices/socialMediaSlice';
 import { updateTestimonialState } from '@/redux/slices/testimonialSlice';
 import { useEffect, useState } from 'react';
 import { updateProjectDataState } from '@/redux/slices/projectDataSlice';
+import { updateAboutMeState } from '@/redux/slices/aboutMeSlice';
+import { updateContactState } from '@/redux/slices/contactSlice';
 
 export default function Header() {
 
@@ -53,10 +55,12 @@ export default function Header() {
         localStorage.removeItem('data');
         setUserData({ id: null, token: null, firstName: null, portfolioUrl: null });
         dispatch(updateUserData(null));
+        dispatch(updateAboutMeState(null));
         dispatch(updateSkillState(null));
         dispatch(updateProjectState(null));
         dispatch(updateProjectDataState([]));
         dispatch(updateTestimonialState(null));
+        dispatch(updateContactState(null));
         dispatch(updateSocialMediaState(null));
         setIsDataPresent(false);
         router.push('/login');

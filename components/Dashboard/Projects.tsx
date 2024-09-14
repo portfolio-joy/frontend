@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { base64ToFile } from '@/util/base64ToFile';
 import { ImageType } from '@/types/ImageType';
 import { clearAllErrors } from '@/redux/slices/errorSlice';
+import { updateResumeData } from '@/redux/slices/resumeSlice';
 
 export default function Projects() {
 
@@ -37,6 +38,7 @@ export default function Projects() {
         if (projectState.success) {
             dispatch(clearAllErrors());
             toast.success("Data Updated Successfully");
+            dispatch(updateResumeData({key : 'projects', value : projectState.data}));
         } else if (Object.keys(error).length) {
             dispatch(projectFaliure());
             toast.error(error.general);
@@ -90,7 +92,7 @@ export default function Projects() {
             <div className={styles['data-chips']}>
                 {
                     projectState.data?.map((project, index) =>
-                        <Chip key={index} className={`mb-2 ${styles['skill-chip']}`}>
+                        <Chip key={index} className={`mb-2 ${styles['data-chip']}`}>
                             <span className='select-none' onDoubleClick={() => updateForm(index)}>{project.name}</span>
                             <button onClick={() => handleRemove(index)}><CrossIcon /></button>
                         </Chip>
@@ -100,14 +102,14 @@ export default function Projects() {
             <Divider />
             <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
                 <h2>Projects Form</h2>
-                <Tooltip className={error.name && styles['error-tooltip']} content={error.name}>
-                    <input autoComplete='true' className={error.name ? styles['input-error'] : styles['input-normal']} name="name" type="text" placeholder="Name" value={formData.name} onChange={handleChange} required></input>
+                <Tooltip isDisabled={!error.name} className={error.name && styles['error-tooltip']} content={error.name}>
+                    <input autoComplete='true' className={error.name ? styles['input-error'] : styles['input-normal']} name="name" type="text" placeholder="Name" maxLength={35} value={formData.name} onChange={handleChange} required></input>
                 </Tooltip>
-                <Tooltip className={error.briefDetail && styles['error-tooltiip']}>
-                    <textarea className={error.briefDetail ? styles['input-error'] : styles['input-normal']} name="briefDetail" rows={5} placeholder="Brief Detail" maxLength={300} value={formData.briefDetail} onChange={handleChange} required></textarea>
+                <Tooltip isDisabled={!error.briefDetail} className={error.briefDetail && styles['error-tooltip']} content={error.briefDetail}>
+                    <textarea autoComplete='true' className={error.briefDetail ? styles['input-error'] : styles['input-normal']} name="briefDetail" rows={5} placeholder="Brief Detail" maxLength={300} value={formData.briefDetail} onChange={handleChange} required></textarea>
                 </Tooltip>
                 <input id='image' type="file" name="image" accept="image/*" onChange={handleFileChange} hidden />
-                <Tooltip className={error.image && styles['error-tooltiip']}>
+                <Tooltip isDisabled={!error.image} className={error.image && styles['error-tooltip']} content={error.image}>
                     <label htmlFor='image' className={`cursor-pointer ${error.image ? styles['input-error'] : styles['input-normal']}`}>Project Image : <i>{image?.name}</i></label>
                 </Tooltip>
                 <fieldset className='flex'>
