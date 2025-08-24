@@ -1,11 +1,11 @@
 import { call, put, CallEffect, PutEffect } from "redux-saga/effects";
-import { fetchProjectDataSuccess, projectDataFaliure } from "../../slices/projectDataSlice";
+import { fetchProjectDataSuccess } from "../../slices/projectDataSlice";
 import { ProjectDataType } from "@/types/ProjectDataType";
 import ApiRequest from "@/util/api";
 import { CommonHeaders } from "@/util/headers";
 import { setErrors } from "../../slices/errorSlice";
 
-export default function* fetchProjectDataSaga(action: { type: string; payload: { username?: string, projectName: string, token?: string } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, ProjectDataType[]> {
+export default function* fetchProjectDataSaga(action: { type: string; payload: { username?: string, projectId: string, token?: string } }): Generator<CallEffect<Response> | PutEffect | Promise<string>, void, { projectName: string, projectData: ProjectDataType[] }> {
     const requestData: RequestInit = {
         method: 'GET',
         headers: {
@@ -16,8 +16,8 @@ export default function* fetchProjectDataSaga(action: { type: string; payload: {
     try {
         const responseJson = yield call(ApiRequest,
             action.payload.token ?
-                `/user/projectData/${action.payload.projectName}`
-                : `/user/portfolio/${action.payload.username}/${action.payload.projectName}`,
+                `/user/projectData/${action.payload.projectId}`
+                : `/user/portfolio/${action.payload.username}/${action.payload.projectId}`,
             requestData
         )
         yield put(fetchProjectDataSuccess(responseJson));

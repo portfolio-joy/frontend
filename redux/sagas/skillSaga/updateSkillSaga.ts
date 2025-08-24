@@ -1,6 +1,6 @@
 import { SkillsType } from "@/types/SkillsType";
 import { call, CallEffect, put, PutEffect } from "redux-saga/effects";
-import { skillFaliure, updateSkillSuccess } from "../../slices/skillSlice";
+import { updateSkillSuccess } from "../../slices/skillSlice";
 import { CommonHeaders } from "@/util/headers";
 import ApiRequest from "@/util/api";
 import { setErrors } from "../../slices/errorSlice";

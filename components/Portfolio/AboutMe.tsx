@@ -4,6 +4,7 @@ import { AboutMeType } from "@/types/AboutMeType";
 import { useEffect, useState } from "react";
 import { ImageType } from "@/types/ImageType";
 import { useAppSelector } from "@/hooks/hooks";
+import Image from "next/image";
 
 export default function PortfolioAboutMe() {
 
@@ -18,23 +19,23 @@ export default function PortfolioAboutMe() {
                 setSkillsArray(aboutMe.skills.split(','));
             }
         }
-    }, [portfolioState.success, aboutMe])
+    }, [portfolioState.success, aboutMe, portfolioState.user?.aboutMe])
 
     return (
         <section id="aboutMe" className={styles['about-me']}>
             <div className={styles['user-detail']}>
-                <h1>I'm {aboutMe?.name}</h1>
-                <p className="break-words">{aboutMe?.description}</p>
+                <h1>I&apos;m {aboutMe?.name}</h1>
+                <p className="break-words" dangerouslySetInnerHTML={{ __html: aboutMe?.description ?? "" }}></p>
                 <div className={styles['data-chips']}>
                     {skillsArray &&
                         skillsArray?.map((skill, index) =>
-                            skill.trim() && <Chip key={index} className="mr-5 mt-5">{skill.trim()}</Chip>
+                            <Chip key={index} className="mr-5 mt-5">{skill.trim()}</Chip>
                         )
                     }
                 </div>
             </div>
             <div className={styles['user-image']}>
-                <img src={`data:${(aboutMe?.image as ImageType)?.type};base64,${(aboutMe?.image as ImageType)?.imageData}`}></img>
+                <Image src={`data:${(aboutMe?.image as ImageType)?.type};base64,${(aboutMe?.image as ImageType)?.imageData}`} alt="user image" width={100} height={100}></Image>
             </div>
         </section>
     )

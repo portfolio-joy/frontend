@@ -20,7 +20,7 @@ const projectSlice = createSlice({
         },
         addProjectSuccess(state, action: PayloadAction<ProjectsType>) {
             state.success = true;
-            state.data!.unshift(action.payload);
+            state.data!.push(action.payload);
         },
         updateProjectRequest(state, action: PayloadAction<{ data: ProjectsType, projectId: string, token: string | null, image: File }>) {
             state.success = false;
@@ -38,11 +38,11 @@ const projectSlice = createSlice({
             const projectIndex = state.data!.findIndex((project) => project.id === action.payload.id);
             state.data!.splice(projectIndex, 1);
         },
-        projectFaliure(state) {
+        resetProjectSuccess(state) {
             state.success = false;
         }
     }
 })
 
-export const { updateProjectState, addProjectRequest, addProjectSuccess, updateProjectRequest, updateProjectSuccess, removeProjectRequest, removeProjectSuccess, projectFaliure } = projectSlice.actions;
+export const { updateProjectState, addProjectRequest, addProjectSuccess, updateProjectRequest, updateProjectSuccess, removeProjectRequest, removeProjectSuccess, resetProjectSuccess } = projectSlice.actions;
 export default projectSlice.reducer;

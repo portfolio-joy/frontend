@@ -20,7 +20,7 @@ const socialMediaSlice = createSlice({
         },
         addSocialMediaSuccess(state, action: PayloadAction<SocialMediaType>) {
             state.success = true;
-            state.data?.unshift(action.payload);
+            state.data?.push(action.payload);
         },
         updateSocialMediaRequest(state, action: PayloadAction<{ data: SocialMediaType, socialMediaId: string, token: string | null }>) {
             state.success = false;
@@ -38,11 +38,11 @@ const socialMediaSlice = createSlice({
             const socialMediaIndex = state.data!.findIndex((socialMedia) => socialMedia.id === action.payload.id);
             state.data!.splice(socialMediaIndex, 1);
         },
-        socialMediaFaliure(state) {
+        resetSocialMediaSuccess(state) {
             state.success = false;
         }
     }
 })
 
-export const { updateSocialMediaState, addSocialMediaRequest, addSocialMediaSuccess, updateSocialMediaRequest, updateSocialMediaSuccess, removeSocialMediaRequest, removeSocialMediaSuccess, socialMediaFaliure } = socialMediaSlice.actions;
+export const { updateSocialMediaState, addSocialMediaRequest, addSocialMediaSuccess, updateSocialMediaRequest, updateSocialMediaSuccess, removeSocialMediaRequest, removeSocialMediaSuccess, resetSocialMediaSuccess } = socialMediaSlice.actions;
 export default socialMediaSlice.reducer;

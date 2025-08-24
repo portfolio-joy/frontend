@@ -77,8 +77,8 @@ export default function Header() {
                         </DropdownTrigger>
                         <DropdownMenu className={styles['dropdown-menu']}>
                             <DropdownItem href='/dashboard' textValue='dashboard' key="dashboard" className={styles['header-link']}>Dashboard</DropdownItem>
-                            <DropdownItem onClick={logoutUser} textValue='logout' key="logout" className={styles['header-link']}>Logout</DropdownItem>
-                            <DropdownItem href={userData.portfolioUrl ? userData.portfolioUrl : ''} target='_blank' textValue='portfolioUrl' className={styles['header-link']}>Your Portfolio</DropdownItem>
+                            <DropdownItem onPress={logoutUser} textValue='logout' key="logout" className={styles['header-link']}>Logout</DropdownItem>
+                            <DropdownItem href={userData.portfolioUrl ? userData.portfolioUrl : ''} target='_blank' textValue='portfolioUrl' className={styles['header-link']} key={''}>Your Portfolio</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     :

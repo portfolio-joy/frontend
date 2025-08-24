@@ -20,7 +20,7 @@ const testimonialSlice = createSlice({
         },
         addTestimonialSuccess(state, action: PayloadAction<TestimonialType>) {
             state.success = true;
-            state.data?.unshift(action.payload);
+            state.data?.push(action.payload);
         },
         updateTestimonialRequest(state, action: PayloadAction<{ data: TestimonialType, testimonialId: string, token: string | null }>) {
             state.success = false;
@@ -38,11 +38,11 @@ const testimonialSlice = createSlice({
             const testimonialIndex = state.data!.findIndex((testimonial) => testimonial.id === action.payload.id);
             state.data!.splice(testimonialIndex, 1);
         },
-        testimonialFaliure(state) {
+        resetTestimonialSuccess(state) {
             state.success = false;
         }
     }
 })
 
-export const { updateTestimonialState, addTestimonialRequest, addTestimonialSuccess, updateTestimonialRequest, updateTestimonialSuccess, removeTestimonialRequest, removeTestimonialSuccess, testimonialFaliure } = testimonialSlice.actions;
+export const { updateTestimonialState, addTestimonialRequest, addTestimonialSuccess, updateTestimonialRequest, updateTestimonialSuccess, removeTestimonialRequest, removeTestimonialSuccess, resetTestimonialSuccess } = testimonialSlice.actions;
 export default testimonialSlice.reducer;

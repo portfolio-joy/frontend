@@ -1,13 +1,15 @@
 import styles from '@/styles/Dashboard.module.css'
 import { Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, Radio, RadioGroup, Slider, Tooltip, useDisclosure } from '@nextui-org/react'
 import { CrossIcon } from '../icons'
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { removeSkillRequest, addSkillRequest, updateSkillRequest, updateSkillState, skillFaliure } from '@/redux/slices/skillSlice';
+import { removeSkillRequest, addSkillRequest, updateSkillRequest, updateSkillState, resetSkillSuccess } from '@/redux/slices/skillSlice';
 import { SkillsType } from '@/types/SkillsType';
 import { toast } from 'react-toastify';
-import { clearAllErrors } from '@/redux/slices/errorSlice';
+import { clearAllErrors, clearError } from '@/redux/slices/errorSlice';
 import { updateResumeData } from '@/redux/slices/resumeSlice';
+import { textEditorConfiguration } from '@/util/textEditorConfiguration';
+import dynamic from 'next/dynamic';
 
 export default function Skills() {
 
@@ -27,13 +29,19 @@ export default function Skills() {
     const [skillType, setSkillType] = useState<string>("");
     const [proficiencyValue, setProficiencyValue] = useState<number | number[]>(1);
     const dispatch = useAppDispatch();
+    const editorRef = useRef(null);
+    const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false })
+    const config = useMemo(
+        () => textEditorConfiguration(600, 'Description'),
+        [],
+    );
 
     useEffect(() => {
         dispatch(clearAllErrors());
         if (userState.success && !skillState.data) {
             dispatch(updateSkillState(userState?.user?.skills ? userState.user.skills : []));
         }
-    }, [])
+    }, [dispatch, skillState.data, userState.success, userState.user?.skills])
 
     useEffect(() => {
         setFormData((previousFormDataState) => ({ ...previousFormDataState, "proficiency": proficiencyValue as number }));
@@ -45,19 +53,29 @@ export default function Skills() {
             toast.success("Data Updated Successfully");
             dispatch(updateResumeData({ key: 'skills', value: skillState.data }));
         } else if (Object.keys(error).length) {
-            dispatch(skillFaliure());
             toast.error(error.general);
+            dispatch(clearError('general'));
         }
-    }, [skillState.success, error, skillState.data])
+        dispatch(resetSkillSuccess());
+    }, [dispatch,skillState.success, error, skillState.data])
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = event.target;
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string) => {
+        let name = '', value = '';
+        if (typeof event === 'string') {
+            name = 'description';
+            value = event;
+        } else {
+            name = event.target.name;
+            value = event.target.value;
+        }
         setFormData((previousFormDataState) => ({ ...previousFormDataState, [name]: value }));
     }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (updateSkillIndex === -1) {
+        if (formData.description.trim().length === 0) {
+            toast.error("Description should not be empty");
+        } else if (updateSkillIndex === -1) {
             dispatch(addSkillRequest({ data: formData as SkillsType, token: userState.token }))
         } else {
             dispatch(updateSkillRequest({ data: formData as SkillsType, skillId: (skillState.data![updateSkillIndex].id), token: userState.token }))
@@ -115,9 +133,13 @@ export default function Skills() {
                     skillType === 'Technical' &&
                     <Slider name='proficiency' aria-label='proficiency-slider' color='secondary' showTooltip={true} step={1} maxValue={100} minValue={1} defaultValue={formData.proficiency} className={`max-w-md p-5 ${styles['proficiency-slider']}`} value={Number(proficiencyValue)} onChange={setProficiencyValue} />
                 }
-                <Tooltip isDisabled={!error.description} className={error.description && styles['error-tooltip']} content={error.description}>
-                    <textarea autoComplete='true' className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} value={formData.description} onChange={handleChange} required></textarea>
-                </Tooltip>
+                <JoditEditor
+                    className={error.description ? styles['input-error'] : styles['input-normal']}
+                    ref={editorRef}
+                    value={formData?.description ?? ''}
+                    config={config}
+                    onBlur={(htmlString) => handleChange(htmlString)}
+                />
                 <fieldset className='flex'>
                     {
                         updateSkillIndex !== -1 &&

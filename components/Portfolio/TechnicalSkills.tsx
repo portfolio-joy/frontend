@@ -14,7 +14,7 @@ export default function PortfolioTechnicalSkills() {
         if (portfolioState.success) {
             setTechnicalSkills(portfolioState.user ? portfolioState.user.skills.filter((skill) => skill.skillType === 'Technical') : []);
         }
-    }, [portfolioState.success])
+    }, [portfolioState.success, portfolioState.user])
 
     return (
         <section id="technicalSkills" className={styles['technical-skills']}>
@@ -26,9 +26,9 @@ export default function PortfolioTechnicalSkills() {
                             <CardHeader>
                                 <h3>{technicalSkill.name}</h3>
                             </CardHeader>
-                            <Tooltip className='w-96 break-all shadow-sm shadow-secondary' content={technicalSkill.description}>
-                                <CardBody className={styles['card-body']}>
-                                    {technicalSkill.description}
+                            <Tooltip className='w-96 break-all shadow-sm shadow-secondary' content={<span dangerouslySetInnerHTML={{ __html: technicalSkill?.description ?? "" }}>
+                            </span>}>
+                                <CardBody className={`${styles['card-body']}`} dangerouslySetInnerHTML={{ __html: technicalSkill?.description ?? "" }}>
                                 </CardBody>
                             </Tooltip>
                             <CardFooter className={`justify-center ${styles['card-footer']}`}>

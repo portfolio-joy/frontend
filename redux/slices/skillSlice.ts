@@ -20,7 +20,7 @@ const skillSlice = createSlice({
         },
         addSkillSuccess(state, action: PayloadAction<SkillsType>) {
             state.success = true;
-            state.data?.unshift(action.payload);
+            state.data?.push(action.payload);
         },
         updateSkillRequest(state, action: PayloadAction<{ data: SkillsType, skillId: string, token: string | null }>) {
             state.success = false;
@@ -38,11 +38,11 @@ const skillSlice = createSlice({
             const skillIndex = state.data!.findIndex((skill) => skill.id === action.payload.id);
             state.data!.splice(skillIndex, 1);
         },
-        skillFaliure(state) {
+        resetSkillSuccess(state) {
             state.success = false;
         }
     }
 })
 
-export const { updateSkillState, addSkillRequest, addSkillSuccess, updateSkillRequest, updateSkillSuccess, removeSkillRequest, removeSkillSuccess, skillFaliure } = skillSlice.actions;
+export const { updateSkillState, addSkillRequest, addSkillSuccess, updateSkillRequest, updateSkillSuccess, removeSkillRequest, removeSkillSuccess, resetSkillSuccess } = skillSlice.actions;
 export default skillSlice.reducer;

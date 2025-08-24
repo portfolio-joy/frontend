@@ -27,11 +27,11 @@ const aboutMeSlice = createSlice({
             state.success = true;
             state.data = action.payload;
         },
-        aboutMeFaliure(state) {
+        resetAboutMeSuccess(state) {
             state.success = false;
         }
     }
 });
 
-export const { updateAboutMeState, saveAboutMeRequest, updateAboutMeRequest, aboutMeSuccess, aboutMeFaliure } = aboutMeSlice.actions;
+export const { updateAboutMeState, saveAboutMeRequest, updateAboutMeRequest, aboutMeSuccess, resetAboutMeSuccess } = aboutMeSlice.actions;
 export default aboutMeSlice.reducer;

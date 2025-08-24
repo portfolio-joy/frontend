@@ -4,14 +4,14 @@ import { CrossIcon } from "../icons";
 import { useAppSelector, useAppDispatch } from "@/hooks/hooks";
 import { ImageType } from "@/types/ImageType";
 import { base64ToFile } from "@/util/base64ToFile";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ProjectDataType } from '@/types/ProjectDataType';
 import { toast } from 'react-toastify';
-import { addProjectDataRequest, fetchProjectDataRequest, projectDataFaliure, removeProjectDataRequest, reorderProjectDataRequest, updateProjectDataRequest, updateProjectDataState } from '@/redux/slices/projectDataSlice';
-import { clearAllErrors } from '@/redux/slices/errorSlice';
+import { addProjectDataRequest, fetchProjectDataRequest, resetProjectDataSuccess, removeProjectDataRequest, reorderProjectDataRequest, updateProjectDataRequest, updateProjectDataState } from '@/redux/slices/projectDataSlice';
+import { clearAllErrors, clearError } from '@/redux/slices/errorSlice';
 import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
-
-
+import dynamic from 'next/dynamic';
+import { textEditorConfiguration } from '@/util/textEditorConfiguration';
 
 export default function ProjectData() {
 
@@ -35,10 +35,16 @@ export default function ProjectData() {
         }
     };
     const [formData, setFormData] = useState(initialFormData);
+    const editorRef = useRef(null);
+    const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false })
+    const config = useMemo(
+        () => textEditorConfiguration(600, 'Description'),
+        [],
+    );
 
     useEffect(() => {
         dispatch(updateProjectDataState([]));
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         if (projectDataState.success) {
@@ -46,23 +52,36 @@ export default function ProjectData() {
             toast.success("Data Updated Successfully");
             setProjectData(projectDataState.data);
         } else if (Object.keys(error).length) {
-            dispatch(projectDataFaliure());
             toast.error(error.general);
             dispatch(updateProjectDataState(projectData));
+            dispatch(clearError('general'));
         }
-    }, [projectDataState.success, error])
+        dispatch(resetProjectDataSuccess());
+    }, [dispatch, projectData, projectDataState.data, projectDataState.success, error])
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        const { name, value } = event.target;
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> | string) => {
+        let name = '', value = '';
+        if (typeof event === 'string') {
+            name = 'description';
+            value = event;
+        } else {
+            name = event.target.name;
+            value = event.target.value;
+        }
         if (name === 'project') {
             setSelectedProject(value);
             setUpdateProjectDataIndex(-1);
             setRemoveProjectDataIndex(-1);
             setFormData(initialFormData);
             setImage(null);
-            dispatch(fetchProjectDataRequest({ projectName: value, token: userState.token }));
-            const project = projects && projects.find(project => project.name === value);
-            setFormData((previousFromDataState) => ({ ...previousFromDataState, 'project': { 'id': project ? project.id : '' } }));
+            setProjectData([]);
+            if (value == '') {
+                dispatch(updateProjectDataState([]));
+            }
+            else {
+                dispatch(fetchProjectDataRequest({ projectId: value, token: userState.token }));
+                setFormData((previousFromDataState) => ({ ...previousFromDataState, 'project': { 'id': value } }));
+            }
         } else {
             setFormData((previousFormDataState) => ({ ...previousFormDataState, [name]: value }));
         }
@@ -78,7 +97,10 @@ export default function ProjectData() {
         event.preventDefault();
         if (!selectedProject.length) {
             toast.error("Please select any project first !!");
-        } else if (updateProjectDataIndex !== -1) {
+        } else if (formData.description.trim().length === 0) {
+            toast.error("Description should not be empty");
+        }
+        else if (updateProjectDataIndex !== -1) {
             dispatch(updateProjectDataRequest({ data: formData as ProjectDataType, projectDataId: projectDataState.data[updateProjectDataIndex].id, token: userState.token, image: image as File }))
         } else {
             dispatch(addProjectDataRequest({ data: formData as ProjectDataType, token: userState.token, image: image as File }))
@@ -113,7 +135,7 @@ export default function ProjectData() {
         const [reorderedItem] = reorderedItems.splice(result.source.index, 1);
         reorderedItems.splice(result.destination.index, 0, reorderedItem);
         dispatch(updateProjectDataState(reorderedItems));
-        dispatch(reorderProjectDataRequest({data : {entityId : result.draggableId, superEntityId: formData.project.id, oldOrderNumber: result.source.index, newOrderNumber: result.destination.index},token : userState.token ?? ''}))
+        dispatch(reorderProjectDataRequest({ data: { entityId: result.draggableId, superEntityId: formData.project.id, oldOrderNumber: result.source.index, newOrderNumber: result.destination.index }, token: userState.token ?? '' }))
     }
 
     return (
@@ -147,17 +169,21 @@ export default function ProjectData() {
             <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
                 <h2>Project Data Form</h2>
                 <Select id='project' name='project' aria-label='Your Projects' items={projects ? projects : []} placeholder="Select your project" className={'p-5'} variant='bordered' onChange={handleChange}>
-                    {(project) => <SelectItem key={project.name}>{project.name}</SelectItem>}
+                    {(project) => <SelectItem key={project.id}>{project.name}</SelectItem>}
                 </Select>
                 <Tooltip isDisabled={!error.heading} className={error.heading && styles['error-tooltip']} content={error.heading}>
                     <input autoComplete='true' className={error.heading ? styles['input-error'] : styles['input-normal']} name="heading" type="text" placeholder="Heading" maxLength={35} value={formData.heading} onChange={handleChange} required></input>
                 </Tooltip>
-                <Tooltip isDisabled={!error.description} className={error.description && styles['error-tooltip']} content={error.description}>
-                    <textarea autoComplete='true' className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} value={formData.description} onChange={handleChange} required></textarea>
-                </Tooltip>
+                <JoditEditor
+                    className={error.description ? styles['input-error'] : styles['input-normal']}
+                    ref={editorRef}
+                    value={formData?.description ?? ''}
+                    config={config}
+                    onBlur={(htmlString) => handleChange(htmlString)}
+                />
                 <input id='image' type="file" name="image" accept="image/*" onChange={handleFileChange} hidden />
                 <Tooltip isDisabled={!error.image} className={error.image && styles['error-tooltip']} content={error.image}>
-                    <label htmlFor='image' className={`cursor-pointer ${error.image ? styles['input-error'] : styles['input-normal']}`}>Project Data Image : <i>{image?.name}</i></label>
+                    <label htmlFor='image' className={`cursor-pointer ${error.image ? styles['input-error'] : styles['input-normal']}`}>Project Data Image  <small>(less than 1MB)</small>: <i>{image?.name}</i></label>
                 </Tooltip>
                 <fieldset className='flex'>
                     {

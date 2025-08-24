@@ -15,7 +15,7 @@ export default function PortfolioTestimonials() {
         if (portfolioState.success) {
             setTestimonials(portfolioState.user ? portfolioState.user.testimonials : []);
         }
-    }, [portfolioState.success])
+    }, [portfolioState.success, portfolioState.user])
 
     useEffect(() => {
         if (testimonials.length > 0) {
@@ -43,7 +43,7 @@ export default function PortfolioTestimonials() {
                         className={styles['quote']}
                     >
                         <BlockquoteIcon />
-                        <p>{testimonials[currentIndex]?.description}</p>
+                        <p dangerouslySetInnerHTML={{ __html: testimonials[currentIndex]?.description ?? "" }}></p>
                         <cite>
                             <div className="flex justify-end">
                                 {

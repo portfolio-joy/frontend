@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks'
-import { contactFaliure, saveContactRequest, updateContactRequest, updateContactState } from '@/redux/slices/contactSlice'
-import { clearAllErrors } from '@/redux/slices/errorSlice'
+import { resetContactSuccess, saveContactRequest, updateContactRequest, updateContactState } from '@/redux/slices/contactSlice'
+import { clearAllErrors, clearError } from '@/redux/slices/errorSlice'
 import { updateResumeData } from '@/redux/slices/resumeSlice'
 import styles from '@/styles/Dashboard.module.css'
 import { ContactType } from '@/types/ContactType'
@@ -38,7 +38,7 @@ export default function Contact() {
                 setIsDataPresent(true);
             }
         }
-    }, [userState.success])
+    }, [dispatch, userState.success, contactState.data, userState.user?.contact, userState.user?.emailId])
 
     useEffect(() => {
         if (contactState.success) {
@@ -48,10 +48,11 @@ export default function Contact() {
             setIsDataPresent(true);
             dispatch(updateResumeData({ key: 'contact', value: contactState.data }));
         } else if (Object.keys(error).length) {
-            dispatch(contactFaliure())
             toast.error(error.general);
+            dispatch(clearError('general'));
         }
-    }, [contactState.success, error, contactState.data]);
+        dispatch(resetContactSuccess())
+    }, [dispatch, contactState.success, error, contactState.data]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
@@ -79,7 +80,7 @@ export default function Contact() {
                     <input autoComplete='true' className={error.emailId ? styles['input-error'] : styles['input-normal']} name="emailId" type="email" placeholder="Email Id" maxLength={35} value={formData?.emailId} onChange={handleChange} required></input>
                 </Tooltip>
                 <Tooltip isDisabled={!error.address} className={error.address && styles['error-tooltip']} content={error.address}>
-                    <textarea autoComplete='true' className={error.address ? styles['input-error'] : styles['input-normal']} name="address" rows={5} placeholder="Address" maxLength={35} value={formData?.address} onChange={handleChange} required></textarea>
+                    <textarea autoComplete='true' className={error.address ? styles['input-error'] : styles['input-normal']} name="address" rows={5} placeholder="Address" maxLength={255} value={formData?.address} onChange={handleChange} required></textarea>
                 </Tooltip>
                 <Tooltip isDisabled={!error.phoneNo} className={error.phoneNo && styles['error-tooltip']} content={error.phoneNo}>
                     <input autoComplete='true' className={error.phoneNo ? styles['input-error'] : styles['input-normal']} name="phoneNo" type="tel" pattern='^[6-9]\d{9}$' placeholder="Mobile No" maxLength={10} value={formData?.phoneNo} onChange={handleChange} title={!error.phoneNo ? 'Invalid Mobile Number' : undefined} required></input>

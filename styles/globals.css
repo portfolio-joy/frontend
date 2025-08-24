@@ -49,7 +49,7 @@ body {
 }
 
 main {
-  height: calc(100% - 50px);
+  height: 100%;
 }
 
 #__next {
@@ -68,6 +68,24 @@ main {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(120, 40, 200);
+}
+
+.jodit-react-container {
+  margin: 12px;
+  padding: 10px;
+}
+
+.jodit-wysiwyg {
+  padding-left: 10px !important;
+}
+
+.jodit-wysiwyg ul {
+  list-style: inside !important;
+}
+
+.jodit-wysiwyg ol {
+  list-style: inside !important;
+  list-style-type: number !important;
 }
 
 @media screen and (max-width: 767px) {

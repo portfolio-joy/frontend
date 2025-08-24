@@ -45,7 +45,7 @@ export default function PortfolioContainer() {
             setTechnicalSkills(portfolioState.user?.skills.filter((skill) => skill.skillType === 'Technical'));
             setSoftSkills(portfolioState.user?.skills.filter((skill) => skill.skillType === 'Soft'));
         }
-    }, [router.isReady, router.query.user, error, portfolioState.success]);
+    }, [router, dispatch, portfolioState.user?.skills, router.isReady, router.query.user, error, portfolioState.success]);
 
     return (
         <main className={styles['portfolio-container']}>

@@ -6,17 +6,23 @@ const errorSlice = createSlice({
     name: 'error',
     initialState,
     reducers: {
-        setErrors: (state, action: PayloadAction<string>) => {
+        setErrors(state, action: PayloadAction<string>) {
             return JSON.parse(action.payload);
         },
-        clearError: (state, action: PayloadAction<string>) => {
+        addError(state, action: PayloadAction<Record<string, string>>) {
+            return {
+                ...state,
+                ...action.payload
+            }
+        },
+        clearError(state, action: PayloadAction<string>) {
             delete state[action.payload];
         },
-        clearAllErrors: state => {
+        clearAllErrors(state) {
             return initialState
         }
     }
 })
 
-export const { setErrors, clearError, clearAllErrors } = errorSlice.actions
+export const { setErrors, addError, clearError, clearAllErrors } = errorSlice.actions
 export default errorSlice.reducer

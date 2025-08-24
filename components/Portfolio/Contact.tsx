@@ -14,7 +14,7 @@ export default function PortfolioContact() {
         if (portfolioState.success) {
             setContact(portfolioState.user?.contact);
         }
-    }, [portfolioState.success, contact])
+    }, [portfolioState.success, contact, portfolioState.user?.contact])
 
     return (
         <section id="contact" className={styles['contact-me']}>

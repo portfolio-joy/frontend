@@ -27,11 +27,11 @@ const contactSlice = createSlice({
             state.success = true;
             state.data = action.payload;
         },
-        contactFaliure(state) {
+        resetContactSuccess(state) {
             state.success = false;
         }
     }
 });
 
-export const { updateContactState, saveContactRequest, updateContactRequest, contactSuccess, contactFaliure } = contactSlice.actions;
+export const { updateContactState, saveContactRequest, updateContactRequest, contactSuccess, resetContactSuccess } = contactSlice.actions;
 export default contactSlice.reducer;

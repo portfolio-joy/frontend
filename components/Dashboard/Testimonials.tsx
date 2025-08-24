@@ -2,12 +2,14 @@ import styles from '@/styles/Dashboard.module.css'
 import { Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, Tooltip, useDisclosure } from "@nextui-org/react";
 import { CrossIcon } from "../icons";
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { useEffect, useState } from 'react';
-import { addTestimonialRequest, removeTestimonialRequest, testimonialFaliure, updateTestimonialRequest, updateTestimonialState } from '@/redux/slices/testimonialSlice';
-import { clearAllErrors } from '@/redux/slices/errorSlice';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { addTestimonialRequest, removeTestimonialRequest, resetTestimonialSuccess, updateTestimonialRequest, updateTestimonialState } from '@/redux/slices/testimonialSlice';
+import { clearAllErrors, clearError } from '@/redux/slices/errorSlice';
 import { toast } from 'react-toastify';
 import { TestimonialType } from '@/types/TestimonialType';
 import { updateResumeData } from '@/redux/slices/resumeSlice';
+import { textEditorConfiguration } from '@/util/textEditorConfiguration';
+import dynamic from 'next/dynamic';
 
 export default function Testimonials() {
 
@@ -17,7 +19,7 @@ export default function Testimonials() {
     const dispatch = useAppDispatch();
     const [removeTestimonialIndex, setRemoveTestimonialIndex] = useState<number>(-1);
     const [updateTestimonialIndex, setUpdateTestimonialIndex] = useState<number>(-1);
-    const [tooltipOpen, isTooltipOpen] = useState<boolean>(false);
+    const [tooltipOpen, _isTooltipOpen] = useState<boolean>(false);
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const initialFormData = {
         name: "",
@@ -26,32 +28,48 @@ export default function Testimonials() {
         rating: 0
     };
     const [formData, setFormData] = useState(initialFormData);
+    const editorRef = useRef(null);
+    const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false })
+    const config = useMemo(
+        () => textEditorConfiguration(400, 'Description'),
+        [],
+    );
 
     useEffect(() => {
         dispatch(clearAllErrors());
         if (userState.success && !testimonialState.data) {
             dispatch(updateTestimonialState(userState?.user?.testimonials ? userState.user.testimonials : []));
         }
-    }, [])
+    }, [dispatch, testimonialState.data, userState.success, userState.user?.testimonials])
 
     useEffect(() => {
         if (testimonialState.success) {
             toast.success("Data Updated Successfully");
             dispatch(updateResumeData({ key: 'testimonials', value: testimonialState.data }))
         } else if (Object.keys(error).length) {
-            dispatch(testimonialFaliure());
             toast.error(error.general);
+            dispatch(clearError('general'));
         }
-    }, [testimonialState.success, error, testimonialState.data])
+        dispatch(resetTestimonialSuccess());
+    }, [dispatch,testimonialState.success, error, testimonialState.data])
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = event.target;
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string) => {
+        let name = '', value = '';
+        if (typeof event === 'string') {
+            name = 'description';
+            value = event;
+        } else {
+            name = event.target.name;
+            value = event.target.value;
+        }
         setFormData((previousFormData) => ({ ...previousFormData, [name]: value }));
     }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (updateTestimonialIndex === -1) {
+        if (formData.description.trim().length === 0) {
+            toast.error("Description should not be empty");
+        } else if (updateTestimonialIndex === -1) {
             dispatch(addTestimonialRequest({ data: formData as TestimonialType, token: userState.token }))
         } else {
             dispatch(updateTestimonialRequest({ data: formData as TestimonialType, testimonialId: (testimonialState.data![updateTestimonialIndex].id), token: userState.token }))
@@ -99,9 +117,13 @@ export default function Testimonials() {
                 <Tooltip className={error.designation && styles['error-tooltip']} content={error.designation}>
                     <input autoComplete='true' className={error.designation ? styles['input-error'] : styles['input-normal']} name='designation' type='text' placeholder='Designation' maxLength={35} value={formData.designation} onChange={handleChange} required></input>
                 </Tooltip>
-                <Tooltip className={error.description && styles['error-tooltip']} content={error.description}>
-                    <textarea className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={400} value={formData.description} onChange={handleChange} required></textarea>
-                </Tooltip>
+                <JoditEditor
+                    className={error.description ? styles['input-error'] : styles['input-normal']}
+                    ref={editorRef}
+                    value={formData?.description ?? ''}
+                    config={config}
+                    onBlur={(htmlString) => handleChange(htmlString)}
+                />
                 <Tooltip className={error.rating && styles['error-tooltip']} content={error.rating}>
                     <input className={error.rating ? styles['input-error'] : styles['input-normal']} name='rating' type='number' placeholder='Rating(Optional)' min={0} max={5} value={formData.rating ? formData.rating : undefined} onChange={handleChange}></input>
                 </Tooltip>

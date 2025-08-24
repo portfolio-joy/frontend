@@ -11,6 +11,7 @@ export default function PortfolioHeader() {
     const portfolioState = useAppSelector(state => state.user);
     const router = useRouter();
     const [menuItems, setMenuItems] = useState<{ name: string, id: string, dataAbsent: boolean }[]>([]);
+    const [activeSectionIndex, setActiveSectionIndex] = useState<number>(-1);
 
     useEffect(() => {
         if (portfolioState.success) {
@@ -49,7 +50,7 @@ export default function PortfolioHeader() {
                 },
             ]);
         }
-    }, [portfolioState.success])
+    }, [portfolioState.success, portfolioState.user?.aboutMe, portfolioState.user?.contact, portfolioState.user?.projects, portfolioState.user?.skills, portfolioState.user?.testimonials])
 
     useEffect(() => {
         if (router.query.user) setQueryLength(router.query.user.length);
@@ -69,7 +70,7 @@ export default function PortfolioHeader() {
                         menuItems.map((item, index) => (
                             !item.dataAbsent
                             &&
-                            <Link key={index} href={`#${item.id}`}>
+                            <Link className={activeSectionIndex === index ? styles['active-section'] : styles['navbar-content']} onClick={() => setActiveSectionIndex(index)} key={index} href={`#${item.id}`}>
                                 {item.name}
                             </Link>
                         ))
@@ -77,13 +78,17 @@ export default function PortfolioHeader() {
             </NavbarContent>
 
             <NavbarMenu className={styles['navbar-menu']}>
-                {menuItems.map((item, index) => (
-                    !item.dataAbsent
-                    &&
-                    <Link key={index} href={`#${item.id}`}>
-                        {item.name}
-                    </Link>
-                ))}
+                {
+                    queryLength === 2 ?
+                        <button onClick={() => router.back()}>BACK</button>
+                        :
+                        menuItems.map((item, index) => (
+                            !item.dataAbsent
+                            &&
+                            <Link className={activeSectionIndex === index ? styles['active-section'] : styles['navbar-content']} onClick={() => setActiveSectionIndex(index)} key={index} href={`#${item.id}`}>
+                                {item.name}
+                            </Link>
+                        ))}
             </NavbarMenu>
         </Navbar>
     );

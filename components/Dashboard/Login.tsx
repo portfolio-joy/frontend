@@ -27,7 +27,7 @@ export default function Login() {
     useEffect(() => {
         localStorage.clear();
         dispatch(setLoading(false));
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
         if (loginState.success && loginState.data) {
@@ -41,7 +41,7 @@ export default function Login() {
             dispatch(authUserFailure());
             toast.error(error.general);
         }
-    }, [loginState.success, error])
+    }, [dispatch, loginState.success, loginState.data, router, error])
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -54,7 +54,7 @@ export default function Login() {
         const { name, value } = event.target;
         setFormData((previousFormDataState) => ({ ...previousFormDataState, [name]: value }));
     }
-    
+
     return (
         <section className={`${styles['login-page']} ${loading && styles['overlay']}`}>
             {loading && (

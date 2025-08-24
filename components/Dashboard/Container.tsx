@@ -76,22 +76,22 @@ export default function DashboardContainer() {
         dataNumber: 0
       }
     ]);
-  }, [userState.success, aboutMeState.data, contactState.data, skillState.data, projectState.data, projectDataState.data, testimonailState.data, socialMediaState.data])
+  }, [userState.success, aboutMeState.data, contactState.data, skillState.data, projectState.data, projectDataState.data, testimonailState.data, socialMediaState.data, userState.user?.aboutMe?.description, userState.user?.contact?.phoneNo, userState.user?.projects?.length, userState.user?.skills?.length, userState.user?.socialMedias?.length, userState.user?.testimonials?.length])
 
   useEffect(() => {
     dispatch(clearAllErrors());
     const localStorageData = localStorage.getItem('data');
     const dataJson: LoginResponseData = JSON.parse(localStorageData ? localStorageData : '{}');
     dispatch(fetchUserData({ username: null, token: dataJson.token }));
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
-    if (Object.keys(error).length && error.general === 'Session Expired') {
+    if (Object.keys(error).length && (error.general === 'Session Expired' || error.general === 'User Not Found')) {
       dispatch(fetchUserFailure());
       toast.error("Session Expired");
       router.push('/login');
     }
-  }, [error])
+  }, [dispatch, router, error])
 
   return (
     <section className={styles["dashboard-main"]}>

@@ -31,7 +31,7 @@ export default function Register() {
             dispatch(registerUserFailure());
             toast.error(error.general);
         }
-    }, [registerState.success, error]);
+    }, [dispatch, registerState.success, error, onOpen]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;

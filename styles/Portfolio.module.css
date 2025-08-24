@@ -13,14 +13,22 @@
 
 .navbar-menu a {
     padding: 12px;
+}
+
+.navbar-content {
     color: black;
 }
 
-.navbar-menu a:hover {
+.navbar-menu a:hover,
+.active-section {
     background-color: rgb(120, 40, 200);
     color: rgb(228, 227, 213);
     border-radius: 24px;
     transition: .5s ease-in-out;
+}
+
+.active-section {
+    color: rgb(228, 227, 213);
 }
 
 .portfolio-container {

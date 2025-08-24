@@ -3,9 +3,9 @@ import { CrossIcon } from '../icons'
 import { Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, Select, SelectItem, Tooltip, useDisclosure } from '@nextui-org/react'
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks'
 import { useEffect, useState } from 'react';
-import { addSocialMediaRequest, removeSocialMediaRequest, socialMediaFaliure, updateSocialMediaRequest, updateSocialMediaState } from '@/redux/slices/socialMediaSlice';
+import { addSocialMediaRequest, removeSocialMediaRequest, resetSocialMediaSuccess, updateSocialMediaRequest, updateSocialMediaState } from '@/redux/slices/socialMediaSlice';
 import { toast } from 'react-toastify';
-import { clearAllErrors } from '@/redux/slices/errorSlice';
+import { addError, clearAllErrors, clearError } from '@/redux/slices/errorSlice';
 import { SocialMediaType } from '@/types/SocialMediaType';
 
 export default function SocialMedia() {
@@ -39,24 +39,29 @@ export default function SocialMedia() {
         if (userState.success && !socialMediaState.data) {
             dispatch(updateSocialMediaState(userState?.user?.socialMedias ? userState.user.socialMedias : []));
         }
-    }, [])
+    }, [dispatch, socialMediaState.data, userState.success, userState.user?.socialMedias])
 
     useEffect(() => {
         if (socialMediaState.success) {
             toast.success("Data Updated Successfully");
         } else if (Object.keys(error).length) {
-            dispatch(socialMediaFaliure());
             toast.error(error.general);
+            dispatch(clearError('general'));
         }
-    }, [socialMediaState.success, error, socialMediaState.data])
+        dispatch(resetSocialMediaSuccess());
+    }, [dispatch, socialMediaState.success, error, socialMediaState.data])
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | {target: {name: string, value: string}}) => {
         const { name, value } = event.target;
         setFormData((previousFormDataState) => ({ ...previousFormDataState, [name]: value }));
     }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        if(!formData.name) {
+            dispatch(addError({name: 'Name not selected'}));
+            return;
+        }
         if (updateSocialMediaIndex === -1) {
             dispatch(addSocialMediaRequest({ data: formData as SocialMediaType, token: userState.token }))
         } else {
@@ -71,12 +76,13 @@ export default function SocialMedia() {
 
     const updateForm = (index: number) => {
         setFormData(socialMediaState.data![index]);
+        handleChange({target: {name: 'name', value: socialMediaState.data![index]?.name}})
         setUpdateSocialMediaIndex(index);
     }
 
     const cancelUpdate = () => {
         setUpdateSocialMediaIndex(-1);
-        setFormData(formData);
+        setFormData(initialFormData);
     }
 
     const removeSocialMedia = () => {
@@ -99,7 +105,7 @@ export default function SocialMedia() {
             <Divider />
             <form className={styles['dashboard-form']} onSubmit={handleSubmit}>
                 <h2>Social Media Form</h2>
-                <Select id='name' name='name' aria-label='Social Media' items={socialMediaNames} placeholder="Select the social media" className={'p-5'} variant='bordered' onChange={handleChange}>
+                <Select id='name' name='name' aria-label='Social Media' items={socialMediaNames} placeholder="Select the social media" className={'p-5'} variant='bordered' isInvalid= {error.name === 'Name not selected'} errorMessage= {error.name ? error.name : ''} selectedKeys={[formData.name]} onChange={handleChange}>
                     {(socialMediaName) => <SelectItem key={socialMediaName.key}>{socialMediaName.label}</SelectItem>}
                 </Select>
                 <Tooltip isDisabled={!error.url} className={error.url && styles['error-tooltip']} content={error.url}>

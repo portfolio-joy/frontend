@@ -10,12 +10,11 @@ export default function PortfolioProjects() {
 
     const portfolioState = useAppSelector(state => state.user);
     const [projects, setProjects] = useState<ProjectsType[]>([]);
-
     useEffect(() => {
         if (portfolioState.success) {
             setProjects(portfolioState.user ? portfolioState.user.projects : []);
         }
-    }, [portfolioState.success])
+    }, [portfolioState.success, portfolioState.user])
 
     return (
         <section id="projects" className={styles['projects']}>
@@ -25,23 +24,23 @@ export default function PortfolioProjects() {
                     projects.map((project, index) =>
                         <Card key={index} className={`${styles['common-card']}`}>
                             <div className="flex justify-center">
-                                <Image src={`data:${(project?.image as ImageType)?.type};base64,${(project?.image as ImageType)?.imageData}`} className="w-full h-56 object-contain rounded-none"></Image>
+                                <Image src={`data:${(project?.image as ImageType)?.type};base64,${(project?.image as ImageType)?.imageData}`} alt="project image" className="w-full h-56 object-contain rounded-none"></Image>
                             </div>
                             <CardHeader>
                                 <h3>{project.name}</h3>
                             </CardHeader>
-                            <Tooltip className='w-96 break-all shadow-sm shadow-secondary' content={project.briefDetail}>
-                                <CardBody className={`${styles['card-body']}`}>
-                                    {project.briefDetail}
+                            <Tooltip className='w-96 break-all shadow-sm shadow-secondary' content={<span dangerouslySetInnerHTML={{ __html: project?.briefDetail ?? "" }}>
+                            </span>}>
+                                <CardBody className={`${styles['card-body']}`} dangerouslySetInnerHTML={{ __html: project?.briefDetail ?? "" }}>
                                 </CardBody>
                             </Tooltip>
                             <CardFooter className="m-0 p-0 ps-2">
-                                <Link className="m-0 p-2 rounded-xl bg-secondary text-white" href={portfolioState.user?.username + "/" + project.name}>Learn More</Link>
+                                <Link className="m-0 p-2 rounded-xl bg-secondary text-white" href={portfolioState.user?.username + "/" + project.id}>Learn More</Link>
                             </CardFooter>
                         </Card>
                     )
                 }
-            </Carousel>
-        </section>
+            </Carousel >
+        </section >
     )
 }

@@ -25,7 +25,7 @@ export default function PortfolioFooter() {
         if (portfolioState.success) {
             setSocialMedias(portfolioState.user ? portfolioState.user.socialMedias : []);
         }
-    }, [portfolioState.success])
+    }, [portfolioState.success, portfolioState.user])
 
     return (
         <section className={styles['footer']}>

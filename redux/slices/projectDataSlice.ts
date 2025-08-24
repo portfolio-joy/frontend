@@ -6,6 +6,7 @@ import { EntityReorderType } from "@/types/EntityReorderType";
 const initialState: ProjectDataState = {
     success: false,
     data: [],
+    projectName: ''
 }
 
 const projectDataSlice = createSlice({
@@ -16,12 +17,13 @@ const projectDataSlice = createSlice({
             state.success = false;
             state.data = action.payload;
         },
-        fetchProjectDataRequest(state, action: PayloadAction<{ username?: string, projectName: string, token: string | null }>) {
+        fetchProjectDataRequest(state, action: PayloadAction<{ username?: string, projectId: string, token: string | null }>) {
             state.success = false;
         },
-        fetchProjectDataSuccess(state, action: PayloadAction<ProjectDataType[]>) {
+        fetchProjectDataSuccess(state, action: PayloadAction<{ projectName: string, projectData: ProjectDataType[] }>) {
             state.success = true;
-            state.data = action.payload;
+            state.data = action.payload.projectData;
+            state.projectName = action.payload.projectName;
         },
         addProjectDataRequest(state, action: PayloadAction<{ data: ProjectDataType, token: string | null, image: File }>) {
             state.success = false;
@@ -41,7 +43,7 @@ const projectDataSlice = createSlice({
         removeProjectDataRequest(state, action: PayloadAction<{ projectDataId: string, token: string | null }>) {
             state.success = false;
         },
-        reorderProjectDataRequest(state, action: PayloadAction<{data : EntityReorderType, token : string}>) {
+        reorderProjectDataRequest(state, action: PayloadAction<{ data: EntityReorderType, token: string }>) {
             state.success = false;
         },
         reorderProjectDataSuccess(state) {
@@ -52,11 +54,11 @@ const projectDataSlice = createSlice({
             const projectDataIndex = state.data.findIndex((projectData) => projectData.id === action.payload.id);
             state.data.splice(projectDataIndex, 1);
         },
-        projectDataFaliure(state) {
+        resetProjectDataSuccess(state) {
             state.success = false;
         }
     }
 })
 
-export const { updateProjectDataState, fetchProjectDataRequest, fetchProjectDataSuccess, addProjectDataRequest, addProjectDataSuccess, updateProjectDataRequest, updateProjectDataSuccess, reorderProjectDataRequest, reorderProjectDataSuccess, removeProjectDataRequest, removeProjectDataSuccess, projectDataFaliure } = projectDataSlice.actions;
+export const { updateProjectDataState, fetchProjectDataRequest, fetchProjectDataSuccess, addProjectDataRequest, addProjectDataSuccess, updateProjectDataRequest, updateProjectDataSuccess, reorderProjectDataRequest, reorderProjectDataSuccess, removeProjectDataRequest, removeProjectDataSuccess, resetProjectDataSuccess } = projectDataSlice.actions;
 export default projectDataSlice.reducer;

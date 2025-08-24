@@ -1,5 +1,5 @@
 import { ProjectsType } from "@/types/ProjectsType";
-import { projectFaliure, updateProjectSuccess } from "../../slices/projectSlice";
+import { updateProjectSuccess } from "../../slices/projectSlice";
 import { CallEffect, PutEffect, call, put } from "redux-saga/effects";
 import { CommonHeaders } from "@/util/headers";
 import ApiRequest from "@/util/api";

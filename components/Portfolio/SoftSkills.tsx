@@ -14,7 +14,7 @@ export default function PortfolioSoftSkills() {
         if (portfolioState.success) {
             setSoftSkills(portfolioState.user ? portfolioState.user.skills.filter((skill) => skill.skillType === 'Soft') : []);
         }
-    }, [portfolioState.success])
+    }, [portfolioState.success, portfolioState.user])
 
     return (
         <section id="softSkills" className={styles['soft-skills']}>
@@ -26,9 +26,9 @@ export default function PortfolioSoftSkills() {
                             <CardHeader>
                                 <h3>{softSkill.name}</h3>
                             </CardHeader>
-                            <Tooltip className='w-96 break-all shadow-sm shadow-secondary' content={softSkill.description}>
-                                <CardBody className={styles['card-body']}>
-                                    {softSkill.description}
+                            <Tooltip className='w-96 break-all shadow-sm shadow-secondary' content={<span dangerouslySetInnerHTML={{ __html: softSkill?.description ?? "" }}>
+                            </span>}>
+                                <CardBody className={`${styles['card-body']}`} dangerouslySetInnerHTML={{ __html: softSkill?.description ?? "" }}>
                                 </CardBody>
                             </Tooltip>
                         </Card>

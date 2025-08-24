@@ -1,15 +1,17 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { aboutMeFaliure, saveAboutMeRequest, updateAboutMeState } from '@/redux/slices/aboutMeSlice';
+import { resetAboutMeSuccess, saveAboutMeRequest, updateAboutMeState } from '@/redux/slices/aboutMeSlice';
 import { updateAboutMeRequest } from '@/redux/slices/aboutMeSlice';
-import { clearAllErrors } from '@/redux/slices/errorSlice';
+import { clearAllErrors, clearError } from '@/redux/slices/errorSlice';
 import { updateResumeData, updateResumeState } from '@/redux/slices/resumeSlice';
 import styles from '@/styles/Dashboard.module.css'
 import { AboutMeType } from '@/types/AboutMeType'
 import { ImageType } from '@/types/ImageType';
 import { base64ToFile } from '@/util/base64ToFile';
 import { Divider, Tooltip } from '@nextui-org/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'react-toastify';
+import { textEditorConfiguration } from '@/util/textEditorConfiguration';
+import dynamic from 'next/dynamic';
 
 export default function AboutMe() {
 
@@ -26,6 +28,13 @@ export default function AboutMe() {
     const [isDataPresent, setIsDataPresent] = useState<boolean>(false);
     const [image, setImage] = useState<File | null>(null);
     const dispatch = useAppDispatch();
+    const editorRef = useRef(null);
+    const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false })
+    const config = useMemo(
+        () => textEditorConfiguration(600, 'Description'),
+        [],
+    );
+
     useEffect(() => {
         dispatch(clearAllErrors());
         if (userState.success) {
@@ -51,7 +60,7 @@ export default function AboutMe() {
                 setIsDataPresent(true);
             }
         }
-    }, [userState.success])
+    }, [aboutMeState.data, dispatch, userState.user?.aboutMe, userState.user?.contact, userState.user?.firstName, userState.user?.lastName, userState.user?.projects, userState.user?.skills, userState.user?.testimonials, userState.success])
 
     useEffect(() => {
         if (aboutMeState.success) {
@@ -62,13 +71,22 @@ export default function AboutMe() {
             setIsDataPresent(true);
             dispatch(updateResumeData({ key: 'aboutMe', value: aboutMeState.data }));
         } else if (Object.keys(error).length) {
-            dispatch(aboutMeFaliure())
             toast.error(error.general);
+            dispatch(clearError('general'));
         }
-    }, [aboutMeState.success, error]);
+        dispatch(resetAboutMeSuccess())
+    }, [dispatch, aboutMeState.success, aboutMeState.data, error]);
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = event.target;
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string) => {
+        let name = '';
+        let value = '';
+        if (typeof event === 'string') {
+            name = 'description',
+                value = event;
+        } else {
+            name = event.target.name;
+            value = event.target.value;
+        }
         setFormData((previousFormDataState) => ({ ...previousFormDataState, [name]: value }));
     }
 
@@ -80,11 +98,14 @@ export default function AboutMe() {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        let skillLenghtGreaterThan30 = -1;
-        skillLenghtGreaterThan30 = formData.skills.split(",").findIndex((skill) => skill.trim().length > 30);
-        if (skillLenghtGreaterThan30 !== -1) {
-            toast.error("No skill should have length greater than 30");
-        } else if (isDataPresent) {
+        let invalidSkillLength = -1;
+        invalidSkillLength = formData.skills.split(",").findIndex((skill) => skill.trim().length > 30 || skill.trim().length<=0);
+        if (invalidSkillLength !== -1) {
+            toast.error("No skill should have length greater than 30 or smaller than 1");
+        } else if (formData.description.trim().length === 0) {
+            toast.error("Description should not be empty");
+        }
+        else if (isDataPresent) {
             dispatch(updateAboutMeRequest({ data: formData, aboutMeId: formData.id, token: userState.token!, image: image as File }));
         }
         else {
@@ -96,7 +117,7 @@ export default function AboutMe() {
         <>
             <div className={styles['data-chips']}>
             </div>
-            <Divider/>
+            <Divider />
             <form className={styles["dashboard-form"]} onSubmit={handleSubmit}>
                 <h2>About Me Form</h2>
                 <Tooltip isDisabled={!error.name} className={error.name && styles['error-tooltip']} content={error.name}>
@@ -105,12 +126,16 @@ export default function AboutMe() {
                 <Tooltip isDisabled={!error.skills} className={error.skills ? styles['error-tooltip'] : styles['info-tooltip']} content={error.skills}>
                     <input autoComplete='true' className={error.skills ? styles['input-error'] : styles['input-normal']} name="skills" type="text" placeholder="Skills(Seperate the skills using comma)" maxLength={255} value={formData?.skills} onChange={handleChange} required></input>
                 </Tooltip>
-                <Tooltip isDisabled={!error.description} className={error.description && styles['error-tooltip']}>
-                    <textarea autoComplete='true' className={error.description ? styles['input-error'] : styles['input-normal']} name="description" rows={5} placeholder="Description" maxLength={600} value={formData?.description} onChange={handleChange} required></textarea>
-                </Tooltip>
+                <JoditEditor
+                    className={error.description ? styles['input-error'] : styles['input-normal']}
+                    ref={editorRef}
+                    value={formData?.description ?? ''}
+                    config={config}
+                    onBlur={(htmlString) => handleChange(htmlString)}
+                />
                 <input id='image' type="file" name="image" accept="image/*" onChange={handleFileChange} hidden />
                 <Tooltip isDisabled={!error.image} className={error.image && styles['error-tooltip']} content={error.image}>
-                    <label htmlFor='image' className={`cursor-pointer ${error.image ? styles['input-error'] : styles['input-normal']}`}>Your Profile : <i>{image?.name}</i></label>
+                    <label htmlFor='image' className={`cursor-pointer ${error.image ? styles['input-error'] : styles['input-normal']}`}>Your Profile Image <small>(less than 1MB)</small>: <i>{image?.name}</i></label>
                 </Tooltip>
                 <button type="submit" className={styles['submit-button']}> {isDataPresent ? 'Update' : 'Save'} </button>
             </form>
