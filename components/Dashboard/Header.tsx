@@ -22,7 +22,7 @@ export default function Header() {
         id: null,
         token: null,
         firstName: null,
-        portfolioUrl: null
+        username: null
     }
     const userState = useAppSelector(state => state.user);
     const dispatch = useAppDispatch();
@@ -32,7 +32,7 @@ export default function Header() {
         id: null,
         token: null,
         firstName: null,
-        portfolioUrl: null
+        username: null
     });
 
     useEffect(() => {
@@ -41,7 +41,7 @@ export default function Header() {
             if (storedUserData) {
                 const parsedUserData = JSON.parse(storedUserData) as LoginResponseData;
                 setUserData(parsedUserData);
-                if (parsedUserData.token && parsedUserData.firstName && parsedUserData.portfolioUrl) {
+                if (parsedUserData.token && parsedUserData.firstName && parsedUserData.username) {
                     setIsDataPresent(true);
                 }
             } else {
@@ -53,7 +53,7 @@ export default function Header() {
     const logoutUser = () => {
         dispatch(logoutUserRequest({ token: userData.token ? userData.token : '' }));
         localStorage.removeItem('data');
-        setUserData({ id: null, token: null, firstName: null, portfolioUrl: null });
+        setUserData({ id: null, token: null, firstName: null, username: null });
         dispatch(updateUserData(null));
         dispatch(updateAboutMeState(null));
         dispatch(updateSkillState(null));
@@ -78,7 +78,7 @@ export default function Header() {
                         <DropdownMenu className={styles['dropdown-menu']}>
                             <DropdownItem href='/dashboard' textValue='dashboard' key="dashboard" className={styles['header-link']}>Dashboard</DropdownItem>
                             <DropdownItem onPress={logoutUser} textValue='logout' key="logout" className={styles['header-link']}>Logout</DropdownItem>
-                            <DropdownItem href={userData.portfolioUrl ? userData.portfolioUrl : ''} target='_blank' textValue='portfolioUrl' className={styles['header-link']} key={''}>Your Portfolio</DropdownItem>
+                            <DropdownItem href={userData.username ? process.env.NEXT_PUBLIC_PORTFOLIO_URL+'/'+userData.username : ''} target='_blank' textValue='portfolioUrl' className={styles['header-link']} key={''}>Your Portfolio</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     :

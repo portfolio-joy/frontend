@@ -30,6 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NEXT_PUBLIC_BE_HOSTNAME: ${{secrets.NEXT_PUBLIC_BE_HOSTNAME}}
+      NEXT_PUBLIC_PORTFOLIO_URL: ${{secrets.NEXT_PUBLIC_PORTFOLIO_URL}}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
