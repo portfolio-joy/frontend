@@ -1,6 +1,5 @@
-const BASE_URL = 'http://localhost:8080'
-
 export default async function ApiRequest(url: string, data: RequestInit) {
+    const BASE_URL = process.env.NEXT_PUBLIC_BE_HOSTNAME
     const response = await fetch(`${BASE_URL}${url}`, data);
     if (!response.ok) {
         throw new Error(await response.text());
