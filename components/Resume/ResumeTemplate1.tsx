@@ -5,7 +5,7 @@ import { parseHtmlToText } from '@/util/parseHtmlToText';
 
 Font.register({
   family: 'Tinos',
-  src: 'http://fonts.gstatic.com/s/tinos/v9/EqpUbkVmutfwZ0PjpoGwCg.ttf'
+  src: 'https://fonts.gstatic.com/s/tinos/v9/EqpUbkVmutfwZ0PjpoGwCg.ttf'
 });
 
 const styles = StyleSheet.create({
