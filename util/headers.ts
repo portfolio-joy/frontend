@@ -1,5 +1,5 @@
 export function CommonHeaders() {
     return {
-        'Access-Control-Allow-Origin': 'http://localhost:3000'
+        'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_PORTFOLIO_URL
     }
 }
