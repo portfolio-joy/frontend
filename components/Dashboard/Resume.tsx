@@ -3,7 +3,7 @@ import { pdf, PDFDownloadLink } from "@react-pdf/renderer";
 import ResumeTemplate1 from "../Resume/ResumeTemplate1";
 import { useAppSelector } from "@/hooks/hooks";
 import React, { useEffect, useState } from "react";
-import { Divider, Select, SelectItem, Radio, RadioGroup } from '@nextui-org/react';
+import { Divider, Select, SelectItem, Radio, RadioGroup } from "@heroui/react";
 import { ProjectsType } from '@/types/ProjectsType';
 import { TestimonialType } from '@/types/TestimonialType';
 import ResumeTemplate2 from '../Resume/ResumeTemplate2';

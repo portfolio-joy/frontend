@@ -1,6 +1,6 @@
 import { registerUserFailure, registerUserRequest } from '@/redux/slices/registerSlice';
 import styles from '@/styles/Dashboard.module.css'
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tooltip, useDisclosure } from '@nextui-org/react';
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tooltip, useDisclosure } from "@heroui/react";
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { CorrectIcon } from '../icons';

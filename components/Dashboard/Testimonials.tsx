@@ -1,5 +1,5 @@
 import styles from '@/styles/Dashboard.module.css'
-import { Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, Tooltip, useDisclosure } from "@nextui-org/react";
+import { Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, Tooltip, useDisclosure } from "@heroui/react";
 import { CrossIcon } from "../icons";
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { useEffect, useMemo, useRef, useState } from 'react';

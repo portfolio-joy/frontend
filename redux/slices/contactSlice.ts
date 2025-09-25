@@ -1,8 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { userInitialState } from "../rootInitialState";
 import { ContactType } from "@/types/ContactType";
-import { UserResponseType } from "@/types/UserResponseType";
 import { ContactState } from "@/types/states/ContactState";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState : ContactState = {
     data: null,

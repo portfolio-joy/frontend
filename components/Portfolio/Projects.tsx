@@ -1,6 +1,6 @@
 import styles from "@/styles/Portfolio.module.css"
 import Carousel from "./Carousel"
-import { Card, CardBody, CardFooter, CardHeader, Image, Link, Tooltip } from "@nextui-org/react"
+import { Card, CardBody, CardFooter, CardHeader, Image, Link, Tooltip } from "@heroui/react"
 import { ProjectsType } from "@/types/ProjectsType";
 import { useAppSelector } from "@/hooks/hooks";
 import { useState, useEffect } from "react";

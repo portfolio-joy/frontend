@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { toast } from "react-toastify";
 import Resume from "./Resume";
 import { clearAllErrors } from "@/redux/slices/errorSlice";
-import { Chip } from "@nextui-org/react";
+import { Chip } from "@heroui/react";
 import { CorrectIconSmall } from "../icons";
 
 export default function DashboardContainer() {
@@ -109,7 +109,7 @@ export default function DashboardContainer() {
                     {
                       module.dataNumber
                         ?
-                        <Chip size="sm" className="bg-success-400 ms-2 w-2 h-5 text-white text-xs">
+                        <Chip size="md" className="bg-success-400 w-5 h-5 text-white text-xs">
                           {
                             module.value === 'About Me' || module.value === 'Contact' ?
                               <CorrectIconSmall />

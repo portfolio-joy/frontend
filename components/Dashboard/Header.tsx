@@ -1,5 +1,5 @@
 import styles from '@/styles/Home.module.css'
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react'
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react"
 import Link from 'next/link'
 import { ArrowDownIcon } from '../icons'
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
@@ -22,7 +22,8 @@ export default function Header() {
         id: null,
         token: null,
         firstName: null,
-        username: null
+        username: null,
+        role: null
     }
     const userState = useAppSelector(state => state.user);
     const dispatch = useAppDispatch();
@@ -32,7 +33,8 @@ export default function Header() {
         id: null,
         token: null,
         firstName: null,
-        username: null
+        username: null,
+        role: null
     });
 
     useEffect(() => {
@@ -53,7 +55,7 @@ export default function Header() {
     const logoutUser = () => {
         dispatch(logoutUserRequest({ token: userData.token ? userData.token : '' }));
         localStorage.removeItem('data');
-        setUserData({ id: null, token: null, firstName: null, username: null });
+        setUserData({ id: null, token: null, firstName: null, username: null, role: null });
         dispatch(updateUserData(null));
         dispatch(updateAboutMeState(null));
         dispatch(updateSkillState(null));
@@ -73,7 +75,7 @@ export default function Header() {
                 isDataPresent ?
                     <Dropdown>
                         <DropdownTrigger>
-                            <Button className={styles['header-link']}> {userData.firstName}<ArrowDownIcon></ArrowDownIcon> </Button>
+                            <Button className={styles['header-link']}>{userData.firstName}<ArrowDownIcon></ArrowDownIcon></Button>
                         </DropdownTrigger>
                         <DropdownMenu className={styles['dropdown-menu']}>
                             <DropdownItem href='/dashboard' textValue='dashboard' key="dashboard" className={styles['header-link']}>Dashboard</DropdownItem>

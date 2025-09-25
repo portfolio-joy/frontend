@@ -1,7 +1,7 @@
 import { useAppSelector } from "@/hooks/hooks";
 import styles from "@/styles/Portfolio.module.css"
 import { SkillsType } from "@/types/SkillsType";
-import { Card, CardBody, CardHeader, Tooltip } from "@nextui-org/react"
+import { Card, CardBody, CardHeader, Tooltip } from "@heroui/react"
 import { useState, useEffect } from "react";
 import Carousel from "./Carousel";
 
