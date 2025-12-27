@@ -1,5 +1,5 @@
 import styles from "@/styles/Portfolio.module.css"
-import { Chip } from "@nextui-org/react"
+import { Chip } from "@heroui/react"
 import { AboutMeType } from "@/types/AboutMeType";
 import { useEffect, useState } from "react";
 import { ImageType } from "@/types/ImageType";

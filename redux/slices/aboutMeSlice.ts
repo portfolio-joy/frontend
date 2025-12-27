@@ -1,8 +1,6 @@
 import { AboutMeType } from "@/types/AboutMeType";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { userInitialState } from "../rootInitialState";
-import { UserResponseType } from "@/types/UserResponseType";
 import { AboutMeState } from "@/types/states/AboutMeState";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState : AboutMeState = {
     data : null,

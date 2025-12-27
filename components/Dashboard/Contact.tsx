@@ -4,7 +4,7 @@ import { clearAllErrors, clearError } from '@/redux/slices/errorSlice'
 import { updateResumeData } from '@/redux/slices/resumeSlice'
 import styles from '@/styles/Dashboard.module.css'
 import { ContactType } from '@/types/ContactType'
-import { Divider, Tooltip } from '@nextui-org/react'
+import { Divider, Tooltip } from "@heroui/react"
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 

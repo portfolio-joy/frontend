@@ -1,11 +1,9 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "../hero.ts";
+@source "../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
 
 * {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
   font-family: '__Lora_242605';
   scroll-behavior: smooth;
 }

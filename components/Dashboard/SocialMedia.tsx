@@ -1,6 +1,6 @@
 import styles from '@/styles/Dashboard.module.css'
 import { CrossIcon } from '../icons'
-import { Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, Select, SelectItem, Tooltip, useDisclosure } from '@nextui-org/react'
+import { Chip, Divider, Modal, ModalBody, ModalContent, ModalFooter, Select, SelectItem, Tooltip, useDisclosure } from "@heroui/react"
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks'
 import { useEffect, useState } from 'react';
 import { addSocialMediaRequest, removeSocialMediaRequest, resetSocialMediaSuccess, updateSocialMediaRequest, updateSocialMediaState } from '@/redux/slices/socialMediaSlice';

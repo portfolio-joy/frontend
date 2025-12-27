@@ -7,7 +7,7 @@ import styles from '@/styles/Dashboard.module.css'
 import { AboutMeType } from '@/types/AboutMeType'
 import { ImageType } from '@/types/ImageType';
 import { base64ToFile } from '@/util/base64ToFile';
-import { Divider, Tooltip } from '@nextui-org/react'
+import { Divider, Tooltip } from "@heroui/react"
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'react-toastify';
 import { textEditorConfiguration } from '@/util/textEditorConfiguration';
@@ -52,7 +52,8 @@ export default function AboutMe() {
                     dispatch(updateAboutMeState(userState.user.aboutMe));
                     setIsDataPresent(true);
                 } else {
-                    setFormData((previousFormDataState) => ({ ...previousFormDataState, 'name': userState.user?.firstName + " " + userState.user?.lastName }));
+                    const lastName = userState.user?.lastName;
+                    setFormData((previousFormDataState) => ({ ...previousFormDataState, 'name': userState.user?.firstName + " " + (lastName ?? '') }));
                 }
             } else {
                 setImage(base64ToFile(aboutMeState.data?.image as ImageType));

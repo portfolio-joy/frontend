@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Navbar, NavbarMenuToggle, NavbarMenu, NavbarContent, Link } from "@nextui-org/react";
+import { Navbar, NavbarMenuToggle, NavbarMenu, NavbarContent, Link } from "@heroui/react";
 import styles from "@/styles/Portfolio.module.css"
 import { useRouter } from "next/router";
 import { useAppSelector } from "@/hooks/hooks";

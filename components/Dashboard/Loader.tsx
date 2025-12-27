@@ -1,4 +1,4 @@
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@heroui/react";
 import styles from '@/styles/Dashboard.module.css'
 
 export default function Loader() {
