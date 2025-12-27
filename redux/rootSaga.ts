@@ -24,6 +24,7 @@ import addTestimonialSaga from './sagas/testimonialSaga/addTestimonialSaga';
 import updateTestimonialSaga from './sagas/testimonialSaga/updateTestimonialSaga';
 import removeTestimonialSaga from './sagas/testimonialSaga/removeTestimonialSaga';
 import reorderProjectDataSaga from './sagas/projectDataSaga/reorderProjectDataSaga';
+import fetchAllAdminDataSaga from './sagas/adminSaga/fetchAllAdminDataSaga';
 
 function* watchLatest() {
     yield takeLatest('projectData/addProjectDataRequest', addProjectDataSaga);
@@ -54,6 +55,7 @@ function* watchEvery() {
     yield takeEvery('user/fetchUserData', fetchUserSaga);
     yield takeEvery('projectData/fetchProjectDataRequest', fetchProjectDataSaga);
     yield takeEvery('projectData/reorderProjectDataRequest', reorderProjectDataSaga);
+    yield takeEvery('admin/fetchAllAdminData', fetchAllAdminDataSaga);
 }
 
 function* rootSaga() {

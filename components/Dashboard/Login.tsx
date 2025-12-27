@@ -34,10 +34,7 @@ export default function Login() {
             dispatch(clearAllErrors());
             const responseData = loginState.data as LoginResponseData;
             localStorage.setItem('data', JSON.stringify(responseData));
-            if(responseData.role === 'Admin')
-                router.push('/admin');
-            else 
-                router.push('/dashboard');
+            router.push('/dashboard');
         }
         if (Object.keys(error).length) {
             dispatch(setLoading(false));

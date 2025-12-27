@@ -12,6 +12,7 @@ import contactSlice from "./slices/contactSlice"
 import socialMediaSlice from "./slices/socialMediaSlice"
 import testimonialSlice from "./slices/testimonialSlice"
 import resumeSlice from "./slices/resumeSlice"
+import adminSlice from "./slices/adminSlice"
 
 const rootReducer = combineReducers({
     register: registerSlice,
@@ -26,7 +27,8 @@ const rootReducer = combineReducers({
     contact: contactSlice,
     socialMedia: socialMediaSlice,
     error: errorSlice,
-    resume: resumeSlice
+    resume: resumeSlice,
+    admin: adminSlice
 })
 
 export default rootReducer;

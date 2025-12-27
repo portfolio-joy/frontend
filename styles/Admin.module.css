@@ -1,0 +1,11 @@
+.table-header {
+    background-color: rgb(228 227 213);
+    opacity: .8;
+    color: black;
+    font-style: italic;
+}
+
+.button-color {
+    background-color: rgb(120, 40, 200);
+    color: white;
+}
