@@ -13,7 +13,7 @@ export default function Roles() {
         if (adminState.success) {
             setRoles(adminState.data ? adminState.data.roles : []);
         }
-    }, [adminState.success]);
+    }, [adminState.success, adminState.data]);
 
     const columns = [
         { name: "Name", uid: "name", align : "start" as "start"},

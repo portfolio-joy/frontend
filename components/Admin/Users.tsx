@@ -14,7 +14,7 @@ export default function Users() {
         if (adminState.success) {
             setUsers(adminState.data ? adminState.data.users : []);
         }
-    }, [adminState.success]);
+    }, [adminState.success, adminState.data]);
 
     const columns = [
         { name: "Name", uid: "name", align : "start" as "start"},
